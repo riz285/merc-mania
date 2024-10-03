@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "947029214867",
+    "project_id": "merc-mania",
+    "storage_bucket": "merc-mania.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:947029214867:android:0dd316292718dd71eeef66",
+        "android_client_info": {
+          "package_name": "com.example.merc_ma"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "947029214867-i06jgtoab4mphfufi02t1tc4gejej76n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9H-TQREb6M7SDgClC0b9nS_RSURAypfY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "947029214867-i06jgtoab4mphfufi02t1tc4gejej76n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "947029214867-cs6vptbsu382lucpjk1v9dtd8fnia34h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.mercMania"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:947029214867:android:308aa307714cbceeeeef66",
+        "android_client_info": {
+          "package_name": "com.example.merc_mania"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "947029214867-d6tblqq61r2i6ig9ksgl4ms3odp1tldn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.merc_mania",
+            "certificate_hash": "df906ecb25c4f02fcf25fd4c20243c47e3579f93"
+          }
+        },
+        {
+          "client_id": "947029214867-i06jgtoab4mphfufi02t1tc4gejej76n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9H-TQREb6M7SDgClC0b9nS_RSURAypfY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "947029214867-i06jgtoab4mphfufi02t1tc4gejej76n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "947029214867-cs6vptbsu382lucpjk1v9dtd8fnia34h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.mercMania"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
