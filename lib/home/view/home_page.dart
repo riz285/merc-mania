@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:merc_mania/common/widgets/navigation_bar/styled_navigation_bar.dart';
 import 'package:merc_mania/common/widgets/styled_drawer.dart';
 import 'package:merc_mania/core/configs/themes/app_colors.dart';
+
+import '../domain/home_view.dart';
 
 
 class HomePage extends StatelessWidget {
@@ -27,45 +30,9 @@ class HomePage extends StatelessWidget {
         ],
       ),
       drawer: StyledDrawer(),
-      body: Align(
-        alignment: const Alignment(-1.0,-1.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('Popular',
-              style: TextStyle(
-                color: AppColors.primary,
-                fontSize: 20,
-                fontWeight: FontWeight.bold
-              )),
-            ),
-            // CustomScrollView()
-            Divider(),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('Recently Searched',
-              style: TextStyle(
-                color: AppColors.primary,
-                fontSize: 20,
-                fontWeight: FontWeight.bold
-              )),
-            ),
-            Divider(),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('Recommended',
-              style: TextStyle(
-                color: AppColors.primary,
-                fontSize: 20,
-                fontWeight: FontWeight.bold
-              )),
-            ),
-          ],
-        ),
-      ),
+      bottomNavigationBar: StyledNavigationBar(),
+      body: HomeView() 
+      //HomeView()
     );
   }
 }

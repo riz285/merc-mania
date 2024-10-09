@@ -253,6 +253,14 @@ class AuthenticationRepository {
     }
   }
 
+  Future<void> confirmPasswordReset({required String code, required String newPassword}) async {
+    try {
+      await _firebaseAuth.confirmPasswordReset(code: code, newPassword: newPassword);
+    } catch (_) {
+      throw const ResetPasswordFailure();
+    }
+  }
+
   /// Signs in with the provided [email] and [password].
   ///
   /// Throws a [LogInWithEmailAndPasswordFailure] if an exception occurs.

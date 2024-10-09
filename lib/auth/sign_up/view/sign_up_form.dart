@@ -39,6 +39,10 @@ class SignUpForm extends StatelessWidget {
               const SizedBox(height: 8),
               _ConfirmPasswordInput(),
               const SizedBox(height: 8),
+              // _FirstNameInput(),
+              // const SizedBox(height: 8),
+              // _LastNameInput(),
+              // const SizedBox(height: 8),
               _SignUpButton(),
             ],
           ),
@@ -109,6 +113,46 @@ class _ConfirmPasswordInput extends StatelessWidget {
     );
   }
 }
+
+// class _FirstNameInput extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     final displayError = context.select(
+//       (SignUpCubit cubit) => cubit.state.email.displayError,
+//     );
+
+//     return TextField(
+//       key: const Key('signUpForm_firstNameInput_textField'),
+//       onChanged: (firstName) => context.read<SignUpCubit>().firstNameChanged(firstName),
+//       keyboardType: TextInputType.emailAddress,
+//       decoration: InputDecoration(
+//         labelText: 'first name',
+//         helperText: '',
+//         errorText: displayError != null ? 'invalid name' : null,
+//       ),
+//     );
+//   }
+// }
+
+// class _LastNameInput extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     final displayError = context.select(
+//       (SignUpCubit cubit) => cubit.state.email.displayError,
+//     );
+
+//     return TextField(
+//       key: const Key('signUpForm_lastNameInput_textField'),
+//       onChanged: (lastName) => context.read<SignUpCubit>().lastNameChanged(lastName),
+//       keyboardType: TextInputType.emailAddress,
+//       decoration: InputDecoration(
+//         labelText: 'last name',
+//         helperText: '',
+//         errorText: displayError != null ? 'invalid name' : null,
+//       ),
+//     );
+//   }
+// }
 
 class _SignUpButton extends StatelessWidget {
   @override

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:formz/formz.dart';
-import 'package:merc_mania/reset_password/view/reset_password_page.dart';
 
 import '../../sign_up/view/sign_up_page.dart';
 import '../cubit/login_cubit.dart';
@@ -31,35 +30,17 @@ class LoginForm extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset('assets/images/butterfly.png',
-              height: 100),
+              Image.asset(
+                  'assets/images/butterfly.png',
+                  height: 100,
+              ),
               const SizedBox(height: 16),
               _EmailInput(),
               const SizedBox(height: 8),
               _PasswordInput(),
-              Align(
-                alignment: Alignment.topRight,
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ResetPasswordPage()));
-                  },
-                  child: const Text('forget password?',
-                  style: TextStyle(
-                    fontStyle: FontStyle.italic, 
-                    decoration: TextDecoration.underline
-                  ),)),
-              ),
               const SizedBox(height: 8),
               _LoginButton(),
-              const SizedBox(height: 20),
-              Row(
-                children: <Widget>[
-                  Expanded(child: Divider()),
-                  Text(' or ',style: TextStyle(color: Colors.grey),),
-                  Expanded(child: Divider()),
-                ],
-              ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 8),
               _GoogleLoginButton(),
               const SizedBox(height: 4),
               _SignUpButton(),
@@ -83,7 +64,7 @@ class _EmailInput extends StatelessWidget {
       onChanged: (email) => context.read<LoginCubit>().emailChanged(email),
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
-        labelText: 'Email',
+        labelText: 'email',
         helperText: '',
         errorText: displayError != null ? 'invalid email' : null,
       ),
@@ -104,7 +85,7 @@ class _PasswordInput extends StatelessWidget {
           context.read<LoginCubit>().passwordChanged(password),
       obscureText: true,
       decoration: InputDecoration(
-        labelText: 'Password',
+        labelText: 'password',
         helperText: '',
         errorText: displayError != null ? 'invalid password' : null,
       ),

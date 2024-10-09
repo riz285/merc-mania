@@ -3,6 +3,7 @@ import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../common/widgets/navigation_bar/cubit/navigation_bar_cubit.dart';
 import '../bloc/app_bloc.dart';
 import '../routes/routes.dart';
 
@@ -18,14 +19,19 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return RepositoryProvider.value(
       value: _authenticationRepository,
-      child: BlocProvider(
-        lazy: false,
+      child: MultiBlocProvider(
+  providers: [
+    BlocProvider<StyledNavigationBarCubit>(
+      create: (BuildContext context) => StyledNavigationBarCubit(),
+    ),
+    BlocProvider<AppBloc>(
+      lazy: false,
         create: (_) => AppBloc(
           authenticationRepository: _authenticationRepository,
-        )..add(const AppUserSubscriptionRequested()),
-        
+        )..add(const AppUserSubscriptionRequested())
+    ),],
         child: const AppView(),
-      ),
+      )
     );
   }
 }

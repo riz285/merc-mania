@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyB9H-TQREb6M7SDgClC0b9nS_RSURAypfY',
-    appId: '1:947029214867:android:0dd316292718dd71eeef66',
+    appId: '1:947029214867:android:d7ad4fa67639da4eeeef66',
     messagingSenderId: '947029214867',
     projectId: 'merc-mania',
     storageBucket: 'merc-mania.appspot.com',

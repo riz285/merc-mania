@@ -19,6 +19,7 @@ dependencies:
   meta: ^1.15.0
   flutter:
     sdk: flutter
+  cloud_firestore: ^5.4.4
 
 dev_dependencies:
   firebase_auth_platform_interface: ^7.4.7

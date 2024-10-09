@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+import 'package:equatable/equatable.dart'; 
 
 /// {@template user}
 /// User model
@@ -14,11 +14,11 @@ class User extends Equatable {
     this.photo,
   });
 
-  /// The current user's email address.
-  final String? email;
-
   /// The current user's id.
   final String id;
+
+  /// The current user's email address.
+  final String? email;
 
   /// The current user's name (display name).
   final String? name;
@@ -29,6 +29,23 @@ class User extends Equatable {
   /// Empty user which represents an unauthenticated user.
   static const empty = User(id: '');
 
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'],
+      email: json['email'],
+      name: json['name'],
+      photo: json['photo']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id' : id,
+      'email' : email,
+      'name' : name,
+      'photo' : photo,
+    };
+  }
+
   @override
-  List<Object?> get props => [email, id, name, photo];
+  List<Object?> get props => [id, email, name, photo];
 }
