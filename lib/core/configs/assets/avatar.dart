@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 const _avatarSize = 48.0;
 
 class Avatar extends StatelessWidget {
-  const Avatar({super.key, this.photo});
+  const Avatar(userData, {super.key, this.photo});
 
   final String? photo;
 
@@ -13,6 +13,7 @@ class Avatar extends StatelessWidget {
     return CircleAvatar(
       radius: _avatarSize,
       backgroundImage: photo != null ? NetworkImage(photo) : null,
+      backgroundColor: Colors.grey,
       child: photo == null
           ? const Icon(Icons.person_outline, size: _avatarSize)
           : null,

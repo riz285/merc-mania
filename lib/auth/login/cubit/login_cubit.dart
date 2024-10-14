@@ -4,12 +4,15 @@ import 'package:equatable/equatable.dart';
 import 'package:form_inputs/form_inputs.dart';
 import 'package:formz/formz.dart';
 
+import '../../../services/database/user_service.dart';
+
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   LoginCubit(this._authenticationRepository) : super(const LoginState());
 
   final AuthenticationRepository _authenticationRepository;
+  final userService = UserService();
 
   void emailChanged(String value) {
     final email = Email.dirty(value);
@@ -29,6 +32,10 @@ class LoginCubit extends Cubit<LoginState> {
         isValid: Formz.validate([state.email, password]),
       ),
     );
+  }
+
+  Future<bool> exists(String id) async {
+    return await userService.exists(id);
   }
 
   Future<void> logInWithCredentials() async {
@@ -56,6 +63,12 @@ class LoginCubit extends Cubit<LoginState> {
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
       await _authenticationRepository.logInWithGoogle();
+      // ignore: no_leading_underscores_for_local_identifiers
+      User _currentUser = _authenticationRepository.currentUser;
+      if (!await userService.exists(_currentUser.id)) {
+        User user = User(id: _currentUser.id, email: _currentUser.email, photo: _currentUser.photo);
+        userService.createUser(user.id, user);
+      }
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } on LogInWithGoogleFailure catch (e) {
       emit(

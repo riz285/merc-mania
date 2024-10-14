@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget {
     //final user = context.select((AppBloc bloc) => bloc.state.user);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home', style: TextStyle(fontWeight: FontWeight.bold),),
+        title: const Text('Home', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.brown),),
         backgroundColor: AppColors.appBar,
         actions: <Widget>[
           IconButton(

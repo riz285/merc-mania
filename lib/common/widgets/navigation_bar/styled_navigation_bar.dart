@@ -36,12 +36,12 @@ class _StyledNavigationBarState extends State<StyledNavigationBar> {
             label: 'Notifications',
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.person),
+            selectedIcon: Icon(Icons.inbox),
             icon: Badge(
               label: Text('2'),
-              child: Icon(Icons.person_outlined),
+              child: Icon(Icons.inbox_outlined),
             ),
-            label: 'Profile',
+            label: 'Inbox',
           ),
         ],
       );

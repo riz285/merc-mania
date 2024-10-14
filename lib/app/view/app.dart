@@ -2,8 +2,11 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:merc_mania/screens/profile/cubit/profile_cubit.dart';
 
 import '../../common/widgets/navigation_bar/cubit/navigation_bar_cubit.dart';
+import '../../core/configs/themes/app_themes.dart';
+import '../../screens/theme_modes/cubit/theme_cubit.dart';
 import '../bloc/app_bloc.dart';
 import '../routes/routes.dart';
 
@@ -21,15 +24,19 @@ class App extends StatelessWidget {
       value: _authenticationRepository,
       child: MultiBlocProvider(
   providers: [
+    BlocProvider<ThemeCubit>(create: (_) => ThemeCubit()),
     BlocProvider<StyledNavigationBarCubit>(
-      create: (BuildContext context) => StyledNavigationBarCubit(),
+      create: (_) => StyledNavigationBarCubit(),
     ),
     BlocProvider<AppBloc>(
       lazy: false,
         create: (_) => AppBloc(
           authenticationRepository: _authenticationRepository,
         )..add(const AppUserSubscriptionRequested())
-    ),],
+      ),
+    BlocProvider<ProfileCubit>(
+      create: (_) => ProfileCubit(_authenticationRepository)
+      )],
         child: const AppView(),
       )
     );
@@ -41,19 +48,21 @@ class AppView extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      // BlocBuilder<ThemeCubit, ThemeMode>(
-            // builder: (context, mode) => 
-      //theme based on user's system
-      // theme: AppTheme.lightTheme,
-      // darkTheme: AppTheme.darkTheme,
-      // themeMode: mode,
-
+    return 
+      BlocBuilder<ThemeCubit, ThemeMode>(
+            builder: (context, mode) => 
+      MaterialApp(
+      // Initialize app's ThemeData
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      // Theme based on user's system
+      themeMode: mode,
+      
       debugShowCheckedModeBanner: false,
       home: FlowBuilder<AppStatus>(
         state: context.select((AppBloc bloc) => bloc.state.status),
         onGeneratePages: onGenerateAppViewPages,
-      ),
+      ),)
     );
   }
 }

@@ -6,7 +6,7 @@ import 'package:merc_mania/screens/security/security.dart';
 
 import '../../app/bloc/app_bloc.dart';
 import '../../core/configs/assets/app_images.dart';
-import '../../screens/profile/view/profile.dart';
+import '../../screens/profile/view/user_display/profile_page.dart';
 import '../../screens/settings/settings.dart';
 
 class StyledDrawer extends StatelessWidget {
@@ -37,7 +37,7 @@ class StyledDrawer extends StatelessWidget {
             Navigator.pop(context);
             Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => const Profile(),
+              builder: (context) => const ProfilePage(),
             )
           );
           },

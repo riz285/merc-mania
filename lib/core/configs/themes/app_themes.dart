@@ -14,8 +14,25 @@ class AppTheme {
               textStyle:
                   const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30)))));
-
+                  borderRadius: BorderRadius.circular(30)))),
+      //Text button
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.lightTitle),
+          shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30))
+        )
+      ),
+      //Text label style
+      inputDecorationTheme: InputDecorationTheme(
+        labelStyle: TextStyle(
+          color: AppColors.lightTitle,
+        )
+      )
+      //Text style
+        
+      
+  );
   //Dark mode
   static final darkTheme = ThemeData(
       primaryColor: Colors.grey[900],
@@ -24,9 +41,25 @@ class AppTheme {
       //Elevated button
       elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.grey[900],
+              backgroundColor: Colors.blue[600],
               textStyle:
                   const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30)))));
+                  borderRadius: BorderRadius.circular(30)))),
+      //Text button
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.darkTitle),
+          shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30))
+        )
+      ),
+
+      //Text label style
+      inputDecorationTheme: InputDecorationTheme(
+        labelStyle: TextStyle(
+          color: AppColors.darkTitle,
+        )
+      )
+                  );
 }

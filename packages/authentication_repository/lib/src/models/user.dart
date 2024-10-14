@@ -10,7 +10,9 @@ class User extends Equatable {
   const User({
     required this.id,
     this.email,
-    this.name,
+    this.firstName,
+    this.lastName,
+    this.phoneNum,
     this.photo,
   });
 
@@ -20,8 +22,15 @@ class User extends Equatable {
   /// The current user's email address.
   final String? email;
 
-  /// The current user's name (display name).
-  final String? name;
+  /// The current user's first name (display name).
+  final String? firstName;
+
+  /// The current user's last name.
+  final String? lastName;
+
+
+  /// The current user's phone number.
+  final String? phoneNum;
 
   /// Url for the current user's photo.
   final String? photo;
@@ -33,7 +42,9 @@ class User extends Equatable {
     return User(
       id: json['id'],
       email: json['email'],
-      name: json['name'],
+      firstName: json['first_name'],
+      lastName: json['last_name'],
+      phoneNum: json['phone_number'],
       photo: json['photo']);
   }
 
@@ -41,11 +52,13 @@ class User extends Equatable {
     return {
       'id' : id,
       'email' : email,
-      'name' : name,
+      'first_name' : firstName,
+      'last_name' : lastName,
+      'phone_number': phoneNum,
       'photo' : photo,
     };
   }
 
   @override
-  List<Object?> get props => [id, email, name, photo];
+  List<Object?> get props => [id, email, firstName, lastName, phoneNum, photo];
 }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:merc_mania/home/view/home_screen.dart';
+import 'package:merc_mania/screens/chat/view/chat_screen.dart';
+import 'package:merc_mania/screens/notifications/view/notification_screen.dart';
 
 import '../../common/widgets/navigation_bar/cubit/navigation_bar_cubit.dart';
-import '../../notifications/view/notification_screen.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -31,7 +32,7 @@ class _HomeViewState extends State<HomeView> {
   static final List<Widget> pages = <Widget>[
     const HomeScreen(),
     const NotificationScreen(),
-    //
+    const ChatScreen()
   ];
   
   void onPageChanged(int index) {

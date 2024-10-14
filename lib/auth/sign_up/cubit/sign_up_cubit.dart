@@ -2,11 +2,10 @@ import 'dart:async';
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:form_inputs/form_inputs.dart';
 import 'package:formz/formz.dart';
-import 'package:merc_mania/services/database/db_service.dart';
+import 'package:merc_mania/services/database/user_service.dart';
 
 part 'sign_up_state.dart';
 
@@ -14,7 +13,7 @@ class SignUpCubit extends Cubit<SignUpState> {
   SignUpCubit(this._authenticationRepository) : super(const SignUpState());
 
   final AuthenticationRepository _authenticationRepository;
-  final db = DbService();
+  final userService = UserService();
 
   void emailChanged(String value) {
     final email = Email.dirty(value);
@@ -74,8 +73,10 @@ class SignUpCubit extends Cubit<SignUpState> {
         email: state.email.value,
         password: state.password.value,
       );
-      User user = User(id: _authenticationRepository.currentUser.id, email: state.email.value);
-      await db.createUser(user.id, user);
+      // ignore: no_leading_underscores_for_local_identifiers
+      User _currentUser = _authenticationRepository.currentUser;
+      User user = User(id: _currentUser.id, email: _currentUser.email);
+      await userService.createUser(user.id, user);
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } on SignUpWithEmailAndPasswordFailure catch (e) {
       emit(
