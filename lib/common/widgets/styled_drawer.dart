@@ -2,18 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:merc_mania/screens/help_center/help_center.dart';
 import 'package:merc_mania/screens/policy/policy.dart';
-import 'package:merc_mania/screens/security/security.dart';
+import 'package:merc_mania/screens/theme_modes/cubit/theme_cubit.dart';
 
 import '../../app/bloc/app_bloc.dart';
 import '../../core/configs/assets/app_images.dart';
-import '../../screens/profile/view/user_display/profile_page.dart';
+import '../../screens/profile/view/profile_display/profile_page.dart';
 import '../../screens/settings/settings.dart';
+import 'styled_switch.dart';
 
-class StyledDrawer extends StatelessWidget {
+class StyledDrawer extends StatefulWidget {
   const StyledDrawer({super.key});
 
   @override
+  State<StyledDrawer> createState() => _StyledDrawerState();
+}
+
+class _StyledDrawerState extends State<StyledDrawer> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final themeCubit = BlocProvider.of<ThemeCubit>(context);
+    var mode = themeCubit.state;
+
     return Drawer(
       child: Column(children: [
         Expanded(child: ListView(
@@ -25,10 +39,18 @@ class StyledDrawer extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Current user's avatar
                 Image.asset(AppImages.logoImage,
                 height: 50),
+                // Current user's name
                 const Text('Name',
                 style: TextStyle(color: Colors.white),),
+                // TODO: implement get() user's following and followers
+                Row(children: [
+                  Text('Following: 0'),
+                  Spacer(),
+                  Text('Followers: 0')
+                ],)
               ],
             ),
           ),
@@ -49,12 +71,12 @@ class StyledDrawer extends StatelessWidget {
             Navigator.pop(context);
             Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => const Security(),
+              builder: (context) => const Settings(),
             )
           );
           },
-          leading: Icon(Icons.lock),
-          title: Text('Security'),
+          leading: Icon(Icons.settings),
+          title: Text('Settings'),
         ),
         ListTile(
           onTap: () { 
@@ -83,16 +105,16 @@ class StyledDrawer extends StatelessWidget {
         ),
         Align(
           child: Row(children: [
-            IconButton(
-              key: const Key('drawer_settings_iconButton'),
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const Settings()
-                    ));},
-              icon: Icon(Icons.settings)
-            ),
+            StyledSwitch(
+                  key: const Key('drawer_themeMode_switch'),
+                  value: mode == ThemeMode.light,
+                  onChanged: (value) {
+                    themeCubit.toggleTheme();
+                    setState(() {
+                    value = !value;
+                    });
+                  },
+                ),
             Spacer(),
             IconButton(
               key: const Key('drawer_logout_iconButton'),
