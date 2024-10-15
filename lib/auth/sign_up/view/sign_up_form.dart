@@ -39,10 +39,12 @@ class SignUpForm extends StatelessWidget {
               const SizedBox(height: 8),
               _ConfirmPasswordInput(),
               const SizedBox(height: 8),
-              // _FirstNameInput(),
-              // const SizedBox(height: 8),
-              // _LastNameInput(),
-              // const SizedBox(height: 8),
+              _FirstNameInput(),
+              const SizedBox(height: 8),
+              _LastNameInput(),
+              const SizedBox(height: 8),
+              _PhoneNumberInput(),
+              const SizedBox(height: 8),
               _SignUpButton(),
             ],
           ),
@@ -114,45 +116,65 @@ class _ConfirmPasswordInput extends StatelessWidget {
   }
 }
 
-// class _FirstNameInput extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     final displayError = context.select(
-//       (SignUpCubit cubit) => cubit.state.email.displayError,
-//     );
+class _FirstNameInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final displayError = context.select(
+      (SignUpCubit cubit) => cubit.state.email.displayError,
+    );
 
-//     return TextField(
-//       key: const Key('signUpForm_firstNameInput_textField'),
-//       onChanged: (firstName) => context.read<SignUpCubit>().firstNameChanged(firstName),
-//       keyboardType: TextInputType.emailAddress,
-//       decoration: InputDecoration(
-//         labelText: 'first name',
-//         helperText: '',
-//         errorText: displayError != null ? 'invalid name' : null,
-//       ),
-//     );
-//   }
-// }
+    return TextField(
+      key: const Key('signUpForm_firstNameInput_textField'),
+      onChanged: (firstName) => context.read<SignUpCubit>().firstNameChanged(firstName),
+      keyboardType: TextInputType.name,
+      decoration: InputDecoration(
+        labelText: 'first name',
+        helperText: '',
+        errorText: displayError != null ? 'invalid name' : null,
+      ),
+    );
+  }
+}
 
-// class _LastNameInput extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     final displayError = context.select(
-//       (SignUpCubit cubit) => cubit.state.email.displayError,
-//     );
+class _LastNameInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final displayError = context.select(
+      (SignUpCubit cubit) => cubit.state.email.displayError,
+    );
 
-//     return TextField(
-//       key: const Key('signUpForm_lastNameInput_textField'),
-//       onChanged: (lastName) => context.read<SignUpCubit>().lastNameChanged(lastName),
-//       keyboardType: TextInputType.emailAddress,
-//       decoration: InputDecoration(
-//         labelText: 'last name',
-//         helperText: '',
-//         errorText: displayError != null ? 'invalid name' : null,
-//       ),
-//     );
-//   }
-// }
+    return TextField(
+      key: const Key('signUpForm_lastNameInput_textField'),
+      onChanged: (lastName) => context.read<SignUpCubit>().lastNameChanged(lastName),
+      keyboardType: TextInputType.name,
+      decoration: InputDecoration(
+        labelText: 'last name',
+        helperText: '',
+        errorText: displayError != null ? 'invalid name' : null,
+      ),
+    );
+  }
+}
+
+class _PhoneNumberInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final displayError = context.select(
+      (SignUpCubit cubit) => cubit.state.phoneNum.displayError,
+    );
+
+    return TextField(
+      key: const Key('updateProfileForm_phoneNumberInput_textField'),
+      onChanged: (phoneNum) => context.read<SignUpCubit>().phoneNumberChanged(phoneNum),
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+        labelText: 'phone number',
+        helperText: '',
+        errorText: displayError != null ? 'invalid phone number' : null,
+      ),
+    );
+  }
+}
 
 class _SignUpButton extends StatelessWidget {
   @override

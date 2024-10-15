@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:merc_mania/core/configs/assets/app_images.dart';
-import 'package:merc_mania/home/view/home_page.dart';
+import 'package:merc_mania/home/home_page.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});

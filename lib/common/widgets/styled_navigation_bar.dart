@@ -1,26 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:merc_mania/core/configs/themes/app_colors.dart';
 
-import 'cubit/navigation_bar_cubit.dart';
-
-class StyledNavigationBar extends StatefulWidget {
-  const StyledNavigationBar({super.key});
-
-  @override
-  State<StyledNavigationBar> createState() => _StyledNavigationBarState();
-}
-
-class _StyledNavigationBarState extends State<StyledNavigationBar> {
+class StyledNavigationBar extends StatelessWidget {
+  final int selectedIndex;
+  final Function(int) onTap;
+  const StyledNavigationBar({super.key, required this.selectedIndex, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<StyledNavigationBarCubit, int>(builder: (context, state) {
-      return NavigationBar(
+    return NavigationBar(
         indicatorColor: AppColors.appBar,
-        selectedIndex: state,
+        selectedIndex: selectedIndex,
         onDestinationSelected: (index) { 
-          context.read<StyledNavigationBarCubit>().navigateToPage(index);
+          onTap(index);
         },
         destinations: const <Widget>[
           NavigationDestination(
@@ -45,7 +37,6 @@ class _StyledNavigationBarState extends State<StyledNavigationBar> {
           ),
         ],
       );
-    },);
     // 
   }
 }

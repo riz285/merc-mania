@@ -24,6 +24,9 @@ class SignUpCubit extends Cubit<SignUpState> {
           email,
           state.password,
           state.confirmedPassword,
+          state.firstName,
+          state.lastName,
+          state.phoneNum
         ]),
       ),
     );
@@ -43,6 +46,9 @@ class SignUpCubit extends Cubit<SignUpState> {
           state.email,
           password,
           confirmedPassword,
+          state.firstName,
+          state.lastName,
+          state.phoneNum
         ]),
       ),
     );
@@ -60,6 +66,63 @@ class SignUpCubit extends Cubit<SignUpState> {
           state.email,
           state.password,
           confirmedPassword,
+          state.firstName,
+          state.lastName,
+          state.phoneNum
+        ]),
+      ),
+    );
+  }
+
+  // On first_name change
+  void firstNameChanged(String value) {
+    final firstName = Name.dirty(value);
+    emit(
+      state.copyWith(
+        firstName: firstName,
+        isValid: Formz.validate([
+          state.email,
+          state.password,
+          state.confirmedPassword,
+          firstName,
+          state.lastName,
+          state.phoneNum
+        ]),
+      ),
+    );
+  }
+
+  // On last_name change
+  void lastNameChanged(String value) {
+    final lastName = Name.dirty(value);
+    emit(
+      state.copyWith(
+        lastName: lastName,
+        isValid: Formz.validate([
+          state.email,
+          state.password,
+          state.confirmedPassword,
+          state.firstName,
+          lastName,
+          state.phoneNum,
+        ]),
+      ),
+    );
+  }
+
+  // On phone_number change
+  void phoneNumberChanged(String value) {
+    final phoneNum = PhoneNumber.dirty(value);
+    emit(
+      state.copyWith(
+        phoneNum: phoneNum,
+        isValid: Formz.validate([
+          state.email,
+          state.password,
+          state.confirmedPassword,
+          state.firstName,
+          state.lastName,
+          phoneNum,
         ]),
       ),
     );
@@ -75,7 +138,7 @@ class SignUpCubit extends Cubit<SignUpState> {
       );
       // ignore: no_leading_underscores_for_local_identifiers
       User _currentUser = _authenticationRepository.currentUser;
-      User user = User(id: _currentUser.id, email: _currentUser.email);
+      User user = User(id: _currentUser.id, email: _currentUser.email, firstName: _currentUser.firstName, lastName: _currentUser.lastName, phoneNum: _currentUser.phoneNum);
       await userService.createUser(user.id, user);
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } on SignUpWithEmailAndPasswordFailure catch (e) {

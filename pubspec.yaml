@@ -85,7 +85,7 @@ flutter:
     - assets/vectors/bird.svg
     - assets/vectors/star.svg
     - assets/images/butterfly.png
-
+    - assets/images/default.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

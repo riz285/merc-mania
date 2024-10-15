@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import '../../auth/login/view/login_page.dart';
-import '../../home/view/home_page.dart';
+import '../../home/home_page.dart';
 import '../bloc/app_bloc.dart';
 
 List<Page<dynamic>> onGenerateAppViewPages(

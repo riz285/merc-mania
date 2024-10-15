@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 
-const _avatarSize = 48.0;
+const _avatarSize = 35.0;
 
 class Avatar extends StatelessWidget {
-  const Avatar(userData, {super.key, this.photo});
-
-  final String? photo;
+  final String photo;
+  const Avatar({super.key, required this.photo});
 
   @override
   Widget build(BuildContext context) {
     final photo = this.photo;
     return CircleAvatar(
       radius: _avatarSize,
-      backgroundImage: photo != null ? NetworkImage(photo) : null,
+      backgroundImage: NetworkImage(photo),
       backgroundColor: Colors.grey,
-      child: photo == null
+      child: photo == ''
           ? const Icon(Icons.person_outline, size: _avatarSize)
           : null,
     );

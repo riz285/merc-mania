@@ -12,25 +12,21 @@ class AppTheme {
           style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,
               textStyle:
-                  const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30)))),
       //Text button
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.lightTitle),
+          textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.lightTitle),
           shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30))
         )
       ),
-      //Text label style
-      inputDecorationTheme: InputDecorationTheme(
-        labelStyle: TextStyle(
-          color: AppColors.lightTitle,
-        )
-      )
       //Text style
+      textTheme: TextTheme(
         
+      )
       
   );
   //Dark mode
@@ -43,23 +39,17 @@ class AppTheme {
           style: ElevatedButton.styleFrom(
               backgroundColor: Colors.blue[600],
               textStyle:
-                  const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30)))),
       //Text button
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.darkTitle),
+          textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.darkTitle),
           shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30))
         )
       ),
 
-      //Text label style
-      inputDecorationTheme: InputDecorationTheme(
-        labelStyle: TextStyle(
-          color: AppColors.darkTitle,
-        )
-      )
                   );
 }

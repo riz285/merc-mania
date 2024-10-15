@@ -1,5 +1,8 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:merc_mania/core/configs/assets/avatar.dart';
+import 'package:merc_mania/core/configs/themes/app_colors.dart';
 import 'package:merc_mania/screens/help_center/help_center.dart';
 import 'package:merc_mania/screens/policy/policy.dart';
 import 'package:merc_mania/screens/theme_modes/cubit/theme_cubit.dart';
@@ -27,6 +30,9 @@ class _StyledDrawerState extends State<StyledDrawer> {
   Widget build(BuildContext context) {
     final themeCubit = BlocProvider.of<ThemeCubit>(context);
     var mode = themeCubit.state;
+    final user = context.select((AppBloc bloc) => bloc.state.user);
+    final photo = user.photo;
+    final name = user.firstName;
 
     return Drawer(
       child: Column(children: [
@@ -34,17 +40,16 @@ class _StyledDrawerState extends State<StyledDrawer> {
         children: [
         DrawerHeader(
             decoration: const BoxDecoration(
-              color: Colors.pinkAccent,
+              color: AppColors.appBar,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Current user's avatar
-                Image.asset(AppImages.logoImage,
-                height: 50),
+                Avatar(photo: photo ?? ''),
+                const SizedBox(height: 8),
                 // Current user's name
-                const Text('Name',
-                style: TextStyle(color: Colors.white),),
+                Text(name??''),
                 // TODO: implement get() user's following and followers
                 Row(children: [
                   Text('Following: 0'),
