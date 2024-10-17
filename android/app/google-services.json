@@ -7,6 +7,42 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:947029214867:android:d7ad4fa67639da4eeeef66",
+        "android_client_info": {
+          "package_name": "com.example.merc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "947029214867-i06jgtoab4mphfufi02t1tc4gejej76n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9H-TQREb6M7SDgClC0b9nS_RSURAypfY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "947029214867-i06jgtoab4mphfufi02t1tc4gejej76n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "947029214867-cs6vptbsu382lucpjk1v9dtd8fnia34h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.mercMania"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:947029214867:android:0dd316292718dd71eeef66",
         "android_client_info": {
           "package_name": "com.example.merc_ma"

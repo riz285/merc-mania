@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:formz/formz.dart';
+import 'package:merc_mania/auth/reset_password/view/reset_password_page.dart';
 
 import '../../sign_up/view/sign_up_page.dart';
 import '../cubit/login_cubit.dart';
@@ -38,6 +39,9 @@ class LoginForm extends StatelessWidget {
               _EmailInput(),
               const SizedBox(height: 8),
               _PasswordInput(),
+              Align(
+                alignment: Alignment.topRight,
+                child: _ForgetPassword()),
               const SizedBox(height: 8),
               _LoginButton(),
               const SizedBox(height: 8),
@@ -89,6 +93,27 @@ class _PasswordInput extends StatelessWidget {
         helperText: '',
         errorText: displayError != null ? 'invalid password' : null,
       ),
+    );
+  }
+}
+
+class _ForgetPassword extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const ResetPasswordPage()));
+      },
+      child: Text(
+          'forget password',
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.blue[700],
+            fontStyle: FontStyle.italic, 
+            decoration: TextDecoration.underline),
+        ),
     );
   }
 }
@@ -147,13 +172,15 @@ class _GoogleLoginButton extends StatelessWidget {
 class _SignUpButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    // final theme = Theme.of(context);
     return TextButton(
       key: const Key('loginForm_createAccount_flatButton'),
-      onPressed: () => Navigator.of(context).push<void>(SignUpPage.route()),
+      onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const SignUpPage())),
       child: Text(
         'CREATE ACCOUNT',
-        style: TextStyle(color: theme.primaryColor),
+        style: TextStyle(),
       ),
     );
   }

@@ -5,8 +5,7 @@ import 'package:formz/formz.dart';
 import '../cubit/reset_password_cubit.dart';
 
 class ResetPasswordForm extends StatefulWidget {
-  final String email;
-  const ResetPasswordForm({required this.email, super.key});
+  const ResetPasswordForm({super.key});
 
   @override
   State<ResetPasswordForm> createState() => _ResetPasswordFormState();
@@ -53,7 +52,7 @@ class _EmailInput extends StatelessWidget {
     );
 
     return TextField(
-      key: const Key('signUpForm_emailInput_textField'),
+      key: const Key('resetPasswordForm_emailInput_textField'),
       onChanged: (email) => context.read<ResetPasswordCubit>().emailChanged(email),
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
@@ -80,7 +79,7 @@ class _ResetPasswordButton extends StatelessWidget {
     );
 
     return ElevatedButton(
-      key: const Key('ResetPasswordForm_continue_raisedButton'),
+      key: const Key('resetPasswordForm_continue_raisedButton'),
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),

@@ -20,7 +20,7 @@ class ResetPasswordPage extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         child: BlocProvider(
           create: (_) => ResetPasswordCubit(context.read<AuthenticationRepository>()),
-          child: const ResetPasswordForm(email: '',),
+          child: const ResetPasswordForm(),
         ),
       ),
     );

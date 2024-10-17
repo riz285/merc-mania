@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:merc_mania/screens/profile/cubit/profile_cubit.dart';
 
-import '../../common/widgets/navigation_bar/cubit/navigation_bar_cubit.dart';
 import '../../core/configs/themes/app_themes.dart';
 import '../../screens/theme_modes/cubit/theme_cubit.dart';
 import '../bloc/app_bloc.dart';
@@ -25,9 +24,6 @@ class App extends StatelessWidget {
       child: MultiBlocProvider(
   providers: [
     BlocProvider<ThemeCubit>(create: (_) => ThemeCubit()),
-    BlocProvider<StyledNavigationBarCubit>(
-      create: (_) => StyledNavigationBarCubit(),
-    ),
     BlocProvider<AppBloc>(
       lazy: false,
         create: (_) => AppBloc(
