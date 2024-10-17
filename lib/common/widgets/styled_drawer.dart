@@ -1,4 +1,3 @@
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:merc_mania/core/configs/assets/avatar.dart';
@@ -8,7 +7,6 @@ import 'package:merc_mania/screens/policy/policy.dart';
 import 'package:merc_mania/screens/theme_modes/cubit/theme_cubit.dart';
 
 import '../../app/bloc/app_bloc.dart';
-import '../../core/configs/assets/app_images.dart';
 import '../../screens/profile/view/profile_display/profile_page.dart';
 import '../../screens/settings/settings.dart';
 import 'styled_switch.dart';
@@ -47,14 +45,14 @@ class _StyledDrawerState extends State<StyledDrawer> {
               children: [
                 // Current user's avatar
                 Avatar(photo: photo ?? ''),
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
                 // Current user's name
-                Text(name??''),
+                Text(name??'', style: TextStyle(color: Colors.brown)),
                 // TODO: implement get() user's following and followers
                 Row(children: [
-                  Text('Following: 0'),
+                  Text('Following: 0', style: TextStyle(color: Colors.brown)),
                   Spacer(),
-                  Text('Followers: 0')
+                  Text('Followers: 0', style: TextStyle(color: Colors.brown))
                 ],)
               ],
             ),

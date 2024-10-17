@@ -23,8 +23,12 @@ class AppTheme {
                   borderRadius: BorderRadius.circular(30))
         )
       ),
-      //Text style
+      //Text 
       textTheme: TextTheme(
+        
+      ),
+      //NavigationBar
+      navigationBarTheme: NavigationBarThemeData(
         
       )
       
@@ -34,6 +38,13 @@ class AppTheme {
       primaryColor: Colors.grey[900],
       scaffoldBackgroundColor: AppColors.darkBackground,
       brightness: Brightness.dark,
+      //appBar
+      appBarTheme: AppBarTheme(
+        // iconTheme: 
+        actionsIconTheme: IconThemeData(
+          color: Colors.brown
+        )
+      ),
       //Elevated button
       elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
@@ -50,6 +61,9 @@ class AppTheme {
                   borderRadius: BorderRadius.circular(30))
         )
       ),
-
+      //NavigationBar
+      navigationBarTheme: NavigationBarThemeData(
+        
+      )
                   );
 }
