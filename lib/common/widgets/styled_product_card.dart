@@ -8,31 +8,102 @@ class StyledProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.grey[700],
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+    return Container(
+      width: 150,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        color: Colors.grey[700],
+        image: DecorationImage(
+                fit: BoxFit.fitHeight,
+                image: NetworkImage(product.image))
+      ),
+      child: Stack(
         children: [
-          Row(children: [
-            Container(
+          // Discount percentage
+          Visibility(
+            visible: (product.discountPercentage != 0) ,
+            child: Positioned(
+            top: 0.0,
+            child: Container(
+              height: 30,
+              width: 40,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(10)),
               color: Colors.red,
-              child: Text('50%', style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white
-              ),),
+              ),
+              child: Text(
+                '${product.discountPercentage}%', 
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white
+                ),
+              ),
             ),
-            Spacer(),
-            IconButton(onPressed: () {}, icon: Icon(Icons.favorite_border_outlined))
-          ],),
-          Image.network(product.image),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15))
+          )
+          ),
+          // Favorite IconButton
+          Positioned(
+            top: 0.0,
+            right: 0.0,
+            child: IconButton(
+              onPressed: () {}, 
+              icon: Icon(
+                Icons.favorite_border_outlined,
+              ), 
+              selectedIcon: Icon(
+                Icons.favorite_rounded, 
+                color: Colors.redAccent,
+              )
             ),
-            child: Text('${product.price}VND')),
+          ),
+          // Product price
+          Positioned(
+            bottom: 0.0,
+            child: Container(
+              height: 35,
+              decoration: BoxDecoration(
+                  color: Color.fromRGBO(54, 54, 54, 95),
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
+                  ),
+              child: Row(
+                children: [
+                  Text(' ${product.price} VND ',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                  ),
+                ]
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 }
+
+// class _discountBanner(int? discountPercentage) extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//   if (discountPercentage != '')
+//   return Positioned(
+//             top: 0.0,
+//             child: Container(
+//               height: 30,
+//               width: 40,
+//               alignment: Alignment.center,
+//               decoration: BoxDecoration(
+//                 borderRadius: BorderRadius.only(topLeft: Radius.circular(10)),
+//               color: Colors.red,
+//               ),
+//               child: Text(
+//                 '$discountPercentage%', 
+//                 style: TextStyle(
+//                   fontWeight: FontWeight.bold,
+//                   color: Colors.white
+//                 ),
+//               ),
+//             ),
+//           )
+//           };

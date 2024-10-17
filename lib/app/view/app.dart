@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:merc_mania/screens/profile/cubit/profile_cubit.dart';
 
 import '../../core/configs/themes/app_themes.dart';
+import '../../screens/chat/cubit/chat_cubit.dart';
 import '../../screens/theme_modes/cubit/theme_cubit.dart';
 import '../bloc/app_bloc.dart';
 import '../routes/routes.dart';
@@ -22,17 +23,21 @@ class App extends StatelessWidget {
     return RepositoryProvider.value(
       value: _authenticationRepository,
       child: MultiBlocProvider(
-  providers: [
-    BlocProvider<ThemeCubit>(create: (_) => ThemeCubit()),
-    BlocProvider<AppBloc>(
-      lazy: false,
-        create: (_) => AppBloc(
-          authenticationRepository: _authenticationRepository,
-        )..add(const AppUserSubscriptionRequested())
-      ),
-    BlocProvider<ProfileCubit>(
-      create: (_) => ProfileCubit(_authenticationRepository)
-      )],
+        providers: [
+          BlocProvider<ThemeCubit>(create: (_) => ThemeCubit()),
+          BlocProvider<AppBloc>(
+            lazy: false,
+              create: (_) => AppBloc(
+                authenticationRepository: _authenticationRepository,
+              )..add(const AppUserSubscriptionRequested())
+            ),
+          BlocProvider<ProfileCubit>(
+            create: (_) => ProfileCubit(_authenticationRepository)
+            ),
+          BlocProvider<ChatCubit>(
+            create: (_) => ChatCubit()
+            )
+        ],
         child: const AppView(),
       )
     );
@@ -54,11 +59,13 @@ class AppView extends StatelessWidget {
       // Theme based on user's system
       themeMode: mode,
       
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false, 
+      // home: HomePage(),
       home: FlowBuilder<AppStatus>(
         state: context.select((AppBloc bloc) => bloc.state.status),
         onGeneratePages: onGenerateAppViewPages,
-      ),)
+      ),
+      )
     );
   }
 }
