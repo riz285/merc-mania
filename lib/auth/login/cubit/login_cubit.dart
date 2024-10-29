@@ -34,6 +34,7 @@ class LoginCubit extends Cubit<LoginState> {
     );
   }
 
+  // Check if user exists in database
   Future<bool> exists(String id) async {
     return await userService.exists(id);
   }

@@ -7,6 +7,8 @@ import 'package:merc_mania/screens/policy/policy.dart';
 import 'package:merc_mania/screens/theme_modes/cubit/theme_cubit.dart';
 
 import '../../app/bloc/app_bloc.dart';
+import '../../screens/cart/view/cart_view.dart';
+import '../../screens/cart/view/order_screen.dart';
 import '../../screens/profile/view/profile_display/profile_page.dart';
 import '../../screens/settings/settings.dart';
 import 'styled_switch.dart';
@@ -44,7 +46,7 @@ class _StyledDrawerState extends State<StyledDrawer> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Current user's avatar
-                Avatar(photo: photo ?? ''),
+                Avatar(photo: photo),
                 const SizedBox(height: 12),
                 // Current user's name
                 Text(name??'', style: TextStyle(color: Colors.brown)),
@@ -68,6 +70,30 @@ class _StyledDrawerState extends State<StyledDrawer> {
           },
           leading: Icon(Icons.person),
           title: Text('Personal Information'),
+        ),
+        ListTile(
+          onTap: () { 
+            Navigator.pop(context);
+            Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const CartView(),
+            )
+          );
+          },
+          leading: Icon(Icons.shopping_cart),
+          title: Text('Cart'),
+        ),
+        ListTile(
+          onTap: () { 
+            Navigator.pop(context);
+            Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const OrderScreen(),
+            )
+          );
+          },
+          leading: Icon(Icons.list_alt),
+          title: Text('Orders'),
         ),
         ListTile(
           onTap: () { 

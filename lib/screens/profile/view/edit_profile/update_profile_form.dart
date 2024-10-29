@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-
+import 'package:image_picker/image_picker.dart';
+import 'package:merc_mania/core/configs/assets/avatar.dart';
 import '../../cubit/profile_cubit.dart';
 
 class UpdateProfileForm extends StatelessWidget {
@@ -17,35 +20,98 @@ class UpdateProfileForm extends StatelessWidget {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
-              SnackBar(content: Text(state.errorMessage ?? 'Update Profile Failure')),
+              SnackBar(
+                content: Text(state.errorMessage ?? 'Profile Change Failure'),
+              ),
             );
         }
       },
       child: Align(
-        alignment: const Alignment(0, -1 / 3),
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 50),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Avatar
-              Image.asset(
-                  'assets/images/butterfly.png',
-                  height: 100,
-                ),
-              const SizedBox(height: 8),
-              _FirstNameInput(),
-              const SizedBox(height: 8),
-              _LastNameInput(),
-              const SizedBox(height: 8),
-              _PhoneNumberInput(),
-              const SizedBox(height: 8),
-              _UpdateProfileButton(),
-            ],
-          ),
-        ),
+            alignment: const Alignment(0, -1 / 3),
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 50),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Avatar
+                  _AvatarInput(),
+                  const SizedBox(height: 8),
+                  _FirstNameInput(),
+                  const SizedBox(height: 8),
+                  _LastNameInput(),
+                  const SizedBox(height: 8),
+                  _PhoneNumberInput(),
+                  const SizedBox(height: 8),
+                  _UpdateProfileButton(),
+                ],
+              ),
+            ),
       ),
     );
+  }
+}
+
+class _AvatarInput extends StatefulWidget {
+  @override
+  State<_AvatarInput> createState() => _AvatarInputState();
+}
+
+class _AvatarInputState extends State<_AvatarInput> {
+  File image= File('');
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        image = File(pickedFile.path);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+                onTap: () {
+                  // _pickImage();
+                  // context.read<ProfileCubit>().avatarChanged(image);
+                },
+                child: Stack(
+                  children: [
+                    Avatar(image: image),
+                    Positioned(
+                      bottom: 1,
+                      right: 1,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 2,
+                              color: Colors.white,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(
+                                50,
+                              ),
+                            ),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                offset: Offset(2, 4),
+                                color: Colors.black.withOpacity(
+                                  0.3,
+                                ),
+                                blurRadius: 3,
+                              ),
+                            ]),
+                        child: Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: Icon(Icons.add_a_photo, color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
   }
 }
 

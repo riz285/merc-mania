@@ -5,6 +5,7 @@ import 'package:cache/cache.dart';
 
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/foundation.dart' show kIsWeb;
+// import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 
@@ -163,13 +164,17 @@ class AuthenticationRepository {
     CacheClient? cache,
     firebase_auth.FirebaseAuth? firebaseAuth,
     GoogleSignIn? googleSignIn,
+    // facebook_auth.FacebookAuth? facebookAuth,
   })  : _cache = cache ?? CacheClient(),
         _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
         _googleSignIn = googleSignIn ?? GoogleSignIn.standard();
+        // _facebookAuth = facebookAuth ?? FacebookAuth.instance;
 
   final CacheClient _cache;
   final firebase_auth.FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
+  // final FacebookAuth _facebookAuth;
+  
 
   /// Whether or not the current environment is web
   /// Should only be overridden for testing purposes. Otherwise,

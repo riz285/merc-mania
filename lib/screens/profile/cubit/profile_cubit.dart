@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -15,7 +16,7 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   final AuthenticationRepository _authenticationRepository;
   final userService = UserService();
-  
+
   /// Fetch current user's data
   Future<DocumentSnapshot<Map<String, dynamic>>?> fetchUserData() async {
     try {
@@ -25,6 +26,22 @@ class ProfileCubit extends Cubit<ProfileState> {
       print('Error fetching user data: $e');
       return null;
     }
+  }
+
+  void initState() {
+    emit(
+      ProfileState()
+    );
+  }
+
+  // On avatar change
+  void avatarChanged(File image) async {
+    String imgUrl = await userService.uploadImageToStorage(image);
+    emit(
+      state.copyWith(
+        photo: imgUrl,
+      )
+    );
   }
 
   // On first_name change
@@ -77,11 +94,15 @@ class ProfileCubit extends Cubit<ProfileState> {
     if (!state.isValid) return;
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
-      User user = User(id: _authenticationRepository.currentUser.id, email: _authenticationRepository.currentUser.email, firstName: state.firstName.value, lastName: state.lastName.value, phoneNum: state.phoneNum.value, photo: _authenticationRepository.currentUser.photo);
+      User user = User(id: _authenticationRepository.currentUser.id, 
+                       email: _authenticationRepository.currentUser.email, 
+                       firstName: state.firstName.value, 
+                       lastName: state.lastName.value, 
+                       phoneNum: state.phoneNum.value, 
+                       photo: state.photo);
       // Update user data
       await userService.updateUserData(user.id, user);
       emit(state.copyWith(status: FormzSubmissionStatus.success));
-    // } on SignUpWithEmailAndPasswordFailure catch (e) {
     } catch (e) {
       emit( 
         state.copyWith(
@@ -89,8 +110,6 @@ class ProfileCubit extends Cubit<ProfileState> {
           status: FormzSubmissionStatus.failure,
         ),
       );
-    // } catch (_) {
-    //   emit(state.copyWith(status: FormzSubmissionStatus.failure));
     }
   }
 }

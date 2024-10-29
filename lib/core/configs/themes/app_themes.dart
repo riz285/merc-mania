@@ -41,9 +41,12 @@ class AppTheme {
       //appBar
       appBarTheme: AppBarTheme(
         // iconTheme: 
+        iconTheme: IconThemeData(
+          color: Colors.brown
+        ),
         actionsIconTheme: IconThemeData(
           color: Colors.brown
-        )
+        ),
       ),
       //Elevated button
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -65,5 +68,7 @@ class AppTheme {
       navigationBarTheme: NavigationBarThemeData(
         
       )
+      //Container
+      
                   );
 }
