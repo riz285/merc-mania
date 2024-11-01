@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:merc_mania/common/widgets/styled_navigation_bar.dart';
-import 'package:merc_mania/home/view/home_page.dart';
+import 'package:merc_mania/screens/home/view/home_page.dart';
 import 'package:merc_mania/screens/chat/view/chat_page.dart';
 
 import '../../screens/notifications/view/notification_screen.dart';
 
 
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+class AppView extends StatefulWidget {
+  const AppView({super.key});
 
-  static Page<void> page() => const MaterialPage<void>(child: HomeView());
+  static Page<void> page() => const MaterialPage<void>(child: AppView());
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<AppView> createState() => _AppViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _AppViewState extends State<AppView> {
   final PageController pageController = PageController();
   int _selectedIndex = 0;
 
@@ -48,7 +48,6 @@ class _HomeViewState extends State<HomeView> {
           pageController.animateToPage(page, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
         },
       ),
-      //HomeView()
     );
   }
 }

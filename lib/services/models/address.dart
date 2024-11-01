@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:form_inputs/form_inputs.dart';
 
 class Address extends Equatable {
   const Address({
@@ -22,23 +21,22 @@ class Address extends Equatable {
   final String? ward;
   final String? street;
   final String? detail;
-  final Name? name;
-  final PhoneNumber? phoneNum;
+  final String? name;
+  final String? phoneNum;
 
   static const empty = Address(id: '');
 
-  factory Address.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot) {
-    Map<String, dynamic> data = snapshot.data()!;
+  factory Address.fromJson(Map<String, dynamic> json) {
     return Address(
-      id: data['id'],
-      // country: data['country'],
-      // province: data['province'],
-      // city: data['city'],
-      ward: data['ward'],
-      street: data['street'],
-      detail: data['detail'],
-      name: data['name'],
-      phoneNum: data['phone_number']
+      id: json['id'],
+      // country: json['country'],
+      // province: json['province'],
+      // city: json['city'],
+      ward: json['ward'],
+      street: json['street'],
+      detail: json['detail'],
+      name: json['name'],
+      phoneNum: json['phone_number']
       );
   }
 

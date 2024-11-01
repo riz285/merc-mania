@@ -14,16 +14,15 @@ class Message extends Equatable {
 
   static const empty = Message(id: '', content: '');
 
-  factory Message.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot) {
-    Map<String, dynamic> data = snapshot.data()!;
+  factory Message.fromJson(Map<String, dynamic> json) {
     return Message(
-      id: data['id'],
-      content: data['content'],
-      image: data['image'],
+      id: json['id'],
+      content: json['content'],
+      image: json['image'],
       );
   }
 
-  Map<String, dynamic> toFirestore() {
+  Map<String, dynamic> toJson() {
     return {
       'id' : id,
       'content' : content,

@@ -15,6 +15,7 @@ class User extends Equatable {
     this.lastName,
     this.phoneNum,
     this.photo,
+    this.description,
     this.followers,
     this.following
   });
@@ -38,6 +39,9 @@ class User extends Equatable {
   /// Url for the current user's photo.
   final String? photo;
 
+  /// User's bio
+  final String? description;
+
   /// Number of user's followers & following
   final int? followers;
   final int? following;
@@ -45,21 +49,21 @@ class User extends Equatable {
   /// Empty user which represents an unauthenticated user.
   static const empty = User(id: '');
 
-  factory User.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot) {
-    Map<String, dynamic> data = snapshot.data()!;
+  factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: data['id'],
-      email: data['email'],
-      firstName: data['first_name'],
-      lastName: data['last_name'],
-      phoneNum: data['phone_number'],
-      photo: data['photo'],
-      followers: data['followers'],  
-      following: data['following']
+      id: json['id'],
+      email: json['email'],
+      firstName: json['first_name'],
+      lastName: json['last_name'],
+      phoneNum: json['phone_number'],
+      photo: json['photo'],
+      description: json['description'],
+      followers: json['followers'],  
+      following: json['following']
     );
   }
 
-  Map<String, dynamic> toFirestore() {
+  Map<String, dynamic> toJson() {
     return {
       'id' : id,
       'email' : email,
@@ -67,11 +71,12 @@ class User extends Equatable {
       'last_name' : lastName,
       'phone_number': phoneNum,
       'photo' : photo,
+      'description' : description,
       'followers' : followers,
       'following' : following
     };
   }
 
   @override
-  List<Object?> get props => [id, email, firstName, lastName, phoneNum, photo, followers, following];
+  List<Object?> get props => [id, email, firstName, lastName, phoneNum, photo, description, followers, following];
 }

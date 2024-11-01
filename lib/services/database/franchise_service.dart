@@ -8,7 +8,7 @@ class FranchiseService {
   final franchiseCollectionRef = FirebaseFirestore.instance.collection('franchise');
 
 // CRUD
-  // Add franchise
+  // Add new Franchise
   Future<void> addFranchise(Map<String, dynamic> data) async {
     try {
       await franchiseCollectionRef.add(data);
@@ -18,22 +18,22 @@ class FranchiseService {
     }
   }
 
-  /// Get all franchise
+  /// Get all Franchise
   Stream<QuerySnapshot<Map<String, dynamic>>> getFranchise() {
     return franchiseCollectionRef.snapshots();
   }
 
-  // Update franchise data
-  Future<void> updateFranchise(Map<String, dynamic> data) async {
+  // Update Franchise data
+  Future<void> updateFranchise(String id, Map<String, dynamic> data) async {
     try {
-      await franchiseCollectionRef.doc(data['id']).update(data);
+      await franchiseCollectionRef.doc(id).update(data);
       print('Data updated successfully');
     } catch (e) {
       print('$e');
     }
   }
 
-  // Deleta franchise
+  // Delete Franchise
   Future<void> deleteFranchise(String id) async {
     try {
       await franchiseCollectionRef.doc(id).delete();

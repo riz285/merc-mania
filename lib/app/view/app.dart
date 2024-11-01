@@ -2,11 +2,13 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:merc_mania/home/cubit/recently_viewed_cubit.dart';
+import 'package:merc_mania/screens/home/cubit/product_cubit.dart';
 import 'package:merc_mania/screens/cart/cubit/cart_cubit.dart';
 import 'package:merc_mania/screens/profile/cubit/profile_cubit.dart';
 
 import '../../core/configs/themes/app_themes.dart';
+import '../../screens/address/cubit/address_cubit.dart';
+import '../../screens/order/cubit/order_cubit.dart';
 import '../../screens/theme_modes/cubit/theme_cubit.dart';
 import '../bloc/app_bloc.dart';
 import '../routes/routes.dart';
@@ -32,10 +34,11 @@ class App extends StatelessWidget {
                 authenticationRepository: _authenticationRepository,
               )..add(const AppUserSubscriptionRequested())
             ), 
-          BlocProvider<RecentlyViewedCubit>(create: (_) => RecentlyViewedCubit(_authenticationRepository)), // User's history
-          BlocProvider<CartCubit>(create: (_) => CartCubit(_authenticationRepository)), // Shopping Cart
+          BlocProvider<ProductCubit>(create: (_) => ProductCubit(_authenticationRepository)), // User's product state
           BlocProvider<ProfileCubit>(create: (_) => ProfileCubit(_authenticationRepository)), // Profile display
-          // Address
+          BlocProvider<CartCubit>(create: (_) => CartCubit(_authenticationRepository)), // Shopping Cart
+          BlocProvider<OrderCubit>(create: (_) => OrderCubit(_authenticationRepository)), 
+          BlocProvider<AddressCubit>(create: (_) => AddressCubit(_authenticationRepository)), // Manage User's Addresses
         ],
         child: const AppView(),
       )

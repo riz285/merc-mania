@@ -1,7 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:merc_mania/core/configs/assets/app_format.dart';
 import 'package:merc_mania/services/database/product_service.dart';
 
 import '../../../services/models/product.dart';
@@ -10,14 +9,14 @@ import '../../../services/models/order.dart';
 part 'cart_state.dart';
 
 class CartCubit extends HydratedCubit<CartState> {
-  CartCubit(this._authenticationRepository) : super(const CartState(products: [], quantity: 0, total: 0, orders: []));
+  CartCubit(this._authenticationRepository) : super(const CartState(products: [], quantity: 0, total: 0));
 
   final AuthenticationRepository _authenticationRepository;
   final productService = ProductService();
 
   /// Add Product to Cart 
   void addToCart(Product product) {
-    List<Product> updatedList = state.products.toList();
+    final updatedList = state.products.toList();
     if (updatedList.isNotEmpty) updatedList.remove(product);
     updatedList.insert(0, product); // add to headList
     // if (updatedList.length >= 50)
@@ -25,6 +24,7 @@ class CartCubit extends HydratedCubit<CartState> {
       state.copyWith(
          products: updatedList.toList(),
          total: state.total + product.price,
+         quantity: updatedList.length
       )
     );
   }
@@ -41,13 +41,23 @@ class CartCubit extends HydratedCubit<CartState> {
     );
   }
   
+  /// Empty Cart
+  void resetCart() {
+    List<Product> updatedList = List.empty();
+    emit(
+      state.copyWith(
+        products: updatedList,
+        total: 0
+      ));
+  }
+
 
   List<Product> productsFromJson(List<dynamic> json) {
     return json.map((e) => Product.fromJson(e)).toList();
   }
 
   List<dynamic> productsToJson(List<Product> products) {
-    return products.map((e) => e.toFirestore()).toList();
+    return products.map((e) => e.toJson()).toList();
   }
 
   List<UserOrder> ordersFromJson(List<dynamic> json) {
@@ -65,7 +75,6 @@ class CartCubit extends HydratedCubit<CartState> {
       products: productsFromJson(json['products']), 
       quantity: json['quantity'] as int, 
       total: json['total'] as int, 
-      orders:  ordersFromJson(json['orders'])
     );
   }
   
@@ -75,49 +84,13 @@ class CartCubit extends HydratedCubit<CartState> {
       'products' : productsToJson(state.products),
       'quantity' : state.quantity,
       'total' : state.total,
-      'orders' : ordersToJson(state.orders)
     };
   }
 
-  /// Create new Order
-  void addNewOrder(UserOrder order) {
-    List<UserOrder> updatedList = state.orders.toList();
-    updatedList.insert(0, order); // add to headList
-    // if (updatedList.length >= 8)
-    emit(
-      state.copyWith(
-         orders: updatedList,
-         products: [],
-         total: 0
-      )
-    );
-  }
-
-  /// Remove order
-  // void removeOrder(Product product) {
-  //   final updatedList = state.products.toList();
-  //   updatedList.remove(product); // 
-  //   emit(
-  //     state.copyWith(
-  //        products: updatedList,
-  //        total: state.total - product.price
-  //     )
-  //   );
-  // }
-  
   void checkOutCart() {
       emit(state.copyWith(status: Status.inProgress));
     try {
-      if (state.products.isNotEmpty) {
-        UserOrder order = UserOrder(
-          id: AppFormat.dateTostring.format(DateTime.now()), 
-          products: state.products, 
-          createdAt: AppFormat.date.format(DateTime.now()),
-          total: state.total,
-          userId: _authenticationRepository.currentUser.id
-        );
-        addNewOrder(order);
-      }
+      resetCart();  
       emit(state.copyWith(status: Status.success));
     } catch (e) {
       emit(

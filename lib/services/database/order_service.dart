@@ -17,7 +17,7 @@ class ProductService {
     }
   }
   
-  /// Get Order list
+  /// Get User's Order list
   Stream<QuerySnapshot<Map<String, dynamic>>> getUserOrders(String userId) {
     return orderCollectionRef.where('user_id', isEqualTo: userId).snapshots();
   }

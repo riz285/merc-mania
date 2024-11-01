@@ -1,15 +1,17 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:merc_mania/core/configs/assets/avatar.dart';
 import '../../cubit/profile_cubit.dart';
 
-class UpdateProfileForm extends StatelessWidget {
+class UpdateProfileForm extends StatefulWidget {
   const UpdateProfileForm({super.key});
 
+  @override
+  State<UpdateProfileForm> createState() => _UpdateProfileFormState();
+}
+
+class _UpdateProfileFormState extends State<UpdateProfileForm> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<ProfileCubit, ProfileState>(
@@ -21,16 +23,14 @@ class UpdateProfileForm extends StatelessWidget {
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
-                content: Text(state.errorMessage ?? 'Profile Change Failure'),
+                content: Text(state.errorMessage ?? 'Profile Update Failure'),
               ),
             );
         }
       },
       child: Align(
             alignment: const Alignment(0, -1 / 3),
-            child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 50),
-              child: Column(
+            child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   // Avatar
@@ -41,10 +41,9 @@ class UpdateProfileForm extends StatelessWidget {
                   _LastNameInput(),
                   const SizedBox(height: 8),
                   _PhoneNumberInput(),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 10),
                   _UpdateProfileButton(),
                 ],
-              ),
             ),
       ),
     );
@@ -57,28 +56,16 @@ class _AvatarInput extends StatefulWidget {
 }
 
 class _AvatarInputState extends State<_AvatarInput> {
-  File image= File('');
-
-  Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        image = File(pickedFile.path);
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
                 onTap: () {
-                  // _pickImage();
-                  // context.read<ProfileCubit>().avatarChanged(image);
+                  // context.read<ProfileCubit>().avatarChanged();
                 },
                 child: Stack(
                   children: [
-                    Avatar(image: image),
+                    Avatar(photo: context.read<ProfileCubit>().state.photo, size: 40),
                     Positioned(
                       bottom: 1,
                       right: 1,

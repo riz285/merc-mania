@@ -16,16 +16,15 @@ class Category extends Equatable {
 
   static const empty = Category(id: '', name: '');
 
-  factory Category.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot) {
-    Map<String, dynamic> data = snapshot.data()!;
+  factory Category.fromJson(Map<String, dynamic> json) {
     return Category(
-      id: data['id'],
-      name: data['name'],
-      image: data['image'],
-      description: data['description']);
+      id: json['id'],
+      name: json['name'],
+      image: json['image'],
+      description: json['description']);
   }
 
-  Map<String, dynamic> toFirestore() {
+  Map<String, dynamic> toJson() {
     return {
       'id' : id,
       'name' : name,

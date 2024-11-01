@@ -42,31 +42,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
               if (snapshot.hasError) return Text('Error: ${snapshot.error}');
               if (snapshot.hasData) {
                 final userData = snapshot.data!.data()!;
-                return Align (
-                  alignment: const Alignment(0, -1 / 3),
-                  // User data
+                return Align(
+                  alignment: Alignment(0, -1 / 3),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Avatar(photo: '${userData['photo']}'),
-                      const SizedBox(height: 8),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Email: ${userData['email']}'),
-                          const SizedBox(height: 8),
-                          Text('First name: ${userData['first_name']??''}'),
-                          const SizedBox(height: 8),
-                          Text('Last name: ${userData['last_name']??''}'),
-                          const SizedBox(height: 8),
-                          Text('Phone number: ${userData['phone_number']??''}'),
-                          const SizedBox(height: 8),
-                        ],
-                      ),
-                      _EditProfileButton()
-                    ],
-                  )
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Center(child: Avatar(photo: userData['photo'], size: 40)),
+                        const SizedBox(height: 30),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Email', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                            Text(userData['email']),
+                            const SizedBox(height: 10),
+                            Text('Name', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                            Text('${userData['first_name']??''} ${userData['last_name']??''}'),
+                            const SizedBox(height: 10),
+                            Text('Phone number', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                            Text(userData['phone_number']??''),
+                            const SizedBox(height: 10),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Align(
+                          alignment: Alignment.center,
+                          child: _EditProfileButton())
+                      ],
+                    
+                  ),
                 );
               }
               return Text('No user data found');

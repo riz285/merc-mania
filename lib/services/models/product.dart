@@ -30,23 +30,6 @@ class Product extends Equatable {
 
   static const empty = Product(id: '', name: '', image: '', price: 0);
 
-  factory Product.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot) {
-    Map<String, dynamic> data = snapshot.data()!;
-    return Product(
-      id: data['id'],
-      name: data['name'],
-      image: data['image'],
-      description: data['description'],
-      brandName: data['brand_name'],
-      price: data['price'],
-      quantity: data['quantity'],
-      isInStock: data['is_in_stock'],
-      discountPercentage: data['discount_percentage'],
-      viewCount: data['view_count'],
-      franchise: data['franchise'] 
-    );
-  }
-
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
       id: json['id'],
@@ -63,7 +46,7 @@ class Product extends Equatable {
     );
   }
 
-  Map<String, dynamic> toFirestore() {
+  Map<String, dynamic> toJson() {
     return {
       'id' : id,
       'name' : name,

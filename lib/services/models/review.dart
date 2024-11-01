@@ -20,19 +20,18 @@ class Review extends Equatable {
 
   static const empty = Review(id: '');
 
-  factory Review.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot) {
-    Map<String, dynamic> data = snapshot.data()!;
+  factory Review.fromJson(Map<String, dynamic> json) {
     return Review(
-      id: data['id'],
-      rating: data['rating'],
-      comment: data['comment'],
-      createdAt: data['createdAt'],
-      productId: data['productId'],
-      userId: data['userId']
+      id: json['id'],
+      rating: json['rating'],
+      comment: json['comment'],
+      createdAt: json['createdAt'],
+      productId: json['productId'],
+      userId: json['userId']
       );
   }
 
-  Map<String, dynamic> toFirestore() {
+  Map<String, dynamic> toJson() {
     return {
       'id' : id,
       'rating' : rating,

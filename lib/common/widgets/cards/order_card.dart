@@ -9,17 +9,25 @@ class OrderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return InkWell(
+      onTap: () {
+        // Navigator.of(context).push(
+        //     MaterialPageRoute(
+        //       builder: (context) => OrderDetail(order: order),
+        //     ),
+        // );
+      },
+      child: Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              leading: Icon(Icons.note),
-              title: Text('Order number: ${order.id}'),
-              subtitle: Text('Total: ${AppFormat.currency.format(order.total)} Date: ${order.createdAt} '),
+              title: Text(order.id),
+              subtitle: Text(AppFormat.currency.format(order.total)),
             ),
           ],
         ),
+      )
     );
   }
 }

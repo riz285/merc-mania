@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:merc_mania/common/widgets/styled_app_bar.dart';
 import 'profile_screen.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -9,9 +10,11 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: StyledAppBar(
+        title: Text('Personal Information'),
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(50),
         child: const ProfileScreen(),
         ),
     );

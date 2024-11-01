@@ -67,7 +67,7 @@ class LoginCubit extends Cubit<LoginState> {
       // ignore: no_leading_underscores_for_local_identifiers
       User _currentUser = _authenticationRepository.currentUser;
       if (!await userService.exists(_currentUser.id)) {
-        User user = User(id: _currentUser.id, email: _currentUser.email, photo: _currentUser.photo, firstName: _currentUser.firstName, phoneNum: _currentUser.phoneNum);
+        User user = User(id: _currentUser.id, email: _currentUser.email, photo: _currentUser.photo, firstName: _currentUser.firstName ?? '', phoneNum: _currentUser.phoneNum);
         userService.createUser(user.id, user);
       }
       emit(state.copyWith(status: FormzSubmissionStatus.success));

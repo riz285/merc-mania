@@ -5,11 +5,11 @@ import 'package:merc_mania/services/database/franchise_service.dart';
 import 'package:merc_mania/services/database/product_service.dart';
 import 'package:merc_mania/services/models/franchise.dart';
 
-import '../../common/widgets/list_views/franchise_list_view.dart';
-import '../../common/widgets/list_views/home_product_grid_view.dart';
-import '../cubit/recently_viewed_cubit.dart';
-import '../../services/models/product.dart';
-import '../../common/widgets/list_views/product_list_view.dart';
+import '../../../common/widgets/list_views/franchise_list_view.dart';
+import '../../../common/widgets/list_views/home_product_grid_view.dart';
+import '../cubit/product_cubit.dart';
+import '../../../services/models/product.dart';
+import '../../../common/widgets/list_views/product_list_view.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,20 +20,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
-  void initState () {
-    super.initState();
-  }
-
-  Future<void> refresh() async {
-    await Future.delayed(Duration(seconds: 1));
-    setState(() {
-      
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RecentlyViewedCubit, RecentlyViewedState>(
+    return BlocBuilder<ProductCubit, ProductState>(
       builder: (context, state) {
       return ListView(
         children: [
@@ -45,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
           _PopularProductListView(),
           // Recently viewed items
           _Classification(classification: 'Recently Viewed'),
-          _RecentlyViewedProductsListView(),
+          _RecentlyViewedListView(),
           // Recommended products
           _Classification(classification: 'Recommended'),
           _RecommendedProductGridView(),
@@ -94,7 +82,7 @@ class _FranchiseListView extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator());
             if (snapshot.hasError) return Text('Error: ${snapshot.error}');
             if (snapshot.hasData) {
-              final franchise = snapshot.data!.docs.map((doc) => Franchise.fromFirestore(doc)).toList();
+              final franchise = snapshot.data!.docs.map((doc) => Franchise.fromJson(doc.data())).toList();
               return FranchiseListView(franchise: franchise);
             }                                    
             return Text('No product data found');    
@@ -114,13 +102,13 @@ class _PopularProductListView extends StatelessWidget {
       height: 150,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5),
-        child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-          stream:  productService.getProducts(), 
+        child: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+          future:  productService.getPopularProducts(), 
           builder: (builder, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator());
             if (snapshot.hasError) return Text('Error: ${snapshot.error}');
             if (snapshot.hasData) {
-              final products = snapshot.data!.docs.map((doc) => Product.fromFirestore(doc)).toList();
+              final products = snapshot.data!.docs.map((doc) => Product.fromJson(doc.data())).toList();
               return ProductListView(products: products);
             }                                    
             return Text('No product data found');    
@@ -131,12 +119,12 @@ class _PopularProductListView extends StatelessWidget {
   }
 }
 
-class _RecentlyViewedProductsListView extends StatefulWidget {
+class _RecentlyViewedListView extends StatefulWidget {
   @override
-  State<_RecentlyViewedProductsListView> createState() => _RecentlyViewedProductsListViewState();
+  State<_RecentlyViewedListView> createState() => _RecentlyViewedListViewState();
 }
 
-class _RecentlyViewedProductsListViewState extends State<_RecentlyViewedProductsListView> {
+class _RecentlyViewedListViewState extends State<_RecentlyViewedListView> {
   final productService = ProductService();
 
   @override
@@ -145,30 +133,34 @@ class _RecentlyViewedProductsListViewState extends State<_RecentlyViewedProducts
     fetchData();
   }
 
+  // Fetch recent Product list
   Future<List<Product>> fetchData() async {
-    List<String> ids = context.read<RecentlyViewedCubit>().state.recentlyViewedProducts;
+    List<String> ids = context.read<ProductCubit>().state.recentlyViewedProducts;
     return productService.getProductsFromList(ids);
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        height: 150,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5),
-          child: FutureBuilder<List<Product>>(
-            future: fetchData(), 
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator());
-              if (snapshot.hasError) return Text('Error: ${snapshot.error}');
-              if (snapshot.hasData) {
-                final products = snapshot.data!;
-                return ProductListView(products: products);
-              }    
-              return Text('No product data found');
-            }),
+    return BlocListener<ProductCubit, ProductState>(
+      listener: (context, state) => setState(() {}),
+      child: SizedBox(
+          height: 150,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5),
+            child: FutureBuilder<List<Product>>(
+              future: fetchData(), 
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator());
+                if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+                if (snapshot.hasData) {
+                  final products = snapshot.data!;
+                  return ProductListView(products: products);
+                }    
+                return Text('No product data found');
+              }),
+          ),
         ),
-      );
+    );
   }
 }
 
@@ -184,7 +176,7 @@ class _RecommendedProductGridView extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator());
           if (snapshot.hasError) return Text('Error: ${snapshot.error}');
           if (snapshot.hasData) {
-            final products = snapshot.data!.docs.map((doc) => Product.fromFirestore(doc)).toList();
+            final products = snapshot.data!.docs.map((doc) => Product.fromJson(doc.data())).toList();
             return HomeProductGridView(products: products);
           }                                    
           return Text('No product data found');    

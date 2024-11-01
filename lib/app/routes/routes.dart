@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import '../../auth/login/view/login_page.dart';
-import '../../home/view/home_view.dart';
+import '../view/app_view.dart';
 import '../bloc/app_bloc.dart';
 
 List<Page<dynamic>> onGenerateAppViewPages(
@@ -10,7 +10,7 @@ List<Page<dynamic>> onGenerateAppViewPages(
 ) {
   switch (state) {
     case AppStatus.authenticated:
-      return [HomeView.page()];
+      return [AppView.page()];
     case AppStatus.unauthenticated:
       return [LoginPage.page()];
   }

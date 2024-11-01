@@ -38,16 +38,6 @@ class AppTheme {
       primaryColor: Colors.grey[900],
       scaffoldBackgroundColor: AppColors.darkBackground,
       brightness: Brightness.dark,
-      //appBar
-      appBarTheme: AppBarTheme(
-        // iconTheme: 
-        iconTheme: IconThemeData(
-          color: Colors.brown
-        ),
-        actionsIconTheme: IconThemeData(
-          color: Colors.brown
-        ),
-      ),
       //Elevated button
       elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(

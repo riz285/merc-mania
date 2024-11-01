@@ -1,7 +1,7 @@
-part of 'recently_viewed_cubit.dart';
+part of 'product_cubit.dart';
 
-final class RecentlyViewedState extends Equatable {
-  const RecentlyViewedState({
+final class ProductState extends Equatable {
+  const ProductState({
     required this.recentlyViewedProducts,
   });
 
@@ -12,10 +12,10 @@ final class RecentlyViewedState extends Equatable {
         recentlyViewedProducts,
       ];
 
-  RecentlyViewedState copyWith({
+  ProductState copyWith({
     List<String>? recentlyViewedProducts,
   }) {
-    return RecentlyViewedState(
+    return ProductState(
       recentlyViewedProducts: recentlyViewedProducts ?? this.recentlyViewedProducts,
     );
   }

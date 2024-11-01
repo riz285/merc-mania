@@ -1,39 +1,38 @@
 import 'package:flutter/material.dart';
 
+import '../../core/configs/themes/app_colors.dart';
+
 class StyledAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget ? title;
-  const StyledAppBar({this.title, super.key});
+  final List<Widget> ? actions;
+  const StyledAppBar({this.title, super.key, this.actions});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.appBar,
       elevation: 0,
       title: title ?? const Text(''),
       centerTitle: true,
+      titleTextStyle: TextStyle(
+        color: AppColors.title,
+        fontSize: 20,
+        fontWeight: FontWeight.bold
+      ),
       leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Container(
-            height: 50,
-            width: 50,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle
-            ),
-            child: Row(
-              children: [
-                const Icon(Icons.navigate_before,
-                size: 15,
-                ),
-              ],
-            ),
-          )),
+          icon: Icon(
+            Icons.navigate_before,
+            size: 25,
+            color: AppColors.title
+          ),
+      ),
+      actions: actions,
     );
   }
   
   @override
-  // TODO: implement preferredSize
-  Size get preferredSize => throw UnimplementedError();
+  Size get preferredSize => Size.fromHeight(50);
 }

@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:merc_mania/common/widgets/styled_app_bar.dart';
-import 'package:merc_mania/common/widgets/styled_drawer.dart';
 
+import '../../../common/widgets/styled_drawer.dart';
 import '../../../core/configs/themes/app_colors.dart';
-class NotificationScreen extends StatelessWidget {
-  const NotificationScreen({super.key});
+import 'home_screen.dart';
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  static Page<void> page() => const MaterialPage<void>(child: HomePage());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-            title: const Text('Notfications', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.brown)),
+        appBar: AppBar(
+            title: const Text('Home', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.brown)),
           backgroundColor: AppColors.appBar,
           leading: Builder(builder: (BuildContext context) => IconButton(
             onPressed: () {
@@ -29,7 +32,8 @@ class NotificationScreen extends StatelessWidget {
             ),
           ],
         ),
-      drawer: StyledDrawer(),
+        drawer: StyledDrawer(),
+        body: const HomeScreen(),
     );
   }
 }

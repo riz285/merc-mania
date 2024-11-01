@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:merc_mania/common/widgets/list_views/cart_list_view.dart';
+import 'package:merc_mania/common/widgets/styled_app_bar.dart';
 import 'package:merc_mania/core/configs/assets/app_format.dart';
 
+import '../../address/view/address_display/address_page.dart';
 import '../cubit/cart_cubit.dart';
 
 class CartView extends StatefulWidget {
@@ -31,7 +33,7 @@ class _CartViewState extends State<CartView> {
         });
       },
     child: Scaffold(
-        appBar: AppBar(
+        appBar: StyledAppBar(
           title: Text('Cart'),
         ),
         body: Column(
@@ -65,14 +67,15 @@ class _CheckOutButton extends StatelessWidget {
     return ElevatedButton(
       key: const Key('cart_next_raisedButton'),
       style: ElevatedButton.styleFrom(
-        
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
         backgroundColor: Colors.red,
       ),
       onPressed: () {
-        context.read<CartCubit>().checkOutCart();
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => AddressPage())
+        );
       }, 
       child: Text('CHECK OUT', style: TextStyle( color: Colors.white )),
     );

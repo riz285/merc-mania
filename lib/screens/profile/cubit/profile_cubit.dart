@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -7,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:form_inputs/form_inputs.dart';
 import 'package:formz/formz.dart';
+import 'package:merc_mania/services/database/image_storage.dart';
 import 'package:merc_mania/services/database/user_service.dart';
 
 part 'profile_state.dart';
@@ -16,6 +16,7 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   final AuthenticationRepository _authenticationRepository;
   final userService = UserService();
+  final imageStorage = ImageStorage();
 
   /// Fetch current user's data
   Future<DocumentSnapshot<Map<String, dynamic>>?> fetchUserData() async {
@@ -34,14 +35,16 @@ class ProfileCubit extends Cubit<ProfileState> {
     );
   }
 
-  // On avatar change
-  void avatarChanged(File image) async {
-    String imgUrl = await userService.uploadImageToStorage(image);
-    emit(
-      state.copyWith(
-        photo: imgUrl,
-      )
-    );
+  Future<void> avatarChanged() async {
+    final pickedImage = await imageStorage.pickImage();
+    if (pickedImage != null) {
+      final photo = await imageStorage.uploadImageToStorage(pickedImage);
+      emit(
+        state.copyWith(
+          photo: photo
+        )
+      );
+    }
   }
 
   // On first_name change
@@ -98,8 +101,8 @@ class ProfileCubit extends Cubit<ProfileState> {
                        email: _authenticationRepository.currentUser.email, 
                        firstName: state.firstName.value, 
                        lastName: state.lastName.value, 
-                       phoneNum: state.phoneNum.value, 
-                       photo: state.photo);
+                       phoneNum: state.phoneNum.value
+                      );
       // Update user data
       await userService.updateUserData(user.id, user);
       emit(state.copyWith(status: FormzSubmissionStatus.success));

@@ -18,18 +18,17 @@ class Franchise extends Equatable {
 
   static const empty = Franchise(id: '', name: '', image: '');
 
-  factory Franchise.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot) {
-    Map<String, dynamic> data = snapshot.data()!;
+  factory Franchise.fromJson(Map<String, dynamic> json) {
     return Franchise(
-      id: data['id'],
-      name: data['name'],
-      image: data['image'],
-      description: data['description'] ?? '',
-      favoriteCount: data['favorite_count'] ?? 0
+      id: json['id'],
+      name: json['name'],
+      image: json['image'],
+      description: json['description'] ?? '',
+      favoriteCount: json['favorite_count'] ?? 0
       );
   }
 
-  Map<String, dynamic> toFirestore() {
+  Map<String, dynamic> toJson() {
     return {
       'id' : id,
       'name' : name,

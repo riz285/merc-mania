@@ -1,8 +1,5 @@
 // ignore_for_file: avoid_print
-import 'dart:io';
-
 import 'package:authentication_repository/authentication_repository.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserService {
@@ -31,13 +28,14 @@ final authenticationRepository = AuthenticationRepository();
   // Create user
   Future<void> createUser(String id, User user) async {
     try {
-      await usersCollectionRef.doc(id).set(user.toFirestore());
+      await usersCollectionRef.doc(id).set(user.toJson());
       print('User created successfully');
     } catch (e) {
       print('$e');
     }
   }
 
+  // Get all Users
   Stream<QuerySnapshot<Map<String, dynamic>>> getUsers() {
     return usersCollectionRef.snapshots();
   }
@@ -58,7 +56,7 @@ final authenticationRepository = AuthenticationRepository();
   // Update user info
   Future<void> updateUserData(String id, User user) async {
     try {
-      await usersCollectionRef.doc(id).update(user.toFirestore());
+      await usersCollectionRef.doc(id).update(user.toJson());
       print('Update user successfully.');
     } catch (e) { print('$e'); }
   } 
@@ -70,20 +68,4 @@ final authenticationRepository = AuthenticationRepository();
       print('Delete user successfully.');
     } catch (e) { print('$e'); }
   } 
-
-  Future<String> uploadImageToStorage(File image) async {
-    Reference storageReference = FirebaseStorage.instance.ref().child('images');
-    UploadTask uploadTask = storageReference.putFile(image);
-
-    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-    String imgUrl = await taskSnapshot.ref.getDownloadURL(); 
-    return imgUrl;
-  }
-
-  Future<void> updateAvatar(String id, String imgUrl) async {
-     try {
-      await usersCollectionRef.doc(id).update({'photo' : imgUrl});
-      print('Update user successfully.');
-    } catch (e) { print('$e'); }
-  }
 }
