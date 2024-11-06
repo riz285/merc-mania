@@ -19,7 +19,7 @@ class ProductService {
     }
   }
 
-  /// Get Products from List
+  /// Get Products from idList
   Future<List<Product>> getProductsFromList(List<String> ids) async {
     List<Product> products = [];
     for (String id in ids) {

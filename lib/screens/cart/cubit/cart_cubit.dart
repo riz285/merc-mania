@@ -1,5 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:formz/formz.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:merc_mania/services/database/product_service.dart';
 
@@ -9,7 +10,7 @@ import '../../../services/models/order.dart';
 part 'cart_state.dart';
 
 class CartCubit extends HydratedCubit<CartState> {
-  CartCubit(this._authenticationRepository) : super(const CartState(products: [], quantity: 0, total: 0));
+  CartCubit(this._authenticationRepository) : super(const CartState(products: []));
 
   final AuthenticationRepository _authenticationRepository;
   final productService = ProductService();
@@ -24,7 +25,8 @@ class CartCubit extends HydratedCubit<CartState> {
       state.copyWith(
          products: updatedList.toList(),
          total: state.total + product.price,
-         quantity: updatedList.length
+         quantity: updatedList.length,
+         isValid: true
       )
     );
   }
@@ -36,7 +38,9 @@ class CartCubit extends HydratedCubit<CartState> {
     emit(
       state.copyWith(
          products: updatedList.toList(),
-         total: state.total - product.price
+         total: state.total - product.price,
+         quantity: updatedList.length,
+         isValid: updatedList.isNotEmpty
       )
     );
   }
@@ -47,7 +51,8 @@ class CartCubit extends HydratedCubit<CartState> {
     emit(
       state.copyWith(
         products: updatedList,
-        total: 0
+        total: 0,
+        isValid: false
       ));
   }
 
@@ -60,12 +65,12 @@ class CartCubit extends HydratedCubit<CartState> {
     return products.map((e) => e.toJson()).toList();
   }
 
-  List<UserOrder> ordersFromJson(List<dynamic> json) {
-    return json.map((e) => UserOrder.fromJson(e)).toList();
+  List<AppOrder> ordersFromJson(List<dynamic> json) {
+    return json.map((e) => AppOrder.fromJson(e)).toList();
   }
 
-  List<dynamic> ordersToJson(List<UserOrder> orders) {
-    return orders.map((e) => e.toFirestore()).toList();
+  List<dynamic> ordersToJson(List<AppOrder> orders) {
+    return orders.map((e) => e.toJson()).toList();
   }
   
   @override
@@ -75,6 +80,7 @@ class CartCubit extends HydratedCubit<CartState> {
       products: productsFromJson(json['products']), 
       quantity: json['quantity'] as int, 
       total: json['total'] as int, 
+      isValid: json['not_empty'] as bool
     );
   }
   
@@ -84,20 +90,22 @@ class CartCubit extends HydratedCubit<CartState> {
       'products' : productsToJson(state.products),
       'quantity' : state.quantity,
       'total' : state.total,
+      'not_empty' : state.isValid
     };
   }
 
   void checkOutCart() {
-      emit(state.copyWith(status: Status.inProgress));
-    try {
-      resetCart();  
-      emit(state.copyWith(status: Status.success));
-    } catch (e) {
+      emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
+    if (state.products.isNotEmpty) {
+      emit(state.copyWith(status: FormzSubmissionStatus.success));
+    }
+    else {
       emit(
         state.copyWith(
-          status: Status.failure,
+          status: FormzSubmissionStatus.failure,
         ),
       );
     }
   }
 }
+  

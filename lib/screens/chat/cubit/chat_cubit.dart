@@ -13,11 +13,6 @@ class ChatCubit extends Cubit<ChatState> {
   final messageService = MessageService();
   final AuthenticationRepository _authenticationRepository;
 
-  // Get current authenticated user
-  User getCurrentUser() {
-    return _authenticationRepository.currentUser;
-  }
-
   // On first_name change
   // void chatContentChanged(String value) {
   //   final chatContent;

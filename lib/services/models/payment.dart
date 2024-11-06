@@ -1,33 +1,48 @@
-// ignore_for_file: empty_constructor_bodies
-
 abstract class PaymentMethod {
-  PaymentMethod({
-    required this.id,
-    required this.title,
-    required this.icon
-  });
-
-  final String id;
-  final String title;
-  final String icon;
-
   Future<bool> processPayment(int amount);
+}
+
+// COD Payment Method
+class CashPayment extends PaymentMethod {
+
+  @override
+  Future<bool> processPayment(int amount) async {
+    // TODO: implement Credit Card Payment
+    throw UnimplementedError();
+  }
 }
 
 // Credit Card Payment Method
 class CreditCardPayment extends PaymentMethod {
   final String cardNumber;
+  final String cardHolderName;
   final String expiryDate;
   final String cvv;
 
   CreditCardPayment({
-    required super.id,
-    required super.title,
-    required super.icon,
     required this.cardNumber,
+    required this.cardHolderName,
     required this.expiryDate,
     required this.cvv
   });
+
+  factory CreditCardPayment.fromJson(Map<String, dynamic> json) {
+    return CreditCardPayment(
+      cardNumber: json['card_number'],
+      cardHolderName: json['cardholder_name'],
+      expiryDate: json['expiry_date'],
+      cvv: json['cvv']
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'card_number' : cardNumber,
+      'cardholder_name' : cardHolderName,
+      'expiry_date' : expiryDate,
+      'cvv' : cvv
+    };
+  }
 
   @override
   Future<bool> processPayment(int amount) async {
@@ -42,13 +57,23 @@ class PayPalPayment extends PaymentMethod {
   final String password;
 
   PayPalPayment({
-    required super.id,
-    required super.title,
-    required super.icon,
     required this.email,
     required this.password
   });
 
+  factory PayPalPayment.fromJson(Map<String, dynamic> json) {
+    return PayPalPayment(
+      email: json['email'],
+      password: json['password']
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'email' : email,
+      'password' :password
+    };
+  }
 
   @override
   Future<bool> processPayment(int amount) {

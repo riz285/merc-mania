@@ -3,7 +3,9 @@ import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:merc_mania/core/configs/assets/app_format.dart';
 import 'package:merc_mania/services/database/order_service.dart';
+import 'package:merc_mania/services/models/product.dart';
 
+import '../../../services/models/address.dart';
 import '../../../services/models/order.dart';
 import '../../../services/models/payment.dart';
 
@@ -13,17 +15,25 @@ class OrderCubit extends HydratedCubit<OrderState> {
   OrderCubit(this._authenticationRepository) : super(const OrderState(orders: [], quantity: 0, total: 0));
 
   final AuthenticationRepository _authenticationRepository;
-  final orderService = ProductService();
+  final orderService = OrderService();
 
-  /// Create new Order
-  void addOrder(UserOrder order) { //
-    List<UserOrder> updatedList = state.orders.toList();
-      updatedList.insert(0, order); // add to headList
-      emit(
-        state.copyWith(
-          orders: updatedList.toList(),
-        )
-      ); // add to headList
+  void createNewOrder(List<Product> items, int total, Address address) {
+    final List<String> productIds = items.map((product) => product.id).toList();
+    final String shippingAddress = address.ward! + address.street! + address.detail!;
+    final AppOrder order = AppOrder(
+          productIds: productIds,
+          quantity: items.length,
+          total: total,
+          createdAt: AppFormat.date.format(DateTime.now()),
+          shippingAddress: shippingAddress,
+          userId: _authenticationRepository.currentUser.id
+          );
+    orderService.createOrder(order.toJson()); // Add new order to database
+    emit(
+      state.copyWith(
+        order: order
+      )
+    );
   }
 
   /// Remove order
@@ -38,12 +48,12 @@ class OrderCubit extends HydratedCubit<OrderState> {
   //   );
   // }
 
-  List<UserOrder> ordersFromJson(List<dynamic> json) {
-    return json.map((e) => UserOrder.fromJson(e)).toList();
+  List<AppOrder> ordersFromJson(List<dynamic> json) {
+    return json.map((e) => AppOrder.fromJson(e)).toList();
   }
 
-  List<dynamic> ordersToJson(List<UserOrder> orders) {
-    return orders.map((e) => e.toFirestore()).toList();
+  List<dynamic> ordersToJson(List<AppOrder> orders) {
+    return orders.map((e) => e.toJson()).toList();
   }
   
   @override
@@ -63,22 +73,12 @@ class OrderCubit extends HydratedCubit<OrderState> {
       'quantity' : state.quantity,
       'total' : state.total,
     };
-  }
-
+  }  
   
-  
-  void checkOutOrder() {
+  void checkOutOrder(List<Product> items, int total, Address address) {
       emit(state.copyWith(status: Status.inProgress));
     try {
-      if (state.orders.isNotEmpty) {
-        UserOrder order = UserOrder(
-          id: AppFormat.dateTostring.format(DateTime.now()), 
-          createdAt: AppFormat.date.format(DateTime.now()),
-          total: state.total,
-          userId: _authenticationRepository.currentUser.id
-        );
-        addOrder(order);
-      }
+      createNewOrder(items, total, address);
       emit(state.copyWith(status: Status.success));
     } catch (e) {
       emit(

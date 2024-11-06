@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:merc_mania/common/widgets/cards/cart_item_card.dart';
-
-import '../../../screens/cart/cubit/cart_cubit.dart';
+import 'package:merc_mania/screens/cart/view/cart_item_card.dart';
+import 'package:merc_mania/services/models/product.dart';
 
 class CartListView extends StatelessWidget {
-  const CartListView({super.key});
+  final List<Product> products;
+  const CartListView({super.key, required this.products});
 
   @override
   Widget build(BuildContext context) {
-    final products = BlocProvider.of<CartCubit>(context).state.products;
     return Expanded(
       child: ListView.separated(
               itemCount: products.length,

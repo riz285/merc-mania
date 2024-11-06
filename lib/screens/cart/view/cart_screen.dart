@@ -1,44 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:merc_mania/common/widgets/list_views/cart_list_view.dart';
+import 'package:formz/formz.dart';
+import 'package:merc_mania/screens/cart/view/cart_list_view.dart';
 import 'package:merc_mania/common/widgets/styled_app_bar.dart';
 import 'package:merc_mania/core/configs/assets/app_format.dart';
 
-import '../../address/view/address_display/address_page.dart';
+import '../../address/view/address_selection/choose_address_page.dart';
 import '../cubit/cart_cubit.dart';
 
-class CartView extends StatefulWidget {
-  const CartView({super.key});
+class CartScreen extends StatefulWidget {
+  const CartScreen({super.key});
 
   @override
-  State<CartView> createState() => _CartViewState();
+  State<CartScreen> createState() => _CartScreenState();
 }
 
-class _CartViewState extends State<CartView> {
+class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
+    final products = context.select((CartCubit cubit) => cubit.state.products);
     return BlocListener<CartCubit, CartState>(
-      listener: (context, state) {
-        if (state.status == Status.failure) {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                content: Text('Cart empty'),
-              ),
-            );
-        }
-        setState(() {
-          
-        });
-      },
+      listener: (context, state) => setState(() {}),
     child: Scaffold(
         appBar: StyledAppBar(
           title: Text('Cart'),
         ),
         body: Column(
           children: [
-            CartListView(),
+            CartListView(products: products),
             Align(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
@@ -64,20 +53,31 @@ class _CartViewState extends State<CartView> {
 class _CheckOutButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final isInProgress = context.select(
+      (CartCubit cubit) => cubit.state.status.isInProgress,
+    );
+
+    if (isInProgress) return const CircularProgressIndicator();
+
+    final isValid = context.select(
+      (CartCubit cubit) => cubit.state.isValid,
+    );
+
     return ElevatedButton(
       key: const Key('cart_next_raisedButton'),
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-        backgroundColor: Colors.red,
+      // style: ElevatedButton.styleFrom(
+      //   shape: RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.circular(15),
+      //   ),
+      //   backgroundColor: Colors.red,
+      // ),
+      onPressed: isValid 
+                  ? () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => AddressPage())
+                  ) : null,
+      child: Text('CHECK OUT', 
+      // style: TextStyle( color: Colors.white )
       ),
-      onPressed: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => AddressPage())
-        );
-      }, 
-      child: Text('CHECK OUT', style: TextStyle( color: Colors.white )),
     );
   }
 }
