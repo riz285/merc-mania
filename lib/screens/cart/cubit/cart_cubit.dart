@@ -79,7 +79,7 @@ class CartCubit extends HydratedCubit<CartState> {
     return CartState(
       products: productsFromJson(json['products']), 
       quantity: json['quantity'] as int, 
-      total: json['total'] as int, 
+      total: json['total'] as double, 
       isValid: json['not_empty'] as bool
     );
   }

@@ -14,7 +14,7 @@ class ProfilePage extends StatelessWidget {
         title: Text('Personal Information'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(50),
+        padding: const EdgeInsets.all(8),
         child: const ProfileScreen(),
         ),
     );

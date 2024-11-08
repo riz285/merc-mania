@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../common/widgets/styled_drawer.dart';
-import '../../../core/configs/themes/app_colors.dart';
 import 'home_screen.dart';
 
 class HomePage extends StatelessWidget {
@@ -13,22 +12,18 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: const Text('Home', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.brown)),
-          backgroundColor: AppColors.appBar,
+            title: const Text('Home'),
           leading: Builder(builder: (BuildContext context) => IconButton(
             onPressed: () {
               Scaffold.of(context).openDrawer();
             }, 
-            icon: Icon(Icons.menu,
-              size: 25,
-              color: AppColors.title))),
+            icon: Icon(Icons.menu)
+          )),
           actions: <Widget>[
             IconButton(
               key: const Key('homePage_search_iconButton'),
-              icon: const Icon(Icons.search,
-              size: 25,
-              color: AppColors.title),
-              onPressed: () {},
+              icon: const Icon(Icons.search),
+              onPressed: () {}, //TODO: implement product search
             ),
           ],
         ),

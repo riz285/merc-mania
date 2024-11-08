@@ -17,7 +17,7 @@ class OrderCubit extends HydratedCubit<OrderState> {
   final AuthenticationRepository _authenticationRepository;
   final orderService = OrderService();
 
-  void createNewOrder(List<Product> items, int total, Address address) {
+  void createNewOrder(List<Product> items, double total, Address address) {
     final List<String> productIds = items.map((product) => product.id).toList();
     final String shippingAddress = address.ward! + address.street! + address.detail!;
     final AppOrder order = AppOrder(
@@ -75,7 +75,7 @@ class OrderCubit extends HydratedCubit<OrderState> {
     };
   }  
   
-  void checkOutOrder(List<Product> items, int total, Address address) {
+  void checkOutOrder(List<Product> items, double total, Address address) {
       emit(state.copyWith(status: Status.inProgress));
     try {
       createNewOrder(items, total, address);

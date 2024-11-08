@@ -25,10 +25,8 @@ class AddAddressForm extends StatelessWidget {
       },
       child: Align(
         alignment: const Alignment(0, -1 / 3),
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 50),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+        child: ListView(padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+          shrinkWrap: true,
             children: [
               // _CountryInput(),
               // const SizedBox(height: 8),
@@ -46,10 +44,9 @@ class AddAddressForm extends StatelessWidget {
               const SizedBox(height: 8),
               _PhoneNumberInput(),
               const SizedBox(height: 8),
-              _AddNewAddressButton()
+              Align(child: _ConfirmButton())
             ],
           ),
-        ),
       )
     );
   }
@@ -134,7 +131,7 @@ class _PhoneNumberInput extends StatelessWidget {
   }
 }
 
-class _AddNewAddressButton extends StatelessWidget {
+class _ConfirmButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isInProgress = context.select(
@@ -149,12 +146,6 @@ class _AddNewAddressButton extends StatelessWidget {
 
     return ElevatedButton(
       key: const Key('addAddressForm_addAddress_raisedButton'),
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
-        backgroundColor: Colors.orangeAccent,
-      ),
       onPressed: isValid
           ? () => context.read<AddressCubit>().addAddressFormSubmitted()
           : null,

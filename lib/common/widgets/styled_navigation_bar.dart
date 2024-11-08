@@ -9,7 +9,7 @@ class StyledNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NavigationBar(
-        indicatorColor: AppColors.appBar,
+        indicatorColor: AppColors.primary,
         selectedIndex: selectedIndex,
         onDestinationSelected: (index) { 
           onTap(index);
@@ -23,14 +23,14 @@ class StyledNavigationBar extends StatelessWidget {
           NavigationDestination(
             selectedIcon: Icon(Icons.notifications),
             icon: Badge(
-              label: Text('99+'),
+              label: Text('2'),
               child: Icon(Icons.notifications_outlined)),
             label: 'Notifications',
           ),
           NavigationDestination(
             selectedIcon: Icon(Icons.inbox),
             icon: Badge(
-              label: Text('2'),
+              label: Text('3'),
               child: Icon(Icons.inbox_outlined),
             ),
             label: 'Inbox',

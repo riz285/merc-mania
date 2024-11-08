@@ -7,6 +7,7 @@ FirebaseFirestore firestore = FirebaseFirestore.instance;
 final usersCollectionRef = FirebaseFirestore.instance.collection('users');
 final authenticationRepository = AuthenticationRepository();
 
+
 // User CRUD
   // Check if user exists
   Future<bool> exists(String id) async {
@@ -54,9 +55,9 @@ final authenticationRepository = AuthenticationRepository();
   }
 
   // Update user info
-  Future<void> updateUserData(String id, User user) async {
+  Future<void> updateUserData(String id, Map<String, dynamic> data) async {
     try {
-      await usersCollectionRef.doc(id).update(user.toJson());
+      await usersCollectionRef.doc(id).update(data);
       print('Update user successfully.');
     } catch (e) { print('$e'); }
   } 

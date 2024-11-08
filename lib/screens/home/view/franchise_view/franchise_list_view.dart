@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../cards/franchise_card.dart';
-import '../../../services/models/franchise.dart';
+import 'franchise_card.dart';
+import '../../../../services/models/franchise.dart';
 
 class FranchiseListView extends StatelessWidget {
   final List<Franchise> franchise;

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart'; 
 
 /// {@template user}
@@ -17,7 +16,8 @@ class User extends Equatable {
     this.photo,
     this.description,
     this.followers,
-    this.following
+    this.following, 
+    this.preferences
   });
 
   /// The current user's id.
@@ -46,6 +46,9 @@ class User extends Equatable {
   final int? followers;
   final int? following;
 
+  /// User preferences
+  final List<String>? preferences;
+
   /// Empty user which represents an unauthenticated user.
   static const empty = User(id: '');
 
@@ -59,7 +62,8 @@ class User extends Equatable {
       photo: json['photo'],
       description: json['description'],
       followers: json['followers'],  
-      following: json['following']
+      following: json['following'],
+      preferences: json['preferences']
     );
   }
 
@@ -73,10 +77,11 @@ class User extends Equatable {
       'photo' : photo,
       'description' : description,
       'followers' : followers,
-      'following' : following
+      'following' : following,
+      'preferences' : preferences
     };
   }
 
   @override
-  List<Object?> get props => [id, email, firstName, lastName, phoneNum, photo, description, followers, following];
+  List<Object?> get props => [id, email, firstName, lastName, phoneNum, photo, description, followers, following, preferences];
 }

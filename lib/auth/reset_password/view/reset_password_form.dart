@@ -17,6 +17,11 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
     return BlocListener<ResetPasswordCubit, ResetPasswordState>(
       listener: (context, state) {
         if (state.status.isSuccess) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(content: Text('A link to reset password has been sent to your email.')),
+            );
           Navigator.pop(context);
         } else if (state.status.isFailure) {
           ScaffoldMessenger.of(context)
@@ -33,6 +38,7 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              Text('Please enter your  email.'),
               _EmailInput(),
               const SizedBox(height: 8),
               _ResetPasswordButton(),
@@ -80,12 +86,6 @@ class _ResetPasswordButton extends StatelessWidget {
 
     return ElevatedButton(
       key: const Key('resetPasswordForm_continue_raisedButton'),
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
-        backgroundColor: Colors.orangeAccent,
-      ),
       onPressed: isValid
           ? () => context.read<ResetPasswordCubit>().resetPasswordFormSubmitted()
           : null,

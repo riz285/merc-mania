@@ -35,9 +35,9 @@ class _OrderListView extends StatelessWidget {
               if (snapshot.hasError) return Text('Error: ${snapshot.error}');
               if (snapshot.hasData) {
                 final orders = snapshot.data!.docs.map((doc) => AppOrder.fromJson(doc.data())).toList();
-                return OrderListView(orders: orders);
+                return orders.isNotEmpty ? OrderListView(orders: orders) : Align(child: Text('No order history yet!'));
               }                                    
-              return Text('No product data found');    
+              return Container();    
             }
     );
   }

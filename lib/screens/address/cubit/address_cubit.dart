@@ -95,11 +95,11 @@ class AddressCubit extends HydratedCubit<AddressState> {
 
   /// Add new address
   void addToAddressList(Address address) {
-    final updatedList = state.addresses;
+    final updatedList = state.addresses.toList();
     updatedList.insert(0, address); // add to headList
     emit(
       state.copyWith(
-         addresses: updatedList
+         addresses: updatedList.toList()
       )
     );
   }
@@ -107,7 +107,7 @@ class AddressCubit extends HydratedCubit<AddressState> {
   /// Remove address
   void removeAddress(Address address) {
     final updatedList = state.addresses;
-    updatedList.remove(address); // add to headList
+    updatedList.remove(address);
     emit(
       state.copyWith(
          addresses: updatedList
@@ -139,7 +139,6 @@ class AddressCubit extends HydratedCubit<AddressState> {
     } catch (e) {
       emit( 
         state.copyWith(
-          // errorMessage: e.message,
           status: FormzSubmissionStatus.failure,
         ),
       );

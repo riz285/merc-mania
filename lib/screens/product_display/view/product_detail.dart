@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:merc_mania/common/widgets/styled_app_bar.dart';
 import 'package:merc_mania/core/configs/assets/app_format.dart';
 import 'package:merc_mania/screens/cart/cubit/cart_cubit.dart';
 import 'package:merc_mania/services/models/product.dart';
+
+import '../cubit/product_cubit.dart';
 
 // import '../cubit/product_item_cubit.dart';
 
@@ -15,13 +18,18 @@ class ProductDetail extends StatefulWidget {
 }
 
 class _ProductDetailState extends State<ProductDetail> {
+
+  double discountedPrice(double price, int discountPercentage) {
+    return (price*(100-discountPercentage)/100);
+  }
+
   @override
   Widget build(BuildContext context) {
     // final user = context.select((AppBloc bloc) => bloc.state.user);
     final cart = BlocProvider.of<CartCubit>(context);
     return Scaffold(
-                appBar: AppBar(
-                  title: Text(widget.product.name),
+                appBar: StyledAppBar(
+                  title: Text('Product Details'),
                 ),
                 body: ListView(
                   padding: EdgeInsets.symmetric(vertical: 30),
@@ -54,9 +62,22 @@ class _ProductDetailState extends State<ProductDetail> {
                           SizedBox(
                             child: Text('Brand: ${widget.product.brandName ?? 'unknown'}')
                           ),
+                          widget.product.discountPercentage == null ?
                           SizedBox(
-                            child: Text(AppFormat.currency.format(widget.product.price))
-                          ),
+                            child: Text('Price: ${AppFormat.currency.format(widget.product.price)}')
+                          ) 
+                          : Row(children: [
+                            SizedBox(
+                              child: Text('Price: ')
+                            ),
+                            SizedBox(
+                              child: Text(AppFormat.currency.format(widget.product.price), style: TextStyle(decoration: TextDecoration.lineThrough))
+                            ),
+                            SizedBox(width: 4),
+                            SizedBox(
+                              child: Text(AppFormat.currency.format(discountedPrice(widget.product.price, widget.product.discountPercentage??1)), style: TextStyle(color: Colors.red),)
+                            ),
+                          ]),
                           SizedBox(width: 10),
                           //
                           Row(
@@ -74,16 +95,19 @@ class _ProductDetailState extends State<ProductDetail> {
                                     ),
                                     child: IconButton(
                                       onPressed: () {
-                                        // context.read<ProductItemCubit>().toggleFavorite();
+                                        context.read<ProductCubit>().toggleFavorite(widget.product.id);
+                                        setState(() {
+                                          
+                                        });
                                       }, 
-                                      icon: Icon(Icons.favorite_border_outlined)
-                                            // ! context.read<ProductItemCubit>().state.isFavorite
-                                            // ? Icon(Icons.favorite_border_outlined)
-                                            // : Icon(Icons.favorite, color: Colors.red,)
+                                      icon: 
+                                            ! context.read<ProductCubit>().isFavorite(widget.product.id)
+                                            ? Icon(Icons.favorite_border_outlined)
+                                            : Icon(Icons.favorite, color: Colors.red,)
                                     ),
                                   ),
                                   SizedBox(width: 10),
-                                  // Add to cart
+                                  // Add to cart 
                                   Container(
                                     height: 40,
                                     width: 50,
@@ -126,7 +150,6 @@ class _ProductDetailState extends State<ProductDetail> {
                               ),
                           
                           //
-                          SizedBox(height: 20),
                           Text(
                               'Description',
                               style: TextStyle(
@@ -156,16 +179,10 @@ class _PurchaseButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       key: const Key('productDetail_purchase_raisedButton'),
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-        backgroundColor: Colors.red,
-      ),
       onPressed: () {
         
       }, 
-      child: Text('PURCHASE', style: TextStyle( color: Colors.white )),
+      child: Text('PURCHASE'),
     );
   }
 }

@@ -36,48 +36,59 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return BlocListener<ProfileCubit, ProfileState>(
       listener: (context, state) => setState(() {}),
       child: FutureBuilder(
-            future: fetchUserData(), 
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator());
-              if (snapshot.hasError) return Text('Error: ${snapshot.error}');
-              if (snapshot.hasData) {
-                final userData = snapshot.data!.data()!;
-                return Align(
-                  alignment: Alignment(0, -1 / 3),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Center(child: Avatar(photo: userData['photo'], size: 40)),
-                        const SizedBox(height: 30),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Email', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                            Text(userData['email']),
-                            const SizedBox(height: 10),
-                            Text('Name', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                            Text('${userData['first_name']??''} ${userData['last_name']??''}'),
-                            const SizedBox(height: 10),
-                            Text('Phone number', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                            Text(userData['phone_number']??''),
-                            const SizedBox(height: 10),
+        future: fetchUserData(), 
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator());
+          if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+          if (snapshot.hasData) {
+            final userData = snapshot.data!.data()!;
+            return Align(
+              alignment: Alignment(0, - 1 / 3),
+              child: ListView(
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                shrinkWrap: true,
+                children: <Widget>[
+                  Align(child: Avatar(photo: userData['photo'], size: 40)),
+                  const SizedBox(height: 30),
+                  Card(child: Padding(padding: EdgeInsets.all(20),
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Bio', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                        Text(userData['description'] ?? ''),
+                    ],)
+                  )),
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Email', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                          Text(userData['email']),
+                          const SizedBox(height: 10),
+                          Text('Name', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                          Text('${userData['first_name']??''} ${userData['last_name']??''}'),
+                          const SizedBox(height: 10),
+                          Text('Phone number', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                          Text(userData['phone_number']??''),
+                          const SizedBox(height: 10),
+                          SizedBox(height: 10),
+                          Align(
+                            alignment: Alignment.center,
+                            child: _EditProfileButton())
                           ],
                         ),
-                        SizedBox(height: 10),
-                        Align(
-                          alignment: Alignment.center,
-                          child: _EditProfileButton())
-                      ],
-                    
-                  ),
-                );
-              }
-              return Text('No user data found');
-            }
-          ),
+                      ),
+                    ),
+                  ],
+                
+              ),
+            );
+          }
+          return Text('No user data found');
+        }
+      ),
     );
-      
   }
 }
 

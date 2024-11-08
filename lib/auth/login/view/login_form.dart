@@ -25,7 +25,7 @@ class LoginForm extends StatelessWidget {
         }
       },
       child: Align(
-        alignment: const Alignment(0, -1 / 3),
+        alignment: const Alignment(0, 0),
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 50),
           child: Column(
@@ -45,9 +45,12 @@ class LoginForm extends StatelessWidget {
               const SizedBox(height: 8),
               _LoginButton(),
               const SizedBox(height: 8),
-              _GoogleLoginButton(),
-              const SizedBox(height: 4),
+              Text('Don\'t have an account? Create one!'),
               _SignUpButton(),
+              Divider(thickness: 2),
+              const SizedBox(height: 16),
+              _GoogleLoginButton(),
+              _FacebookLoginButton()
             ],
           ),
         ),
@@ -100,20 +103,21 @@ class _PasswordInput extends StatelessWidget {
 class _ForgetPassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
+    return TextButton(
+      onPressed: () {
         Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => const ResetPasswordPage()));
-      },
+      }, 
       child: Text(
-          'forget password',
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.blue[700],
-            fontStyle: FontStyle.italic, 
-            decoration: TextDecoration.underline),
-        ),
+        'forget password',
+        style: TextStyle(
+          fontSize: 14,
+          color: const Color.fromARGB(150, 255, 255, 255),
+          fontStyle: FontStyle.italic, 
+          decoration: TextDecoration.underline
+        )
+      )
     );
   }
 }
@@ -133,12 +137,6 @@ class _LoginButton extends StatelessWidget {
 
     return ElevatedButton(
       key: const Key('loginForm_continue_raisedButton'),
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
-        backgroundColor: const Color(0xFFFFD600),
-      ),
       onPressed: isValid
           ? () => context.read<LoginCubit>().logInWithCredentials()
           : null,
@@ -150,21 +148,32 @@ class _LoginButton extends StatelessWidget {
 class _GoogleLoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return ElevatedButton.icon(
       key: const Key('loginForm_googleLogin_raisedButton'),
       label: const Text(
         'SIGN IN WITH GOOGLE',
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: Color.fromARGB(250, 255, 255, 255)),
       ),
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
-        backgroundColor: theme.colorScheme.secondary,
-      ),
-      icon: const Icon(FontAwesomeIcons.google, color: Colors.white),
+      icon: const Icon(FontAwesomeIcons.google, color: Color.fromARGB(250, 255, 255, 255)),
       onPressed: () => context.read<LoginCubit>().logInWithGoogle(),
+    );
+  }
+}
+
+class _FacebookLoginButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton.icon(
+      key: const Key('loginForm_facebookLogin_raisedButton'),
+      style: ButtonStyle(
+        backgroundColor: WidgetStatePropertyAll(Colors.blue),
+      ),
+      label: const Text(
+        'SIGN IN WITH FACEBOOK',
+        style: TextStyle(color: Color.fromARGB(250, 255, 255, 255)),
+      ),
+      icon: const Icon(FontAwesomeIcons.facebook, color: Color.fromARGB(250, 255, 255, 255)),
+      onPressed: () {},
     );
   }
 }
@@ -172,16 +181,13 @@ class _GoogleLoginButton extends StatelessWidget {
 class _SignUpButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // final theme = Theme.of(context);
     return TextButton(
       key: const Key('loginForm_createAccount_flatButton'),
+      style: ButtonStyle(visualDensity: VisualDensity.compact),
       onPressed: () => Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => const SignUpPage())),
-      child: Text(
-        'CREATE ACCOUNT',
-        style: TextStyle(),
-      ),
+      child: Text('CREATE ACCOUNT'),
     );
   }
 }

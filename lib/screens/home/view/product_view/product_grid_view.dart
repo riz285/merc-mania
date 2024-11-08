@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../cards/product_card.dart';
-import '../../../services/models/product.dart';
+import 'product_card.dart';
+import '../../../../services/models/product.dart';
 
-class HomeProductGridView extends StatelessWidget {
+class ProductGridView extends StatelessWidget {
   final List<Product> products;
-  const HomeProductGridView({super.key, required this.products});
+  const ProductGridView({super.key, required this.products});
 
   @override
   Widget build(BuildContext context) {

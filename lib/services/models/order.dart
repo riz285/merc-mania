@@ -16,7 +16,7 @@ class AppOrder extends Equatable {
   final String userId;
   final List<String> productIds;
   final int quantity;
-  final int total;
+  final double total;
   final String createdAt;
   final String? shippingAddress;
   final String? paymentMethod;

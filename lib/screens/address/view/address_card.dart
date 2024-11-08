@@ -9,6 +9,7 @@ class AddressCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = BlocProvider.of<AddressCubit>(context);
     return Padding(
         padding: EdgeInsets.all(5),
         child: Stack(
@@ -31,11 +32,11 @@ class AddressCard extends StatelessWidget {
               ]),
             ),
             Align(
-              alignment: Alignment.bottomRight,
+              alignment: Alignment(1, 1),
               child: TextButton(
                 child: const Text('REMOVE'),
                 onPressed: () {
-                  context.read<AddressCubit>().removeAddress(address);
+                  cubit.removeAddress(address);
                 },
               ),
             ),

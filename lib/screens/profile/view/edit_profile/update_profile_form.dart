@@ -29,22 +29,25 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
         }
       },
       child: Align(
-            alignment: const Alignment(0, -1 / 3),
-            child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Avatar
-                  _AvatarInput(),
-                  const SizedBox(height: 8),
-                  _FirstNameInput(),
-                  const SizedBox(height: 8),
-                  _LastNameInput(),
-                  const SizedBox(height: 8),
-                  _PhoneNumberInput(),
-                  const SizedBox(height: 10),
-                  _UpdateProfileButton(),
-                ],
-            ),
+        alignment: const Alignment(0, -1 / 3),
+        child: ListView(padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+          shrinkWrap: true,
+            children: [
+                _AvatarInput(),
+                const SizedBox(height: 30),
+                Card(child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(children: [
+                    _FirstNameInput(),
+                    const SizedBox(height: 10),
+                    _LastNameInput(),
+                    const SizedBox(height: 10),
+                    _PhoneNumberInput(),
+                    const SizedBox(height: 10),
+                    Align(child: _UpdateProfileButton()),
+                  ]),
+                ))
+          ]),
       ),
     );
   }
@@ -63,40 +66,42 @@ class _AvatarInputState extends State<_AvatarInput> {
                 onTap: () {
                   // context.read<ProfileCubit>().avatarChanged();
                 },
-                child: Stack(
-                  children: [
-                    Avatar(photo: context.read<ProfileCubit>().state.photo, size: 40),
-                    Positioned(
-                      bottom: 1,
-                      right: 1,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 2,
-                              color: Colors.white,
-                            ),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(
-                                50,
+                child: Align(
+                  child: Stack(
+                    children: [
+                      Avatar(photo: context.read<ProfileCubit>().state.photo, size: 40),
+                      Positioned(
+                        bottom: 1,
+                        right: 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 2,
+                                color: Colors.white,
                               ),
-                            ),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                offset: Offset(2, 4),
-                                color: Colors.black.withOpacity(
-                                  0.3,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(
+                                  50,
                                 ),
-                                blurRadius: 3,
                               ),
-                            ]),
-                        child: Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: Icon(Icons.add_a_photo, color: Colors.black),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  offset: Offset(2, 4),
+                                  color: Colors.black.withOpacity(
+                                    0.3,
+                                  ),
+                                  blurRadius: 3,
+                                ),
+                              ]),
+                          child: Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Icon(Icons.add_a_photo, color: Colors.black),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
   }
@@ -177,12 +182,6 @@ class _UpdateProfileButton extends StatelessWidget {
 
     return ElevatedButton(
       key: const Key('updateProfileForm_continue_raisedButton'),
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
-        backgroundColor: Colors.orangeAccent,
-      ),
       onPressed: isValid
           ? () => context.read<ProfileCubit>().updateProfileFormSubmitted()
           : null,

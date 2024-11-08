@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../cards/product_card.dart';
-import '../../../services/models/product.dart';
+import 'product_card.dart';
+import '../../../../services/models/product.dart';
 
 class ProductGridView extends StatelessWidget {
   final List<Product> products;
@@ -11,7 +11,7 @@ class ProductGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.builder(
       shrinkWrap : true,
-      itemCount: 8,
+      itemCount: products.length,
       itemBuilder: (context, index) => Padding(
         padding: const EdgeInsets.all(5.0),
         child: ProductCard(product: products[index]),

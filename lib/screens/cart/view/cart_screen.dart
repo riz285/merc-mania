@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:merc_mania/screens/address/view/address_selection/choose_address_page.dart';
 import 'package:merc_mania/screens/cart/view/cart_list_view.dart';
 import 'package:merc_mania/common/widgets/styled_app_bar.dart';
 import 'package:merc_mania/core/configs/assets/app_format.dart';
 
-import '../../address/view/address_selection/choose_address_page.dart';
 import '../cubit/cart_cubit.dart';
 
 class CartScreen extends StatefulWidget {
@@ -21,7 +21,7 @@ class _CartScreenState extends State<CartScreen> {
     final products = context.select((CartCubit cubit) => cubit.state.products);
     return BlocListener<CartCubit, CartState>(
       listener: (context, state) => setState(() {}),
-    child: Scaffold(
+      child: Scaffold(
         appBar: StyledAppBar(
           title: Text('Cart'),
         ),
@@ -65,19 +65,11 @@ class _CheckOutButton extends StatelessWidget {
 
     return ElevatedButton(
       key: const Key('cart_next_raisedButton'),
-      // style: ElevatedButton.styleFrom(
-      //   shape: RoundedRectangleBorder(
-      //     borderRadius: BorderRadius.circular(15),
-      //   ),
-      //   backgroundColor: Colors.red,
-      // ),
       onPressed: isValid 
                   ? () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => AddressPage())
+                    MaterialPageRoute(builder: (context) => ChooseAddressPage())
                   ) : null,
-      child: Text('CHECK OUT', 
-      // style: TextStyle( color: Colors.white )
-      ),
+      child: Text('CHECK OUT'),
     );
   }
 }

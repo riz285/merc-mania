@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:merc_mania/screens/home/cubit/product_cubit.dart';
-import '../../../core/configs/assets/app_format.dart';
-import '../../../screens/product_display/view/product_detail.dart';
-import '../../../services/models/product.dart';
+import 'package:merc_mania/screens/product_display/cubit/product_cubit.dart';
+import '../../../../core/configs/assets/app_format.dart';
+import '../../../product_display/view/product_detail.dart';
+import '../../../../services/models/product.dart';
 
 class ProductCard extends StatefulWidget {
   final Product product;
@@ -46,11 +46,12 @@ class _ProductCardState extends State<ProductCard> {
                           child: Positioned(
                             top: 0.0,
                             child: Container(
+                              padding: EdgeInsets.all(5),
                               height: 30,
-                              width: 40,
+                              width: 50,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10)),
+                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
                                 color: Colors.red,  
                               ),
                               child: Text(
@@ -64,17 +65,17 @@ class _ProductCardState extends State<ProductCard> {
                           )
                         ),
                         // Favorite IconButton
-                        Positioned(
-                          top: 0.0,
-                          right: 0.0,
-                          child: IconButton(
-                            onPressed: () {       
-                              // context.read<ProductItemCubit>().toggleFavorite();         
-                            }, 
-                            icon: 
-                                   Icon(Icons.favorite_border_outlined)
-                          )
-                        ),
+                        // Positioned(
+                        //   top: 0.0,
+                        //   right: 0.0,
+                        //   child: IconButton(
+                        //     onPressed: () {       
+                        //       // context.read<ProductItemCubit>().toggleFavorite();         
+                        //     }, 
+                        //     icon: 
+                        //            Icon(Icons.favorite_border_outlined)
+                        //   )
+                        // ),
                         // Product price
                         Positioned(
                           bottom: 0.0,

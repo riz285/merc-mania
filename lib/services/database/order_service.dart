@@ -22,6 +22,7 @@ class OrderService {
   
   /// Get all Orders
   Future<QuerySnapshot<Map<String, dynamic>>> getAppOrders(String id) {
-    return orderCollectionRef.where('user_id', isEqualTo: id).get();
+    return orderCollectionRef.where('user_id', isEqualTo: id)
+                             .orderBy('created_at', descending: true).get();
   }
 }

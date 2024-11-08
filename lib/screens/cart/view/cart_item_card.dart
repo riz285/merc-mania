@@ -23,39 +23,38 @@ class CartItemCard extends StatelessWidget {
         );
       },
       child: Card(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ListTile(
-              // Product Image
-              leading: Container(
-                height: 60,
-                width: 60,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  color: Colors.grey[700],
-                  image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: NetworkImage(product.image))
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                // Product Image
+                leading: Container(
+                  height: 60,
+                  width: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: Colors.grey[700],
+                    image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: NetworkImage(product.image))
+                  ),
                 ),
+                title: Text(product.name),
+                subtitle: Text(AppFormat.currency.format(product.price)),
               ),
-              title: Text(product.name),
-              subtitle: Text(AppFormat.currency.format(product.price)),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                const SizedBox(width: 8),
-                TextButton(
+              Align(
+                alignment: Alignment(1, 1),
+                child: TextButton(
                   child: const Text('REMOVE'),
                   onPressed: () {
                     cart.removeFromCart(product);
                   },
                 ),
-                const SizedBox(width: 8),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       )
     );

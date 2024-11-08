@@ -16,7 +16,7 @@ class UpdateProfile extends StatelessWidget {
             title: Text('Update Profile'),
           ),
           body: Padding(
-            padding: const EdgeInsets.all(50),
+            padding: const EdgeInsets.all(8),
             child: UpdateProfileForm())
       );
   }

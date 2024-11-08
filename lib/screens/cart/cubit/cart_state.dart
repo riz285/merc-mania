@@ -11,7 +11,7 @@ final class CartState extends Equatable {
 
   final List<Product> products;
   final int quantity;
-  final int total;
+  final double total;
   final bool isValid;
   final FormzSubmissionStatus status;
 
@@ -27,7 +27,7 @@ final class CartState extends Equatable {
   CartState copyWith({
     List<Product>? products,
     int? quantity, 
-    int? total,
+    double? total,
     bool? isValid,
     FormzSubmissionStatus? status
   }) {

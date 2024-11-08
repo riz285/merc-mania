@@ -5,16 +5,18 @@ import 'package:merc_mania/core/configs/assets/avatar.dart';
 import 'package:merc_mania/core/configs/themes/app_colors.dart';
 import 'package:merc_mania/screens/order/view/order_page.dart';
 import 'package:merc_mania/screens/settings/settings_page.dart';
-import 'styled_switch.dart';
+import '../../auth/login/cubit/login_cubit.dart';
+import '../../screens/cart/view/cart_screen.dart';
+import '../../screens/profile/view/profile_display/profile_page.dart';
+import '../../screens/help_center/help_center.dart';
+import '../../screens/policy/policy.dart';
 
 import '../../app/bloc/app_bloc.dart';
 import '../../screens/theme_modes/cubit/theme_cubit.dart';
 import '../../screens/profile/cubit/profile_cubit.dart';
+import 'styled_switch.dart';
 
-import '../../screens/profile/view/profile_display/profile_page.dart';
-import '../../screens/cart/view/cart_screen.dart';
-import '../../screens/help_center/help_center.dart';
-import '../../screens/policy/policy.dart';
+
 
 class StyledDrawer extends StatefulWidget {
   const StyledDrawer({super.key});
@@ -64,7 +66,7 @@ class _StyledDrawerState extends State<StyledDrawer> {
                   // Drawer Header
                   DrawerHeader(
                     decoration: const BoxDecoration(
-                      color: AppColors.appBar,
+                      color: AppColors.primary,
                     ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -75,8 +77,8 @@ class _StyledDrawerState extends State<StyledDrawer> {
                           Avatar(photo: data['photo'], size: 35),
                           const SizedBox(height: 12),
                           // Current user's name
-                          Text('${data['first_name'] ?? ''}   ${data['last_name'] ?? ''}', 
-                            style: TextStyle(color: Colors.brown)),
+                          Text('${data['first_name'] ?? ''} ${data['last_name'] ?? ''}', 
+                            style: TextStyle(color: Colors.brown, fontWeight: FontWeight.w600)),
                           // TODO: implement get() user's following and followers
                           Row(children: [
                             Text('Following: 0', style: TextStyle(color: Colors.brown)),
@@ -90,7 +92,7 @@ class _StyledDrawerState extends State<StyledDrawer> {
                   // Drawer Item List
                   ListTile( // Personal Information
                     onTap: () { 
-                      Navigator.pop(context);
+                      Navigator.pop(context); // Close drawer
                       Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const ProfilePage(),
@@ -105,7 +107,7 @@ class _StyledDrawerState extends State<StyledDrawer> {
                       Navigator.pop(context);
                       Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const CartView(),
+                        builder: (context) => const CartScreen(),
                       )
                     );
                   },

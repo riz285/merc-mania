@@ -7,6 +7,7 @@ import 'package:merc_mania/screens/address/view/address_selection/choose_address
 import 'package:merc_mania/screens/cart/cubit/cart_cubit.dart';
 import 'package:merc_mania/screens/home/view/home_page.dart';
 import 'package:merc_mania/screens/order/cubit/order_cubit.dart';
+import 'package:merc_mania/screens/order/view/order_success_noti_screen.dart';
 import 'package:merc_mania/screens/payment/view/choose_credit_card_bottom_sheet.dart';
 
 import '../../../services/models/address.dart';
@@ -43,8 +44,8 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                       onPressed: () {
                         context.read<OrderCubit>().checkOutOrder(cart.products, cart.total, widget.address);
                         context.read<CartCubit>().resetCart();
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (context) => HomePage())
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => OrderSuccessScreen())
                         );
                       }
                     ),
@@ -58,7 +59,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
 
 class _AddressCard extends StatelessWidget {
   final Address address;
-  const _AddressCard({super.key, required this.address});
+  const _AddressCard({required this.address});
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +94,7 @@ class _AddressCard extends StatelessWidget {
                     child: const Text('EDIT'),
                     onPressed: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => AddressPage())
+                        MaterialPageRoute(builder: (context) => ChooseAddressPage())
                       );
                     }
                   ),
@@ -118,7 +119,7 @@ class _CartCard extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 16, top: 8),
-              child: Text('Item List:', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              child: Text('Item list:', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             ),
             Divider(),
             CartListView(products: cart.products),
@@ -140,7 +141,7 @@ class _CartCard extends StatelessWidget {
 }
 
 class _PaymentMethodCard extends StatefulWidget {
-  const _PaymentMethodCard({super.key});
+  const _PaymentMethodCard();
 
   @override
   State<_PaymentMethodCard> createState() => __PaymentMethodCardState();
@@ -185,7 +186,7 @@ class __PaymentMethodCardState extends State<_PaymentMethodCard> {
                   builder: (BuildContext context) {
                     return ChooseCreditCardBottomSheet();
                 });
-                        }
+              },
             ),
             SizedBox(height: 8),
             RadioListTile(
@@ -206,20 +207,14 @@ class __PaymentMethodCardState extends State<_PaymentMethodCard> {
 
 class _ConfirmOrderButton extends StatelessWidget {
   final Function() onPressed;
-  const _ConfirmOrderButton({super.key, required this.onPressed});
+  const _ConfirmOrderButton({required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       key: const Key('order_confirm_raisedButton'),
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-        backgroundColor: Colors.red,
-      ),
       onPressed: onPressed, 
-      child: Text('CONFIRM', style: TextStyle( color: Colors.white )),
+      child: Text('CONFIRM'),
     );
   }
 }

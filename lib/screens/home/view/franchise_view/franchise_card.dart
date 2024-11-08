@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:merc_mania/screens/product_display/view/product_screen.dart';
 
-import '../../../services/models/franchise.dart';
+import '../../../../services/models/franchise.dart';
 
 class FranchiseCard extends StatelessWidget {
   final Franchise franchise;
@@ -29,20 +29,20 @@ class FranchiseCard extends StatelessWidget {
         child: Stack(
           children: [
             // Favorite IconButton
-            Positioned(
-              top: 0.0,
-              right: 0.0,
-              child: IconButton(
-                onPressed: () {}, 
-                icon: Icon(
-                  Icons.favorite_border_outlined,
-                ), 
-                selectedIcon: Icon(
-                  Icons.favorite_rounded, 
-                  color: Colors.redAccent,
-                )
-              ),
-            ),
+            // Positioned(
+            //   top: 0.0,
+            //   right: 0.0,
+            //   child: IconButton(
+            //     onPressed: () {}, 
+            //     icon: Icon(
+            //       Icons.favorite_border_outlined,
+            //     ), 
+            //     selectedIcon: Icon(
+            //       Icons.favorite_rounded, 
+            //       color: Colors.redAccent,
+            //     )
+            //   ),
+            // ),
             // Franchise name
             Align(
               alignment: Alignment.bottomCenter,

@@ -97,14 +97,12 @@ class ProfileCubit extends Cubit<ProfileState> {
     if (!state.isValid) return;
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
-      User user = User(id: _authenticationRepository.currentUser.id, 
-                       email: _authenticationRepository.currentUser.email, 
-                       firstName: state.firstName.value, 
-                       lastName: state.lastName.value, 
-                       phoneNum: state.phoneNum.value
-                      );
       // Update user data
-      await userService.updateUserData(user.id, user);
+      await userService.updateUserData(_authenticationRepository.currentUser.id, {
+        'first_name' : state.firstName.value, 
+        'last_name' : state.lastName.value, 
+        'phone_number': state.phoneNum.value
+      });
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } catch (e) {
       emit( 

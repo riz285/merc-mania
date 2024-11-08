@@ -1,15 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:merc_mania/core/configs/themes/app_colors.dart';
 import 'package:merc_mania/services/database/franchise_service.dart';
 import 'package:merc_mania/services/database/product_service.dart';
 import 'package:merc_mania/services/models/franchise.dart';
 
-import '../../../common/widgets/list_views/franchise_list_view.dart';
-import '../../../common/widgets/list_views/home_product_grid_view.dart';
-import '../cubit/product_cubit.dart';
+import 'franchise_view/franchise_list_view.dart';
+import 'product_view/product_grid_view.dart';
+import '../../product_display/cubit/product_cubit.dart';
 import '../../../services/models/product.dart';
-import '../../../common/widgets/list_views/product_list_view.dart';
+import 'product_view/product_list_view.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -29,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
           _Classification(classification: 'Popular Franchise'),
           _FranchiseListView(),
           // Popular products
-          _Classification(classification: 'Popular Products'),
+          _Classification(classification: 'Popular Items'),
           _PopularProductListView(),
           // Recently viewed items
           _Classification(classification: 'Recently Viewed'),
@@ -53,13 +54,14 @@ class _Classification extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
       child: SizedBox(
         child: Text(
           classification, 
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
+            color: AppColors.title
           ),
         ),
       ),
@@ -177,7 +179,7 @@ class _RecommendedProductGridView extends StatelessWidget {
           if (snapshot.hasError) return Text('Error: ${snapshot.error}');
           if (snapshot.hasData) {
             final products = snapshot.data!.docs.map((doc) => Product.fromJson(doc.data())).toList();
-            return HomeProductGridView(products: products);
+            return ProductGridView(products: products);
           }                                    
           return Text('No product data found');    
         }
