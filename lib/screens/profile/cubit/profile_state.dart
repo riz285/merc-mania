@@ -3,7 +3,6 @@ part of 'profile_cubit.dart';
 final class ProfileState extends Equatable {
   const ProfileState({
     this.photo,
-    this.email = const Email.pure(),
     this.firstName = const Name.pure(),
     this.lastName = const Name.pure(),
     this.phoneNum = const PhoneNumber.pure(),
@@ -13,7 +12,6 @@ final class ProfileState extends Equatable {
   });
 
   final String? photo;
-  final Email email;
   final Name firstName;
   final Name lastName;
   final PhoneNumber phoneNum;
@@ -24,7 +22,6 @@ final class ProfileState extends Equatable {
   @override
   List<Object?> get props => [
         photo,
-        email,
         firstName,
         lastName,
         phoneNum,
@@ -45,7 +42,6 @@ final class ProfileState extends Equatable {
   }) {
     return ProfileState(
       photo: photo ?? this.photo,
-      email: email ?? this.email,
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       phoneNum: phoneNum ?? this.phoneNum,

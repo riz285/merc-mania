@@ -37,14 +37,13 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   Future<void> avatarChanged() async {
     final pickedImage = await imageStorage.pickImage();
-    if (pickedImage != null) {
-      final photo = await imageStorage.uploadImageToStorage(pickedImage);
-      emit(
-        state.copyWith(
-          photo: photo
-        )
-      );
-    }
+    if (pickedImage == null) return;
+    final photo = await imageStorage.uploadImageToStorage(pickedImage);
+    emit(
+      state.copyWith(
+        photo: photo
+      )
+    );
   }
 
   // On first_name change
@@ -101,7 +100,8 @@ class ProfileCubit extends Cubit<ProfileState> {
       await userService.updateUserData(_authenticationRepository.currentUser.id, {
         'first_name' : state.firstName.value, 
         'last_name' : state.lastName.value, 
-        'phone_number': state.phoneNum.value
+        'phone_number': state.phoneNum.value,
+        'photo' : state.photo
       });
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } catch (e) {

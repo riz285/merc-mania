@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -12,6 +13,23 @@ class UpdateProfileForm extends StatefulWidget {
 }
 
 class _UpdateProfileFormState extends State<UpdateProfileForm> {
+    @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+
+  // Fetch current user data
+  Future<DocumentSnapshot<Map<String, dynamic>>?> fetchUserData() async {
+    try {
+      return await context.read<ProfileCubit>().fetchUserData();
+    } catch (e) {
+      // ignore: avoid_print
+      print('Error fetching user data: $e');
+      return null;
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     return BlocListener<ProfileCubit, ProfileState>(
@@ -28,32 +46,42 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
             );
         }
       },
-      child: Align(
-        alignment: const Alignment(0, -1 / 3),
-        child: ListView(padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-          shrinkWrap: true,
-            children: [
-                _AvatarInput(),
+      child: FutureBuilder(
+        future: fetchUserData(), 
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) return Center();
+          if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+          final data = snapshot.data!.data()!;
+          return Align(
+            alignment: const Alignment(0, -1 / 3),
+            child: ListView(padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              shrinkWrap: true,
+              children: [
+                _AvatarInput(photo: data['photo']),
                 const SizedBox(height: 30),
                 Card(child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(children: [
-                    _FirstNameInput(),
+                    _FirstNameInput(firstName: data['first_name']),
                     const SizedBox(height: 10),
-                    _LastNameInput(),
+                    _LastNameInput(lastName: data['last_name']),
                     const SizedBox(height: 10),
-                    _PhoneNumberInput(),
+                    _PhoneNumberInput(phoneNum: data['phone_number']),
                     const SizedBox(height: 10),
                     Align(child: _UpdateProfileButton()),
                   ]),
                 ))
-          ]),
-      ),
+              ]
+            ),
+          );
+        }),
     );
   }
 }
 
 class _AvatarInput extends StatefulWidget {
+  final String photo;
+  const _AvatarInput({required this.photo});
   @override
   State<_AvatarInput> createState() => _AvatarInputState();
 }
@@ -62,14 +90,14 @@ class _AvatarInputState extends State<_AvatarInput> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
                 onTap: () {
-                  // context.read<ProfileCubit>().avatarChanged();
+                  context.read<ProfileCubit>().avatarChanged();
                 },
                 child: Align(
                   child: Stack(
                     children: [
-                      Avatar(photo: context.read<ProfileCubit>().state.photo, size: 40),
+                      Avatar(photo: context.read<ProfileCubit>().state.photo??widget.photo, size: 40),
                       Positioned(
                         bottom: 1,
                         right: 1,
@@ -108,6 +136,9 @@ class _AvatarInputState extends State<_AvatarInput> {
 }
 
 class _FirstNameInput extends StatelessWidget {
+  final String firstName;
+  const _FirstNameInput({required this.firstName});
+
   @override
   Widget build(BuildContext context) {
     final displayError = context.select(
@@ -119,8 +150,9 @@ class _FirstNameInput extends StatelessWidget {
       onChanged: (firstName) => context.read<ProfileCubit>().firstNameChanged(firstName),
       keyboardType: TextInputType.name,
       decoration: InputDecoration(
-        labelText: 'first name',
-        helperText: '',
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        labelText: 'first name', 
+        hintText: firstName,
         errorText: displayError != null ? 'invalid name' : null,
       ),
     );
@@ -128,6 +160,9 @@ class _FirstNameInput extends StatelessWidget {
 }
 
 class _LastNameInput extends StatelessWidget {
+  final String lastName;
+  const _LastNameInput({required this.lastName});
+
   @override
   Widget build(BuildContext context) {
     final displayError = context.select(
@@ -139,8 +174,9 @@ class _LastNameInput extends StatelessWidget {
       onChanged: (lastName) => context.read<ProfileCubit>().lastNameChanged(lastName),
       keyboardType: TextInputType.name,
       decoration: InputDecoration(
+        floatingLabelBehavior: FloatingLabelBehavior.always,
         labelText: 'last name',
-        helperText: '',
+        hintText: lastName,
         errorText: displayError != null ? 'invalid name' : null,
       ),
     );
@@ -148,6 +184,9 @@ class _LastNameInput extends StatelessWidget {
 }
 
 class _PhoneNumberInput extends StatelessWidget {
+  final String phoneNum;
+  const _PhoneNumberInput({required this.phoneNum});
+
   @override
   Widget build(BuildContext context) {
     final displayError = context.select(
@@ -159,8 +198,9 @@ class _PhoneNumberInput extends StatelessWidget {
       onChanged: (phoneNum) => context.read<ProfileCubit>().phoneNumberChanged(phoneNum),
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
+        floatingLabelBehavior: FloatingLabelBehavior.always,
         labelText: 'phone number',
-        helperText: '',
+        hintText: phoneNum,
         errorText: displayError != null ? 'invalid phone number' : null,
       ),
     );
