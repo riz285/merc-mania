@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:merc_mania/common/widgets/styled_app_bar.dart';
-import 'package:merc_mania/screens/cart/view/cart_list_view.dart';
 import 'package:merc_mania/screens/product_display/cubit/product_cubit.dart';
 
 import '../../core/configs/assets/app_format.dart';
