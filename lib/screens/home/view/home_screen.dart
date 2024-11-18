@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:merc_mania/core/configs/themes/app_colors.dart';
 import 'package:merc_mania/services/database/franchise_service.dart';
 import 'package:merc_mania/services/database/product_service.dart';
 import 'package:merc_mania/services/models/franchise.dart';
@@ -61,7 +60,6 @@ class _Classification extends StatelessWidget {
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: AppColors.title
           ),
         ),
       ),
@@ -188,11 +186,15 @@ class _RecommendedProductGridView extends StatelessWidget {
   }
 }
 
-// class _addNewProduct extends StatelessWidget {
-//   const _addNewProduct({super.key});
+class _addNewProduct extends StatelessWidget {
+  const _addNewProduct();
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Placeholder();
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+      child: const Icon(Icons.add),);
+  }
+} 

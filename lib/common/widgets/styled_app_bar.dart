@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import '../../core/configs/themes/app_colors.dart';
 
 class StyledAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final Widget ? title;
+  final Widget? title;
+  final Widget? leading;
   final List<Widget> ? actions;
-  const StyledAppBar({this.title, super.key, this.actions});
+  const StyledAppBar({this.title, super.key, this.actions, this.leading});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class StyledAppBar extends StatelessWidget implements PreferredSizeWidget {
         fontSize: 20,
         fontWeight: FontWeight.bold
       ),
-      leading: IconButton(
+      leading: leading ?? IconButton(
           onPressed: () {
             Navigator.pop(context);
           },

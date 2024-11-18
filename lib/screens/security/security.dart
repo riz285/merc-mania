@@ -10,7 +10,15 @@ class Security extends StatelessWidget {
       appBar: StyledAppBar(
         title: Text('Security'),
       ),
-      body: Placeholder(),
+      body: Padding(
+        padding: EdgeInsets.all(8),
+        child: Column(children: [
+          ListTile(
+            title: Text('Change Password'),
+            onTap: () {},
+          )
+        ],),
+      )
     );
   }
 }

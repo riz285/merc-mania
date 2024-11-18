@@ -13,21 +13,21 @@ class CashPayment extends PaymentMethod {
 }
 
 // Credit Card Payment Method
-class CreditCardPayment extends PaymentMethod {
+class CreditCard extends PaymentMethod {
   final String cardNumber;
   final String cardHolderName;
   final String expiryDate;
   final String cvv;
 
-  CreditCardPayment({
+  CreditCard({
     required this.cardNumber,
     required this.cardHolderName,
     required this.expiryDate,
     required this.cvv
   });
 
-  factory CreditCardPayment.fromJson(Map<String, dynamic> json) {
-    return CreditCardPayment(
+  factory CreditCard.fromJson(Map<String, dynamic> json) {
+    return CreditCard(
       cardNumber: json['card_number'],
       cardHolderName: json['cardholder_name'],
       expiryDate: json['expiry_date'],

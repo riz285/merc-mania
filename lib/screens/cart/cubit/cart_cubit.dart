@@ -1,4 +1,3 @@
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -10,9 +9,8 @@ import '../../../services/models/order.dart';
 part 'cart_state.dart';
 
 class CartCubit extends HydratedCubit<CartState> {
-  CartCubit(this._authenticationRepository) : super(const CartState(products: []));
+  CartCubit() : super(const CartState(products: []));
 
-  final AuthenticationRepository _authenticationRepository;
   final productService = ProductService();
 
   /// Add Product to Cart 
@@ -43,6 +41,28 @@ class CartCubit extends HydratedCubit<CartState> {
          isValid: updatedList.isNotEmpty
       )
     );
+  }
+
+  void addToPurchase(Product product) {
+    final updatedList = <Product>[];
+    updatedList.insert(0, product); // add to headList
+    // if (updatedList.length >= 50)
+    emit(
+      state.copyWith(
+         product: updatedList.toList(),
+         price: product.price,
+         isValid: true
+      )
+    );
+  }
+
+  void deleteFromPurchase() {
+    List<Product> updatedList = List.empty();
+    emit(
+      state.copyWith(
+        product: updatedList,
+        price: 0,
+      ));
   }
   
   /// Empty Cart
@@ -79,7 +99,7 @@ class CartCubit extends HydratedCubit<CartState> {
     return CartState(
       products: productsFromJson(json['products']), 
       quantity: json['quantity'] as int, 
-      total: json['total'] as double, 
+      total: json['total'] as int, 
       isValid: json['not_empty'] as bool
     );
   }

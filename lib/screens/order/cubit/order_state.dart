@@ -1,12 +1,5 @@
 part of 'order_cubit.dart';
 
-enum Status {
-  initial,
-  inProgress,
-  success,
-  failure,
-}
-
 final class OrderState extends Equatable {
   const OrderState({
     required this.orders,
@@ -15,8 +8,9 @@ final class OrderState extends Equatable {
     this.total,
     this.createdAt,
     this.address,
-    this.paymentMethod,
-    this.status = Status.initial,
+    required this.paymentMethod,
+    this.status = FormzSubmissionStatus.initial,
+    this.errorMessage
   });
 
   final List<AppOrder> orders;
@@ -25,8 +19,9 @@ final class OrderState extends Equatable {
   final int? total;
   final String? createdAt;
   final Address? address;
-  final PaymentMethod? paymentMethod;
-  final Status status;
+  final int paymentMethod;
+  final FormzSubmissionStatus status;
+  final String? errorMessage;
 
   @override
   List<Object?> get props => [
@@ -47,8 +42,9 @@ final class OrderState extends Equatable {
     int? total,
     String? createdAt,
     Address? address,
-    PaymentMethod? paymentMethod,
-    Status? status
+    int? paymentMethod,
+    FormzSubmissionStatus? status,
+    String? errorMessage
   }) {
     return OrderState(
       orders: orders ?? this.orders,
@@ -58,7 +54,8 @@ final class OrderState extends Equatable {
       createdAt: createdAt ?? this.createdAt,
       address: address ?? this.address,
       paymentMethod: paymentMethod ?? this.paymentMethod,
-      status: status ?? this.status
+      status: status ?? this.status,
+      errorMessage: errorMessage ?? this.errorMessage
     );
   }
 }

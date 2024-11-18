@@ -104,7 +104,6 @@ class _NameInput extends StatelessWidget {
       keyboardType: TextInputType.name,
       decoration: InputDecoration(
         labelText: 'recipient name',
-        helperText: '',
         errorText: displayError != null ? 'invalid name' : null,
       ),
     );
@@ -124,7 +123,6 @@ class _PhoneNumberInput extends StatelessWidget {
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
         labelText: 'phone number',
-        helperText: '',
         errorText: displayError != null ? 'invalid phone number' : null,
       ),
     );

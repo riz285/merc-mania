@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:merc_mania/core/configs/assets/avatar.dart';
 import 'package:merc_mania/core/configs/themes/app_colors.dart';
 import 'package:merc_mania/screens/order/view/order_page.dart';
 import 'package:merc_mania/screens/settings/settings_page.dart';
-import '../../auth/login/cubit/login_cubit.dart';
+import 'package:merc_mania/screens/wishlist/wishlist_screen.dart';
 import '../../screens/cart/view/cart_screen.dart';
 import '../../screens/profile/view/profile_display/profile_page.dart';
 import '../../screens/help_center/help_center.dart';
@@ -92,7 +93,6 @@ class _StyledDrawerState extends State<StyledDrawer> {
                   // Drawer Item List
                   ListTile( // Personal Information
                     onTap: () { 
-                      Navigator.pop(context); // Close drawer
                       Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const ProfilePage(),
@@ -102,9 +102,19 @@ class _StyledDrawerState extends State<StyledDrawer> {
                     leading: Icon(Icons.person),
                     title: Text('Personal Information'),
                   ),
+                  ListTile( // Wish List
+                    onTap: () { 
+                      Navigator.of(context).push(
+                      MaterialPageRoute(
+                      builder: (context) => const WishlistScreen(),
+                        )
+                      );
+                    },
+                    leading: Icon(FontAwesomeIcons.heartCirclePlus),
+                    title: Text('Wishlist'),
+                  ),
                   ListTile( // User's Cart
                     onTap: () { 
-                      Navigator.pop(context);
                       Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const CartScreen(),
@@ -116,7 +126,6 @@ class _StyledDrawerState extends State<StyledDrawer> {
                   ),
                   ListTile( // User's Orders
                     onTap: () { 
-                      Navigator.pop(context);
                       Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const OrderPage(),
@@ -128,7 +137,6 @@ class _StyledDrawerState extends State<StyledDrawer> {
                   ),
                   ListTile( // Settings
                     onTap: () { 
-                      Navigator.pop(context);
                       Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const SettingsPage())
@@ -139,7 +147,6 @@ class _StyledDrawerState extends State<StyledDrawer> {
                   ),
                   ListTile( // Help Center
                     onTap: () { 
-                      Navigator.pop(context);
                       Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const HelpCenter(),
@@ -151,7 +158,6 @@ class _StyledDrawerState extends State<StyledDrawer> {
                   ),
                   ListTile( // Policy
                     onTap: () { 
-                      Navigator.pop(context);
                       Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const Policy(),
@@ -167,7 +173,7 @@ class _StyledDrawerState extends State<StyledDrawer> {
               Align(
                 child: Row(children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     child: StyledSwitch( // Theme Switch
                           key: const Key('drawer_themeMode_switch'),
                           value: mode == ThemeMode.light,

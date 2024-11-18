@@ -41,11 +41,8 @@ class AppTheme {
       textSelectionTheme: TextSelectionThemeData(
         cursorColor: AppColors.primary
       ),
-      textTheme: TextTheme(
-        
-      ),
       radioTheme: RadioThemeData(
-        fillColor: WidgetStateProperty.all(AppColors.primary),
+        fillColor: WidgetStateProperty.all(AppColors.title),
         overlayColor: WidgetStateProperty.all(AppColors.primary)
       ),
       cardTheme: CardTheme(
@@ -61,15 +58,21 @@ class AppTheme {
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
           color: AppColors.title,
-          width: 3)
+          width: 3),
         ),
+        hintStyle: TextStyle(color: const Color.fromARGB(100, 121, 85, 72))
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(
         color: AppColors.primary,
       ),
       listTileTheme: ListTileThemeData(
-        selectedTileColor: Colors.grey[800]
-      ) 
+        selectedTileColor: const Color.fromARGB(50, 255, 193, 214),
+        textColor: AppColors.title,
+        iconColor: AppColors.title
+      ),
+      bottomSheetTheme: BottomSheetThemeData(
+        modalBackgroundColor: Colors.white
+      )
   );
   //Dark mode
   static final darkTheme = ThemeData(

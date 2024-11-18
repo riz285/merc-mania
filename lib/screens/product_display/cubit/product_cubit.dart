@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -36,7 +38,7 @@ class ProductCubit extends HydratedCubit<ProductState> {
     }
   }
 
-  /// Add Product's id to Recently Viewed List 
+  /// Add Product to WishList 
   void addToWishList(String productId) {
     final updatedList = state.favoriteProducts.toList();
     updatedList.insert(0, productId); // add to headList
@@ -57,7 +59,7 @@ class ProductCubit extends HydratedCubit<ProductState> {
     );
   }
 
-  /// Add Product's id to Recently Viewed List 
+  /// Add Product to Recently Viewed List 
   void addToRecentList(String productId) {
     final updatedList = state.recentlyViewedProducts.toList();
     if (updatedList.isNotEmpty) updatedList.remove(productId); // remove duplicate

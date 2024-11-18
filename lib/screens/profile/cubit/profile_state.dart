@@ -9,6 +9,7 @@ final class ProfileState extends Equatable {
     this.status = FormzSubmissionStatus.initial,
     this.isValid = false,
     this.errorMessage,
+    this.description,
   });
 
   final String? photo;
@@ -18,6 +19,7 @@ final class ProfileState extends Equatable {
   final FormzSubmissionStatus status;
   final bool isValid;
   final String? errorMessage;
+  final String? description;
 
   @override
   List<Object?> get props => [
@@ -28,6 +30,7 @@ final class ProfileState extends Equatable {
         status,
         isValid,
         errorMessage,
+        description
       ];
 
   ProfileState copyWith({
@@ -39,6 +42,7 @@ final class ProfileState extends Equatable {
     FormzSubmissionStatus? status,
     bool? isValid,
     String? errorMessage,
+    String? description
   }) {
     return ProfileState(
       photo: photo ?? this.photo,
@@ -48,6 +52,7 @@ final class ProfileState extends Equatable {
       status: status ?? this.status,
       isValid: isValid ?? this.isValid,
       errorMessage: errorMessage ?? this.errorMessage,
+      description: description ?? this.description
     );
   }
 }

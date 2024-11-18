@@ -48,7 +48,7 @@ class _ProductCardState extends State<ProductCard> {
                             child: Container(
                               padding: EdgeInsets.all(5),
                               height: 30,
-                              width: 50,
+                              width: 40,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomRight: Radius.circular(10)),

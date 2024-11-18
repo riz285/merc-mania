@@ -62,11 +62,11 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
                 Card(child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(children: [
-                    _FirstNameInput(firstName: data['first_name']),
+                    _FirstNameInput(firstName: data['first_name']??''),
                     const SizedBox(height: 10),
-                    _LastNameInput(lastName: data['last_name']),
+                    _LastNameInput(lastName: data['last_name']??''),
                     const SizedBox(height: 10),
-                    _PhoneNumberInput(phoneNum: data['phone_number']),
+                    _PhoneNumberInput(phoneNum: data['phone_number']??''),
                     const SizedBox(height: 10),
                     Align(child: _UpdateProfileButton()),
                   ]),
@@ -80,7 +80,7 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
 }
 
 class _AvatarInput extends StatefulWidget {
-  final String photo;
+  final String? photo;
   const _AvatarInput({required this.photo});
   @override
   State<_AvatarInput> createState() => _AvatarInputState();
@@ -90,48 +90,51 @@ class _AvatarInputState extends State<_AvatarInput> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-                onTap: () {
-                  context.read<ProfileCubit>().avatarChanged();
-                },
-                child: Align(
-                  child: Stack(
-                    children: [
-                      Avatar(photo: context.read<ProfileCubit>().state.photo??widget.photo, size: 40),
-                      Positioned(
-                        bottom: 1,
-                        right: 1,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 2,
-                                color: Colors.white,
-                              ),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(
-                                  50,
+    return BlocListener<ProfileCubit, ProfileState>(
+      listener: (context, state) => setState(() {}),
+      child: GestureDetector(
+                  onTap: () {
+                    context.read<ProfileCubit>().avatarChanged();
+                  },
+                  child: Align(
+                    child: Stack(
+                      children: [
+                        Avatar(photo: context.read<ProfileCubit>().state.photo??widget.photo, size: 40),
+                        Positioned(
+                          bottom: 1,
+                          right: 1,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 2,
+                                  color: Colors.white,
                                 ),
-                              ),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  offset: Offset(2, 4),
-                                  color: Colors.black.withOpacity(
-                                    0.3,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(
+                                    50,
                                   ),
-                                  blurRadius: 3,
                                 ),
-                              ]),
-                          child: Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: Icon(Icons.add_a_photo, color: Colors.black),
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    offset: Offset(2, 4),
+                                    color: Colors.black.withOpacity(
+                                      0.3,
+                                    ),
+                                    blurRadius: 3,
+                                  ),
+                                ]),
+                            child: Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Icon(Icons.add_a_photo, color: Colors.black),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              );
+    );
   }
 }
 

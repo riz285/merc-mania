@@ -34,14 +34,13 @@ class _ChooseAddressScreenState extends State<ChooseAddressScreen> {
                 itemBuilder: (context, index) => SizedBox(
                   height: 100,
                   width: 100,
-                  child: RadioListTile(
+                  child: ListTile(
                     isThreeLine: true,
                     subtitle:  AddressCard(address: addresses[index]),
-                    value: index, 
+                    focusColor: Colors.pink,
                     selected: index == selectedIndex,
-                    groupValue: selectedIndex, 
-                    onChanged: (value) => setState(() {
-                      selectedIndex = value ?? 0;
+                    onTap: () => setState(() {
+                      selectedIndex = index;
                     })
                   )
                 ), 

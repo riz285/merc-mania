@@ -64,22 +64,17 @@ class LoginCubit extends Cubit<LoginState> {
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
       await _authenticationRepository.logInWithGoogle();
-      // ignore: no_leading_underscores_for_local_identifiers
-      User _currentUser = _authenticationRepository.currentUser;
-      if (!await userService.exists(_currentUser.id)) {
-        User user = User(id: _currentUser.id, email: _currentUser.email, photo: _currentUser.photo, firstName: _currentUser.firstName ?? '', phoneNum: _currentUser.phoneNum);
-        userService.createUser(user.id, user);
-      }
+      userService.createUser(_authenticationRepository.currentUser.id, _authenticationRepository.currentUser);
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } on LogInWithGoogleFailure catch (e) {
-      emit(
+      return emit(
         state.copyWith(
           errorMessage: e.message,
           status: FormzSubmissionStatus.failure,
         ),
       );
     } catch (_) {
-      emit(state.copyWith(status: FormzSubmissionStatus.failure));
+      return emit(state.copyWith(status: FormzSubmissionStatus.failure));
     }
   }
 }

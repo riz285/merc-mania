@@ -13,7 +13,8 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  
+  final controller = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -50,13 +51,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: <Widget>[
                   Align(child: Avatar(photo: userData['photo'], size: 40)),
                   const SizedBox(height: 30),
-                  Card(child: Padding(padding: EdgeInsets.all(20),
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Bio', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                        Text(userData['description'] ?? ''),
-                    ],)
-                  )),
+                  GestureDetector(
+                    child: Card(child: Padding(padding: EdgeInsets.all(20),
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Bio', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                          Text(userData['description'] ?? ''),
+                      ],),
+                    )),
+                    onTap: () {
+                      showDialog(context: context, builder: (context) => AlertDialog(
+                        title: Text('Your self description', style: TextStyle(fontSize: 16)),
+                        content: TextField(
+                          autofocus: true,
+                          controller: controller,
+                        ),
+                        actions: [
+                          TextButton(
+                          onPressed: () { 
+                            context.read<ProfileCubit>().updateProfileDescription(controller.text);
+                            Navigator.pop(context); 
+                          }, 
+                          child: Text('Save'))
+                        ],
+                      ));
+                    },
+                  ),
                   Card(
                     child: Padding(
                       padding: const EdgeInsets.all(20),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:merc_mania/common/widgets/styled_app_bar.dart';
 
+import 'address_screen.dart';
+
 class AddressPage extends StatelessWidget {
   const AddressPage({super.key});
 
@@ -10,7 +12,8 @@ class AddressPage extends StatelessWidget {
       appBar: StyledAppBar(
         title: Text('My addresses'),
       ),
-      body: Placeholder(),
+      body: Padding(padding: EdgeInsets.all(8),
+        child: AddressScreen()),
     );
   }
 }

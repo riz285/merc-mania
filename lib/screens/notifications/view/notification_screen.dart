@@ -19,13 +19,6 @@ class NotificationScreen extends StatelessWidget {
               Scaffold.of(context).openDrawer();
             }, 
             icon: Icon(Icons.menu))),
-          actions: <Widget>[
-            IconButton(
-              key: const Key('homePage_search_iconButton'),
-              icon: const Icon(Icons.search),
-              onPressed: () {},
-            ),
-          ],
         ),
       drawer: StyledDrawer(),
       body: Padding(

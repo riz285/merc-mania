@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:async';
 
 import 'package:authentication_repository/authentication_repository.dart';
@@ -89,6 +91,19 @@ class ProfileCubit extends Cubit<ProfileState> {
         ]),
       ),
     );
+  }
+
+  Future<void> updateProfileDescription(String description) async {
+    try {
+      await userService.updateUserData(_authenticationRepository.currentUser.id, {'description' : description});
+      emit(
+        state.copyWith(
+          description: description
+        )
+      );
+    } catch (e) {
+      print(e);
+    }
   }
 
   // User information form Save button

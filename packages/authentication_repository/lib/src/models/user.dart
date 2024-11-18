@@ -56,11 +56,11 @@ class User extends Equatable {
     return User(
       id: json['id'],
       email: json['email'],
-      firstName: json['first_name'],
-      lastName: json['last_name'],
-      phoneNum: json['phone_number'],
-      photo: json['photo'],
-      description: json['description'],
+      firstName: json['first_name']??'',
+      lastName: json['last_name']??'',
+      phoneNum: json['phone_number']??'',
+      photo: json['photo']??'',
+      description: json['description']??'',
       followers: json['followers'],  
       following: json['following'],
       preferences: json['preferences']

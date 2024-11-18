@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:equatable/equatable.dart';
 import 'package:form_inputs/form_inputs.dart';
 import 'package:formz/formz.dart';
@@ -71,7 +73,7 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
 
   /// Add Card to Cache 
   void addCard() {
-    final CreditCardPayment creditCard = CreditCardPayment(
+    final CreditCard creditCard = CreditCard(
       cardNumber: state.cardNum.value, 
       cardHolderName: state.fullname.value, 
       expiryDate: state.expiryDate.value, 
@@ -88,7 +90,7 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
   }
 
   /// Remove Card from Cache
-  void removeCard(CreditCardPayment creditCard) {
+  void removeCard(CreditCard creditCard) {
     final updatedList = state.creditCards.toList();
     updatedList.remove(creditCard); // 
     emit(
@@ -98,11 +100,11 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
     );
   }
 
-  List<CreditCardPayment> creditCardsFromJson(List<dynamic> json) {
-    return json.map((e) => CreditCardPayment.fromJson(e)).toList();
+  List<CreditCard> creditCardsFromJson(List<dynamic> json) {
+    return json.map((e) => CreditCard.fromJson(e)).toList();
   }
 
-  List<dynamic> creditCardsToJson(List<CreditCardPayment> creditCards) {
+  List<dynamic> creditCardsToJson(List<CreditCard> creditCards) {
     return creditCards.map((e) => e.toJson()).toList();
   }
 

@@ -3,3 +3,7 @@ export 'src/password.dart';
 export 'src/confirmed_password.dart';
 export 'src/name.dart';
 export 'src/phone_number.dart';
+export 'src/cardholder_name.dart';
+export 'src/card_number.dart';
+export 'src/card_expiry_date.dart';
+export 'src/cvv.dart';

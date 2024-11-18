@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:merc_mania/core/configs/themes/app_colors.dart';
+
+import '../../core/configs/assets/app_icons.dart';
 
 
 class StyledSwitch extends StatelessWidget {
@@ -12,10 +15,10 @@ class StyledSwitch extends StatelessWidget {
     return Switch(
       value: value, 
       onChanged: onChanged,
-      activeTrackColor: Colors.pinkAccent,
-      //activeThumbImage: AssetImage(AppIcons.lightMode),
-      inactiveTrackColor: Colors.grey[800],
-      //inactiveThumbImage: AssetImage(AppIcons.darkMode),
+      activeTrackColor: AppColors.title,
+      activeThumbImage: AssetImage(AppIcons.lightMode),
+      inactiveTrackColor: const Color.fromARGB(255, 96, 79, 102),
+      inactiveThumbImage: AssetImage(AppIcons.darkMode),
     );
   }
 }

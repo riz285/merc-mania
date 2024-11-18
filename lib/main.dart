@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:merc_mania/consts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'app/view/app.dart';
 import 'firebase_options.dart';
@@ -13,6 +15,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = stripePublishableKey;
   Bloc.observer = const AppBlocObserver();
 
   /// initialize hydrated bloc

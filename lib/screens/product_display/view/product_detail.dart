@@ -5,6 +5,7 @@ import 'package:merc_mania/core/configs/assets/app_format.dart';
 import 'package:merc_mania/screens/cart/cubit/cart_cubit.dart';
 import 'package:merc_mania/services/models/product.dart';
 
+import '../../address/view/address_selection/choose_address_page.dart';
 import '../cubit/product_cubit.dart';
 
 // import '../cubit/product_item_cubit.dart';
@@ -19,13 +20,12 @@ class ProductDetail extends StatefulWidget {
 
 class _ProductDetailState extends State<ProductDetail> {
 
-  double discountedPrice(double price, int discountPercentage) {
+  double discountedPrice(int price, int discountPercentage) {
     return (price*(100-discountPercentage)/100);
   }
 
   @override
   Widget build(BuildContext context) {
-    // final user = context.select((AppBloc bloc) => bloc.state.user);
     final cart = BlocProvider.of<CartCubit>(context);
     return Scaffold(
                 appBar: StyledAppBar(
@@ -162,7 +162,10 @@ class _ProductDetailState extends State<ProductDetail> {
                             textAlign: TextAlign.justify,
                           ),
                           SizedBox(height: 20),
-                          Center(child: _PurchaseButton()),
+                          Center(child: _PurchaseButton(onPressed: () {
+                            cart.addToPurchase(widget.product);
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChooseAddressPage()));
+                          })),
                         ],
                       ),
                     )
@@ -173,15 +176,14 @@ class _ProductDetailState extends State<ProductDetail> {
 }
 
 class _PurchaseButton extends StatelessWidget {
-  const _PurchaseButton();
+  final Function() onPressed;
+  const _PurchaseButton({required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       key: const Key('productDetail_purchase_raisedButton'),
-      onPressed: () {
-        
-      }, 
+      onPressed: onPressed,
       child: Text('PURCHASE'),
     );
   }

@@ -5,7 +5,7 @@ import 'package:merc_mania/screens/chat/view/chat_page.dart';
 
 import '../../screens/notifications/view/notification_screen.dart';
 
-
+// Bottom Navigation Bar
 class AppView extends StatefulWidget {
   const AppView({super.key});
 

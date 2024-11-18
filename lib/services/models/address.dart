@@ -3,9 +3,9 @@ import 'package:equatable/equatable.dart';
 class Address extends Equatable {
   const Address({
     required this.id,
-    // this.country,
-    // this.province,
-    // this.city,
+    this.country,
+    this.province,
+    this.city,
     this.ward,
     this.street,
     this.detail,
@@ -14,9 +14,9 @@ class Address extends Equatable {
   });
 
   final String id;
-  // final Country country;
-  // final Province province;
-  // final City city;
+  final String? country;
+  final String? province;
+  final String? city;
   final String? ward;
   final String? street;
   final String? detail;
@@ -28,9 +28,9 @@ class Address extends Equatable {
   factory Address.fromJson(Map<String, dynamic> json) {
     return Address(
       id: json['id'],
-      // country: json['country'],
-      // province: json['province'],
-      // city: json['city'],
+      country: json['country'],
+      province: json['province'],
+      city: json['city'],
       ward: json['ward'],
       street: json['street'],
       detail: json['detail'],
@@ -42,9 +42,9 @@ class Address extends Equatable {
   Map<String, dynamic> toFirestore() {
     return {
       'id' : id,
-      // 'country' : country,
-      // 'province' : province,
-      // 'city' : city,
+      'country' : country,
+      'province' : province,
+      'city' : city,
       'ward' : ward,
       'street' : street,
       'detail' : detail,
@@ -54,5 +54,5 @@ class Address extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, ward, street, detail, name, phoneNum];
+  List<Object?> get props => [id, country, province, city, ward, street, detail, name, phoneNum];
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:merc_mania/common/widgets/product_search.dart';
 
 import '../../../common/widgets/styled_drawer.dart';
 import 'home_screen.dart';
@@ -23,7 +24,9 @@ class HomePage extends StatelessWidget {
             IconButton(
               key: const Key('homePage_search_iconButton'),
               icon: const Icon(Icons.search),
-              onPressed: () {}, //TODO: implement product search
+              onPressed: () {
+                showSearch(context: context, delegate: ProductSearchDelegate());
+              }, 
             ),
           ],
         ),

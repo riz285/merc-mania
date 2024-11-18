@@ -16,7 +16,7 @@ final class PaymentState extends Equatable {
     this.isValid = false,
   });
 
-  final List<CreditCardPayment> creditCards;
+  final List<CreditCard> creditCards;
   final CardholderName fullname;
   final CardNumber cardNum;
   final ExpiryDate expiryDate;
@@ -46,7 +46,7 @@ final class PaymentState extends Equatable {
       ];
 
   PaymentState copyWith({
-    List<CreditCardPayment>? creditCards,
+    List<CreditCard>? creditCards,
     CardholderName? fullname,
     CardNumber? cardNum,
     ExpiryDate? expiryDate,

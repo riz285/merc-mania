@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:merc_mania/common/widgets/styled_drawer.dart';
 
+import '../../../common/widgets/chat_search.dart';
 import '../cubit/chat_cubit.dart';
 import 'chat_screen.dart';
 
@@ -24,7 +25,7 @@ class ChatPage extends StatelessWidget {
             IconButton(
               key: const Key('homePage_search_iconButton'),
               icon: const Icon(Icons.search),
-              onPressed: () {},
+              onPressed: () { showSearch(context: context, delegate: ChatSearchDelegate()); },
             ),
           ],
         ),

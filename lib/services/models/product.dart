@@ -20,7 +20,7 @@ class Product extends Equatable {
   final String image;
   final String? description;
   final String? brandName;
-  final double price;
+  final int price;
   final int? quantity;
   final bool? isInStock;
   final int? discountPercentage;
@@ -36,7 +36,7 @@ class Product extends Equatable {
       image: json['image'],
       description: json['description'],
       brandName: json['brand_name'],
-      price: json['price'].toDouble(),
+      price: json['price'],
       quantity: json['quantity'],
       isInStock: json['is_in_stock'],
       discountPercentage: json['discount_percentage'],
