@@ -6,6 +6,7 @@ final class ProfileState extends Equatable {
     this.firstName = const Name.pure(),
     this.lastName = const Name.pure(),
     this.phoneNum = const PhoneNumber.pure(),
+
     this.status = FormzSubmissionStatus.initial,
     this.isValid = false,
     this.errorMessage,
@@ -16,6 +17,7 @@ final class ProfileState extends Equatable {
   final Name firstName;
   final Name lastName;
   final PhoneNumber phoneNum;
+
   final FormzSubmissionStatus status;
   final bool isValid;
   final String? errorMessage;
@@ -27,6 +29,7 @@ final class ProfileState extends Equatable {
         firstName,
         lastName,
         phoneNum,
+
         status,
         isValid,
         errorMessage,
@@ -35,10 +38,10 @@ final class ProfileState extends Equatable {
 
   ProfileState copyWith({
     String? photo,
-    Email? email,
     Name? firstName,
     Name? lastName,
     PhoneNumber? phoneNum,
+
     FormzSubmissionStatus? status,
     bool? isValid,
     String? errorMessage,
@@ -49,6 +52,7 @@ final class ProfileState extends Equatable {
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       phoneNum: phoneNum ?? this.phoneNum,
+
       status: status ?? this.status,
       isValid: isValid ?? this.isValid,
       errorMessage: errorMessage ?? this.errorMessage,

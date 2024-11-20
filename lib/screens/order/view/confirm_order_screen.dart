@@ -12,6 +12,7 @@ import 'package:merc_mania/screens/order/cubit/order_cubit.dart';
 import 'package:merc_mania/screens/order/view/order_success_noti_screen.dart';
 
 import '../../../services/models/address.dart';
+import '../../notifications/cubit/notifications_cubit.dart';
 
 
 class ConfirmOrderScreen extends StatefulWidget {
@@ -36,6 +37,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
               ),
             );
         } else if (state.status.isSuccess) {
+          context.read<NotificationCubit>().alertAboutNewOrder(context.read<OrderCubit>().state.orderId??'');
           context.read<CartCubit>().state.product==null 
           ? context.read<CartCubit>().resetCart() : context.read<CartCubit>().deleteFromPurchase();
           ScaffoldMessenger.of(context)
@@ -232,7 +234,7 @@ class __PaymentMethodCardState extends State<_PaymentMethodCard> {
               onChanged: (value) => setState(() {
                           selectedIndex = value ?? 0;
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => 
-                          PaypalPaymentScreen(address: widget.address)));
+                            PaypalPaymentScreen(address: widget.address)));
                         })
             ),
             SizedBox(height: 8),

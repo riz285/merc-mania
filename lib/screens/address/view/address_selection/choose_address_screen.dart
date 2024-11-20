@@ -37,7 +37,7 @@ class _ChooseAddressScreenState extends State<ChooseAddressScreen> {
                   child: ListTile(
                     isThreeLine: true,
                     subtitle:  AddressCard(address: addresses[index]),
-                    focusColor: Colors.pink,
+                    focusColor: Colors.purple,
                     selected: index == selectedIndex,
                     onTap: () => setState(() {
                       selectedIndex = index;

@@ -10,7 +10,6 @@ class OrderItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final user = context.select((AppBloc bloc) => bloc.state.user);
     return InkWell(
       onTap: () {
         Navigator.of(context).push(

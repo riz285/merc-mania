@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:merc_mania/core/configs/assets/avatar.dart';
 import 'package:merc_mania/core/configs/themes/app_colors.dart';
 import 'package:merc_mania/screens/order/view/order_page.dart';
+import 'package:merc_mania/screens/product_display/view/user_product_screen.dart';
 import 'package:merc_mania/screens/settings/settings_page.dart';
 import 'package:merc_mania/screens/wishlist/wishlist_screen.dart';
 import '../../screens/cart/view/cart_screen.dart';
@@ -101,6 +102,17 @@ class _StyledDrawerState extends State<StyledDrawer> {
                     },
                     leading: Icon(Icons.person),
                     title: Text('Personal Information'),
+                  ),
+                  ListTile( // User's on-sale products
+                    onTap: () { 
+                      Navigator.of(context).push(
+                      MaterialPageRoute(
+                      builder: (context) => const UserProductScreen(),
+                        )
+                      );
+                    },
+                    leading: Icon(Icons.sell),
+                    title: Text('My Products'),
                   ),
                   ListTile( // Wish List
                     onTap: () { 

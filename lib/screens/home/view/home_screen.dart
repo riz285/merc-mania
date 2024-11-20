@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:merc_mania/screens/product_display/view/add_product/add_product_screen.dart';
 import 'package:merc_mania/services/database/franchise_service.dart';
 import 'package:merc_mania/services/database/product_service.dart';
 import 'package:merc_mania/services/models/franchise.dart';
 
+import '../../../core/configs/themes/app_colors.dart';
 import 'franchise_view/franchise_list_view.dart';
 import 'product_view/product_grid_view.dart';
 import '../../product_display/cubit/product_cubit.dart';
@@ -23,24 +25,30 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<ProductCubit, ProductState>(
       builder: (context, state) {
-      return ListView(
-        children: [
-          // Popular franchise
-          _Classification(classification: 'Popular Franchise'),
-          _FranchiseListView(),
-          // Popular products
-          _Classification(classification: 'Popular Items'),
-          _PopularProductListView(),
-          // Recently viewed items
-          _Classification(classification: 'Recently Viewed'),
-          _RecentlyViewedListView(),
-          // Recommended products
-          _Classification(classification: 'Recommended'),
-          _RecommendedProductGridView(),
+      return Stack(
+        children:[ ListView(
+          children: [
+            // Popular franchise
+            _Classification(classification: 'Popular Franchise'),
+            _FranchiseListView(),
+            // Popular products
+            _Classification(classification: 'Popular Items'),
+            _PopularProductListView(),
+            // Recently viewed items
+            _Classification(classification: 'Recently Viewed'),
+            _RecentlyViewedListView(),
+            // Recommended products
+            _Classification(classification: 'Recommended'),
+            _RecommendedProductGridView(),
+            ]
+          ),
           // Floating button add to sell
-          // _addNewProduct()
-        ],
-      );
+            Positioned(
+              bottom: 20,
+              right: 20,
+              child: _AddNewProduct())
+          ]
+        );
       }
     );
   }
@@ -186,15 +194,17 @@ class _RecommendedProductGridView extends StatelessWidget {
   }
 }
 
-class _addNewProduct extends StatelessWidget {
-  const _addNewProduct();
+class _AddNewProduct extends StatelessWidget {
+  const _AddNewProduct();
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-      child: const Icon(Icons.add),);
+      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => AddProductScreen())
+                      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
+      child: const Icon(Icons.add, color: AppColors.title,),
+    );
   }
 } 

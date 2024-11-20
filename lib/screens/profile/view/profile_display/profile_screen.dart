@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/configs/assets/avatar.dart';
 import '../../cubit/profile_cubit.dart';
@@ -60,20 +61,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],),
                     )),
                     onTap: () {
-                      showDialog(context: context, builder: (context) => AlertDialog(
-                        title: Text('Your self description', style: TextStyle(fontSize: 16)),
-                        content: TextField(
-                          autofocus: true,
-                          controller: controller,
-                        ),
-                        actions: [
-                          TextButton(
-                          onPressed: () { 
-                            context.read<ProfileCubit>().updateProfileDescription(controller.text);
-                            Navigator.pop(context); 
-                          }, 
-                          child: Text('Save'))
-                        ],
+                      showDialog(context: context, builder: (context) => Dialog(
+                          child: SizedBox(
+                            height: 200,
+                            child: Padding(padding: EdgeInsets.all(10),
+                              child: Column(
+                                children: [ 
+                                  Text('Your self description', style: TextStyle(fontSize: 16)),
+                                  Expanded(
+                                    child: TextField(keyboardType: TextInputType.multiline,
+                                    controller: controller,
+                                    inputFormatters: [ LengthLimitingTextInputFormatter(60) ],
+                                  )),
+                                  Align(
+                                    child: TextButton(
+                                      onPressed: () { 
+                                        context.read<ProfileCubit>().updateProfileDescription(controller.text);
+                                        Navigator.pop(context); 
+                                      }, 
+                                      child: Text('Save')),
+                                  )
+                                ]
+                                                      ),
+                            ),
+                          ),
                       ));
                     },
                   ),

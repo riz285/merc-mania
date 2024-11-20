@@ -126,7 +126,7 @@ class _AvatarInputState extends State<_AvatarInput> {
                                 ]),
                             child: Padding(
                               padding: const EdgeInsets.all(2.0),
-                              child: Icon(Icons.add_a_photo, color: Colors.black),
+                              child: Icon(Icons.add_a_photo),
                             ),
                           ),
                         ),

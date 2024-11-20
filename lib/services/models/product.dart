@@ -12,7 +12,8 @@ class Product extends Equatable {
     this.isInStock,
     this.discountPercentage,
     this.viewCount,
-    this.franchise
+    this.franchise,
+    this.userId
   });
 
   final String id;
@@ -26,6 +27,7 @@ class Product extends Equatable {
   final int? discountPercentage;
   final int? viewCount;
   final String? franchise;
+  final String? userId;
 
   static const empty = Product(id: '', name: '', image: '', price: 0);
 
@@ -41,7 +43,8 @@ class Product extends Equatable {
       isInStock: json['is_in_stock'],
       discountPercentage: json['discount_percentage'],
       viewCount: json['view_count'],
-      franchise: json['franchise'] 
+      franchise: json['franchise'],
+      userId: json['user_id']
     );
   }
 
@@ -57,11 +60,12 @@ class Product extends Equatable {
       'isInStock' : isInStock,
       'discount_percentage' : discountPercentage,
       'view_count' : viewCount,
-      'franchise' : franchise
+      'franchise' : franchise,
+      'user_id' : userId
     };
   }
 
   @override
-  List<Object?> get props => [id, name, image, description, brandName, price, quantity, isInStock, discountPercentage, viewCount, franchise];
+  List<Object?> get props => [id, name, image, description, brandName, price, quantity, isInStock, discountPercentage, viewCount, franchise, userId];
 
 }

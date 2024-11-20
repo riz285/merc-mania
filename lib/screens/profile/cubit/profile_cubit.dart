@@ -25,7 +25,6 @@ class ProfileCubit extends Cubit<ProfileState> {
     try {
       return await userService.getUserInfo(_authenticationRepository.currentUser.id);
     } catch (e) {
-      // ignore: avoid_print
       print('Error fetching user data: $e');
       return null;
     }
@@ -40,7 +39,7 @@ class ProfileCubit extends Cubit<ProfileState> {
   Future<void> avatarChanged() async {
     final pickedImage = await imageStorage.pickImage();
     if (pickedImage == null) return;
-    final photo = await imageStorage.uploadImageToStorage(pickedImage);
+    final photo = await imageStorage.uploadAvatarToStorage(pickedImage);
     emit(
       state.copyWith(
         photo: photo

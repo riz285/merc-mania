@@ -17,7 +17,7 @@ class AppTheme {
         ),
         iconTheme: IconThemeData(
         color: AppColors.title,
-        size: 25
+        size: 25,
       )),
       //Elevated button
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -50,17 +50,7 @@ class AppTheme {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25))
       ),
       inputDecorationTheme: InputDecorationTheme(
-        labelStyle: TextStyle(color: AppColors.title),
-        border: UnderlineInputBorder(),
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-          color: AppColors.title)),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-          color: AppColors.title,
-          width: 3),
-        ),
-        hintStyle: TextStyle(color: const Color.fromARGB(100, 121, 85, 72))
+        hintStyle: TextStyle(color: Colors.grey[400])
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(
         color: AppColors.primary,
@@ -72,6 +62,12 @@ class AppTheme {
       ),
       bottomSheetTheme: BottomSheetThemeData(
         modalBackgroundColor: Colors.white
+      ),
+      tabBarTheme: TabBarTheme(
+        indicatorSize: TabBarIndicatorSize.tab,
+        labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+        unselectedLabelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+        unselectedLabelColor: AppColors.title
       )
   );
   //Dark mode
@@ -144,6 +140,19 @@ class AppTheme {
       ),
       listTileTheme: ListTileThemeData(
         selectedTileColor: Colors.grey[800]
+      ),
+      tabBarTheme: TabBarTheme(
+        indicatorSize: TabBarIndicatorSize.tab,
+        labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+        unselectedLabelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+        indicator: BoxDecoration( // Creates border
+          color: AppColors.tab
+        ),
+        labelColor: AppColors.tabLabel,
+        unselectedLabelColor: AppColors.title
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: AppColors.primary
       )
   );
 }

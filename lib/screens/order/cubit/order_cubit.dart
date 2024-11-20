@@ -14,13 +14,13 @@ import '../../../services/models/order.dart';
 
 part 'order_state.dart';
 
-class OrderCubit extends HydratedCubit<OrderState> {
-  OrderCubit(this._authenticationRepository) : super(const OrderState(orders: [], quantity: 0, total: 0, paymentMethod: 0));
+class OrderCubit extends Cubit<OrderState> {
+  OrderCubit(this._authenticationRepository) : super(const OrderState());
 
   final AuthenticationRepository _authenticationRepository;
   final orderService = OrderService();
 
-  void createNewOrder(List<Product> items, int total, Address address, String paymentMethod) {
+  void createNewOrder(List<Product> items, int total, Address address, String paymentMethod) async {
     final List<String> productIds = items.map((product) => product.id).toList();
     final String shippingAddress = address.ward! + address.street! + address.detail!;
     final AppOrder order = AppOrder(
@@ -32,10 +32,10 @@ class OrderCubit extends HydratedCubit<OrderState> {
           userId: _authenticationRepository.currentUser.id,
           paymentMethod: paymentMethod
           );
-    orderService.createOrder(order.toJson()); // Add new order to database
+    String? orderId = await orderService.createOrder(order.toJson()); // Add new order to database
     emit(
       state.copyWith(
-        order: order
+        orderId: orderId
       )
     );
   }
@@ -98,33 +98,6 @@ class OrderCubit extends HydratedCubit<OrderState> {
     }
   }
 
-  List<AppOrder> ordersFromJson(List<dynamic> json) {
-    return json.map((e) => AppOrder.fromJson(e)).toList();
-  }
-
-  List<dynamic> ordersToJson(List<AppOrder> orders) {
-    return orders.map((e) => e.toJson()).toList();
-  }
-  
-  @override
-  OrderState? fromJson(Map<String, dynamic> json) {
-    
-    return OrderState(
-      orders: ordersFromJson(json['orders']), 
-      quantity: json['quantity'] as int, 
-      total: json['total'] as int, paymentMethod: json['payment_method'], 
-    );
-  }
-  
-  @override
-  Map<String, dynamic>? toJson(OrderState state) {
-    return {
-      'orders' : ordersToJson(state.orders),
-      'quantity' : state.quantity,
-      'total' : state.total,
-    };
-  }  
-  
   void checkOutOrder(List<Product> items, int total, Address address) {
       emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {

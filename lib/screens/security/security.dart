@@ -16,7 +16,10 @@ class Security extends StatelessWidget {
           ListTile(
             title: Text('Change Password'),
             onTap: () {},
-          )
+          ),
+          ListTile(
+            title: Text('Link with a different email'),
+            onTap: () {}),
         ],),
       )
     );
