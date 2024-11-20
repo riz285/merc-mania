@@ -5,9 +5,11 @@ enum NotifStatus { noNotif, unreadNotif }
 final class NotificationState extends Equatable {
   const NotificationState({
     required this.status,
+    this.notifications,
   });
 
   final NotifStatus status;
+  final List<AppNotification> ?notifications;
 
   @override
   List<Object?> get props => [
@@ -16,9 +18,11 @@ final class NotificationState extends Equatable {
 
   NotificationState copyWith({
     NotifStatus? status,
+    List<AppNotification>? notifications
   }) {
     return NotificationState(
-      status: status ?? this.status
+      status: status ?? this.status, 
+      notifications: notifications ?? this.notifications,
     );
   }
 }

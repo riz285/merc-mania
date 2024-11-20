@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:merc_mania/core/configs/assets/avatar.dart';
 
+import '../../screens/chat/view/chatbox.dart';
 import '../../services/database/user_service.dart';
 
 class ChatSearchDelegate extends SearchDelegate<String> {
@@ -35,11 +36,11 @@ class ChatSearchDelegate extends SearchDelegate<String> {
               itemCount: users.length,
               itemBuilder: (context, index) => users[index] == User.empty ? Container() : InkWell(
                 onTap: () {
-                    // Navigator.of(context).push(
-                    //     MaterialPageRoute(
-                    //       builder: (context) => ChatBox(user: users[index]),
-                    //     ),
-                    // );
+                    Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => Chatbox(receiver: users[index]),
+                        ),
+                    );
                   },
                   child: SizedBox(
                     height: 100,

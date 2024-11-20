@@ -2,9 +2,10 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:merc_mania/screens/chat/cubit/chat_cubit.dart';
+import 'package:merc_mania/screens/notifications/cubit/notifications_cubit.dart';
 import 'package:merc_mania/screens/product_display/cubit/product_cubit.dart';
 import 'package:merc_mania/screens/cart/cubit/cart_cubit.dart';
-import 'package:merc_mania/screens/payment/cubit/payment_cubit.dart';
 import 'package:merc_mania/screens/profile/cubit/profile_cubit.dart';
 
 import '../../core/configs/themes/app_themes.dart';
@@ -40,7 +41,8 @@ class App extends StatelessWidget {
           BlocProvider<CartCubit>(create: (_) => CartCubit()), // Shopping Cart
           BlocProvider<OrderCubit>(create: (_) => OrderCubit(_authenticationRepository)), // User's orders
           BlocProvider<AddressCubit>(create: (_) => AddressCubit(_authenticationRepository)), // Manage User's Addresses
-          BlocProvider<PaymentCubit>(create: (_) => PaymentCubit()),
+          BlocProvider<ChatCubit>(create: (_) => ChatCubit(_authenticationRepository)),
+          BlocProvider<NotificationCubit>(create: (_) => NotificationCubit(_authenticationRepository)),
         ],
         child: const AppView(),
       )

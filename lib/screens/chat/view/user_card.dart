@@ -1,5 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:merc_mania/screens/chat/view/chatbox.dart';
 
 import '../../../core/configs/assets/avatar.dart';
 
@@ -20,7 +21,11 @@ class UserCard extends StatelessWidget {
             Text('${user.firstName ?? ''} ${user.lastName ?? ''}'),
           ],),
         ),
-        onTap: () {},
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => Chatbox(receiver: user))
+          );
+        },
       ),
     );
   }
