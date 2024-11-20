@@ -23,7 +23,7 @@ class ProductScreen extends StatelessWidget {
             title: Text(franchise.name),
           ),
           body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream:  productService.getProductsFromFranchise(franchise.id), 
+            stream:  productService.getProductsFromFranchise(franchise.name), 
             builder: (builder, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator());
               if (snapshot.hasError) return Text('Error: ${snapshot.error}');
