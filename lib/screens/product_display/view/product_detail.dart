@@ -1,11 +1,17 @@
+import 'package:authentication_repository/authentication_repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:merc_mania/common/widgets/styled_app_bar.dart';
 import 'package:merc_mania/core/configs/assets/app_format.dart';
 import 'package:merc_mania/screens/cart/cubit/cart_cubit.dart';
 import 'package:merc_mania/screens/notifications/cubit/notifications_cubit.dart';
+import 'package:merc_mania/screens/product_display/view/edit_product/edit_product_screen.dart';
+import 'package:merc_mania/screens/product_display/view/user_product_screen.dart';
 import 'package:merc_mania/services/models/product.dart';
 
+import '../../../app/bloc/app_bloc.dart';
+import '../../../core/configs/assets/avatar.dart';
 import '../../address/view/address_selection/choose_address_page.dart';
 import '../cubit/product_cubit.dart';
 
@@ -25,62 +31,102 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 
   @override
+  initState() {
+    super.initState();
+    fetchProductData();
+    fetchUserData();
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>?> fetchUserData() async {
+    try {
+      return await context.read<ProductCubit>().fetchUserData(widget.product.userId);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>?> fetchProductData() async {
+    try {
+      return await context.read<ProductCubit>().fetchProductData(widget.product.id);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final cart = BlocProvider.of<CartCubit>(context);
+    final userId = context.select((AppBloc bloc) => bloc.state.user.id);
     return Scaffold(
       appBar: StyledAppBar(
         title: Text('Product Details'),
+        actions: [ 
+          userId==widget.product.userId 
+          ? IconButton(onPressed: () { context.read<ProductCubit>().init();
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditProductScreen(product: widget.product)));
+          }, icon: Icon(Icons.edit_note)) 
+          : Container() ],
       ),
-      body: ListView(
-        padding: EdgeInsets.symmetric(vertical: 30),
-        children: [
-          // Product image
-          Container(
-            alignment: Alignment.topCenter,
-            height: 200,
-            width: 200,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              image: DecorationImage(
-                fit: BoxFit.contain,
-                image: NetworkImage(widget.product.image))
+      body: BlocListener<ProductCubit, ProductState>(
+        listener: (context, state) => setState(() {}),
+        child: FutureBuilder(
+          future: fetchProductData(), 
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator());
+            if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+            if (snapshot.hasData) {
+              final product = Product.fromJson(snapshot.data!.data()!);
+        return ListView(
+          padding: EdgeInsets.symmetric(vertical: 30),
+          children: [
+            // Product image
+            Container(
+              alignment: Alignment.topCenter,
+              height: 200,
+              width: 200,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                image: DecorationImage(
+                  fit: BoxFit.contain,
+                  image: NetworkImage(product.image))
+              ),
             ),
-          ),
-          SizedBox(height: 20),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.product.name, 
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20
-                  )
-                ),
-                SizedBox(
-                  child: Text('Brand: ${widget.product.brandName ?? 'unknown'}')
-                ),
-                widget.product.discountPercentage == null ?
-                SizedBox(
-                  child: Text('Price: ${AppFormat.currency.format(widget.product.price)}')
-                ) 
-                : Row(children: [
-                  SizedBox(
-                    child: Text('Price: ')
+            SizedBox(height: 20),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    product.name, 
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20
+                    )
                   ),
                   SizedBox(
-                    child: Text(AppFormat.currency.format(widget.product.price), style: TextStyle(decoration: TextDecoration.lineThrough))
+                    child: Text('Brand: ${product.brandName ?? 'unknown'}')
                   ),
-                  SizedBox(width: 4),
+                  product.discountPercentage == null ?
                   SizedBox(
-                    child: Text(AppFormat.currency.format(discountedPrice(widget.product.price, widget.product.discountPercentage??1)), style: TextStyle(color: Colors.red),)
-                  ),
-                ]),
-                SizedBox(width: 10),
-                //
-                Row(
+                    child: Text('Price: ${AppFormat.currency.format(product.price)}')
+                  ) 
+                  : Row(children: [
+                    SizedBox(
+                      child: Text('Price: ')
+                    ),
+                    SizedBox(
+                      child: Text(AppFormat.currency.format(product.price), style: TextStyle(decoration: TextDecoration.lineThrough))
+                    ),
+                    SizedBox(width: 4),
+                    SizedBox(
+                      child: Text(AppFormat.currency.format(discountedPrice(product.price, product.discountPercentage??1)), style: TextStyle(color: Colors.red),)
+                    ),
+                  ]),
+                  Text('Last updated: ${product.timestamp}', style: TextStyle(fontSize: 16)),
+                  // Tools
+                  Padding(padding: EdgeInsets.all(10),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // Add to favorite
@@ -95,13 +141,13 @@ class _ProductDetailState extends State<ProductDetail> {
                           ),
                           child: IconButton(
                             onPressed: () {
-                              context.read<ProductCubit>().toggleFavorite(widget.product.id);
+                              context.read<ProductCubit>().toggleFavorite(product.id);
                               setState(() {
                                 
                               });
                             }, 
                             icon: 
-                                  ! context.read<ProductCubit>().isFavorite(widget.product.id)
+                                  ! context.read<ProductCubit>().isFavorite(product.id)
                                   ? Icon(Icons.favorite_border_outlined)
                                   : Icon(Icons.favorite, color: Colors.red,)
                           ),
@@ -119,7 +165,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           ),
                           child: IconButton(
                             onPressed: () {
-                              cart.addToCart(widget.product);
+                              cart.addToCart(product);
                               ScaffoldMessenger.of(context)
                                 ..hideCurrentSnackBar()
                                 ..showSnackBar(
@@ -144,36 +190,59 @@ class _ProductDetailState extends State<ProductDetail> {
                           ),
                           child: IconButton(
                             onPressed: () {
-                              showDialog(context: context, builder: (context) => _ReportDialog(product: widget.product));
+                              showDialog(context: context, builder: (context) => _ReportDialog(product: product));
                             }, 
                             icon: Icon(Icons.report)),
                         ),
                       ],
                     ),
-                
-                //
-                Text(
-                    'Description',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20
-                    )
                   ),
-                Text(
-                  widget.product.description  ?? '[There is no product description.]', 
-                  textAlign: TextAlign.justify,
-                ),
-                SizedBox(height: 20),
-                Center(child: _PurchaseButton(onPressed: () {
-                  cart.addToPurchase(widget.product);
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChooseAddressPage()));
-                })),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
+                  FutureBuilder(
+                    future: fetchUserData(), 
+                    builder: (context, snapshot) {
+                      // if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator());
+                      if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+                      if (snapshot.hasData) {
+                        final user = User.fromJson(snapshot.data!.data()!);
+                        return ListTile(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                          title: Row(children: [
+                              Avatar(photo: user.photo),
+                              SizedBox(width: 8),
+                              Text('${user.firstName ?? ''} ${user.lastName ?? ''}'),
+                            ],),
+                          onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProductScreen(id: user.id))),
+                        );
+                      }
+                      return Container();
+                    }
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                      'Description',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20
+                      )
+                    ),
+                  Text(
+                    (product.description==null||product.description=='')  ? '[There is no product description.]' : product.description!, 
+                    textAlign: TextAlign.justify,
+                  ),
+                  SizedBox(height: 20),
+                  Center(child: _PurchaseButton(onPressed: () {
+                    cart.addToPurchase(product);
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChooseAddressPage()));
+                  })),
+                ],
+              ),
+            )
+          ],
+        );
+        }
+        return Container();
+      }),
+    ));
   }
 }
 
@@ -192,38 +261,38 @@ class _ReportDialogState extends State<_ReportDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-                              child: Container(padding: EdgeInsets.all(20),
-                                child: Column(mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text('Which is the reason for your report?', style: TextStyle(fontSize: 16)),
-                                  SizedBox(height: 8),
-                                  ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: reasons.length,
-                                    itemBuilder: (context, index) => ListTile(
-                                      title: Text(reasons[index]),
-                                      focusColor: Colors.purple,
-                                      selected: index == selectedIndex,
-                                      onTap: () => setState(() {
-                                        selectedIndex = index;
-                                      })
-                                    )),
-                                  TextButton(
-                                    onPressed: () { 
-                                      context.read<NotificationCubit>().alertAboutReport(reasons[selectedIndex], widget.product);
-                                      ScaffoldMessenger.of(context)
-                                        ..hideCurrentSnackBar()
-                                        ..showSnackBar(
-                                          SnackBar(
-                                            content: Text('Product is reported'),
-                                          ),
-                                        );
-                                      Navigator.pop(context); 
-                                    }, 
-                                    child: Text('Report'))
-                                ]),
-                              ),
-                            );
+      child: Container(padding: EdgeInsets.all(20),
+        child: Column(mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('Which is the reason for your report?', style: TextStyle(fontSize: 16)),
+          SizedBox(height: 8),
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: reasons.length,
+            itemBuilder: (context, index) => ListTile(
+              title: Text(reasons[index]),
+              focusColor: Colors.purple,
+              selected: index == selectedIndex,
+              onTap: () => setState(() {
+                selectedIndex = index;
+              })
+            )),
+          TextButton(
+            onPressed: () { 
+              context.read<NotificationCubit>().alertAboutReport(reasons[selectedIndex], widget.product);
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    content: Text('Product is reported'),
+                  ),
+                );
+              Navigator.pop(context); 
+            }, 
+            child: Text('Report'))
+        ]),
+      ),
+    );
   }
 }
 

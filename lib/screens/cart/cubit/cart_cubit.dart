@@ -51,7 +51,6 @@ class CartCubit extends HydratedCubit<CartState> {
       state.copyWith(
          product: updatedList.toList(),
          price: product.price,
-         isValid: true
       )
     );
   }

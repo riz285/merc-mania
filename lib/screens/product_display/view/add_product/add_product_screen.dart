@@ -57,7 +57,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
               ),
               onTap: () { 
                 context.read<ProductCubit>().productImageChanged(); 
-                setState(() {});
               },
             ),
           ),
@@ -170,7 +169,7 @@ class _DescriptionInput extends StatelessWidget {
       onChanged: (text) => context.read<ProductCubit>().descriptionChanged(text),
       decoration: InputDecoration(
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        labelText: 'product descrption', 
+        labelText: 'product description', 
       ),
     );
   }

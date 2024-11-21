@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:merc_mania/app/view/app.dart';
 import 'package:merc_mania/common/widgets/styled_app_bar.dart';
-import 'package:merc_mania/screens/order/view/order_page.dart';
 import 'package:merc_mania/screens/product_display/view/user_product_screen.dart';
 
+import '../../../../app/bloc/app_bloc.dart';
 import '../../../../core/configs/themes/app_colors.dart';
 
 class AddProductSuccessScreen extends StatelessWidget {
@@ -11,6 +12,7 @@ class AddProductSuccessScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = context.select((AppBloc bloc) => bloc.state.user);
     return Scaffold(
       appBar: StyledAppBar(
         title: Text('Notification'),
@@ -36,7 +38,7 @@ class AddProductSuccessScreen extends StatelessWidget {
             TextButton(
             onPressed: () { 
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => UserProductScreen())
+                MaterialPageRoute(builder: (context) => UserProductScreen(id: user.id))
               );
              },
             child: Text('My Products')

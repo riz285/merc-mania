@@ -34,6 +34,19 @@ class ProductService {
     return products;
   }
 
+  // Get product
+  Future<DocumentSnapshot<Map<String, dynamic>>?> getProduct(String id) async {
+    try {
+      if (id != '') {
+        return await productCollectionRef.doc(id).get();
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
   // Get all Products
   Stream<QuerySnapshot<Map<String, dynamic>>> getProducts() {
     return productCollectionRef.snapshots();
@@ -46,7 +59,7 @@ class ProductService {
 
   // Products from chosen a User
   Stream<QuerySnapshot<Map<String, dynamic>>> getUserProducts(String userId) {
-    return productCollectionRef.where('user_id', isEqualTo: userId).snapshots();
+    return productCollectionRef.where('user_id', isEqualTo: userId).orderBy('timestamp', descending: true).snapshots();
   }
 
   // Products from chosen Franchise
@@ -58,7 +71,7 @@ class ProductService {
 
   // Get Recommended Products
   Stream<QuerySnapshot<Map<String, dynamic>>> getRecommendedProducts() {
-    return productCollectionRef.where('discount_percentage', isGreaterThan: 0).snapshots();
+    return productCollectionRef.orderBy('timestamp', descending: true).snapshots();
   }
 
   // Update product data

@@ -2,30 +2,30 @@ import 'package:equatable/equatable.dart';
 
 class Message extends Equatable {
   const Message({
+    this.id,
     required this.chatId,
     required this.senderId,
-    this.id,
     required this.content,
-    this.image,
+    required this.contentType,
     required this.timestamp,
   });
 
+  final String? id;
   final String chatId;
   final String senderId;
-  final String? id;
   final String content;
-  final String? image;
+  final String contentType;
   final String timestamp;
 
-  static const empty = Message(id: '', content: '', chatId: '', senderId: '', timestamp: '');
+  static const empty = Message(id: '', content: '', chatId: '', senderId: '', timestamp: '', contentType: '');
 
   factory Message.fromJson(Map<String, dynamic> json) {
     return Message(
       id: json['id'],
-      content: json['content'],
-      image: json['image'], 
       chatId: json['chat_id'], 
       senderId: json['sender_id'],
+      content: json['content'],
+      contentType: json['content_type'],
       timestamp: json['timestamp']
       );
   }
@@ -33,14 +33,14 @@ class Message extends Equatable {
   Map<String, dynamic> toJson() {
     return {
       'id' : id,
-      'content' : content,
-      'image' : image,
       'chat_id' : chatId,
       'sender_id' : senderId,
+      'content' : content,
+      'content_type' : contentType,
       'timestamp' : timestamp
     };
   }
 
   @override
-  List<Object?> get props => [id, content, image, chatId, senderId];
+  List<Object?> get props => [id, content, contentType, chatId, senderId];
 }

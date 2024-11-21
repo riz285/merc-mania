@@ -1,11 +1,11 @@
 // ignore_for_file: avoid_print
 
 import 'package:authentication_repository/authentication_repository.dart';
-import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:merc_mania/services/database/image_storage.dart';
 import 'package:merc_mania/services/database/message_service.dart';
 
 import '../../../core/configs/assets/app_format.dart';
@@ -15,6 +15,7 @@ part 'chat_state.dart';
 class ChatCubit extends HydratedCubit<ChatState> {
   ChatCubit(this._authenticationRepository) : super(ChatState(chatIds: []));
   final messageService = MessageService();
+  final imageStorage = ImageStorage();
   final AuthenticationRepository _authenticationRepository;
 
   Stream<QuerySnapshot<Map<String, dynamic>>>? fetchMessage(String id) {
@@ -32,6 +33,29 @@ class ChatCubit extends HydratedCubit<ChatState> {
     }
   }
 
+  // send image
+  Future<void> selectImage(String id) async {
+    final pickedImage = await imageStorage.pickImage();
+    if (pickedImage == null) return;
+    final photo = await imageStorage.uploadImageToStorage(pickedImage);
+    final String chatId;
+    try {
+      if (_authenticationRepository.currentUser.id.hashCode < id.hashCode) {
+        chatId = '${_authenticationRepository.currentUser.id}_$id';
+      } else { 
+        chatId = '${id}_${_authenticationRepository.currentUser.id}'; 
+      }
+      messageService.addMessage({
+        'sender_id' : _authenticationRepository.currentUser.id,
+        'content' : photo,
+        'timestamp' : AppFormat.time.format(DateTime.now()),
+        'chat_id' : chatId,
+        'content_type' : 'image'
+      });
+  } catch (e) {
+    print(e);
+  }
+}
   // Fetch conversations user has
   
 
@@ -48,7 +72,8 @@ class ChatCubit extends HydratedCubit<ChatState> {
         'sender_id' : _authenticationRepository.currentUser.id,
         'content' : text,
         'timestamp' : AppFormat.time.format(DateTime.now()),
-        'chat_id' : chatId
+        'chat_id' : chatId,
+        'content_type' : 'text'
       });
     } catch (e) {
       print(e);

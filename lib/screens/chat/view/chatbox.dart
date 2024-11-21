@@ -2,6 +2,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:merc_mania/common/widgets/styled_app_bar.dart';
 import 'package:merc_mania/core/configs/assets/app_format.dart';
 import 'package:merc_mania/screens/chat/cubit/chat_cubit.dart';
@@ -71,13 +72,19 @@ class _ChatboxState extends State<Chatbox> {
                                 color: const Color.fromARGB(123, 247, 242, 255),
                                 borderRadius: BorderRadius.circular(15),
                               ),
-                              child: Column(
+                              child: Column(crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  Text(messages[index].content),
-                                  Text(
-                                      AppFormat.hourmin.format(AppFormat.date.parse(messages[index].timestamp)),
-                                      style: TextStyle(fontSize: 10),
-                                      )
+                                  messages[index].contentType=='text' 
+                                  ? Text(messages[index].content) 
+                                  : Image.network(messages[index].content, width: 150, height: 150, fit: BoxFit.cover),
+                                  Row(
+                                    children: [
+                                      Text(
+                                          AppFormat.hourmin.format(AppFormat.date.parse(messages[index].timestamp)),
+                                          style: TextStyle(fontSize: 10),
+                                          ),
+                                    ],
+                                  )
                                 ],
                               ),
                             )
@@ -95,6 +102,12 @@ class _ChatboxState extends State<Chatbox> {
             child: Padding(padding: EdgeInsets.all(8),
               child: Row(
                 children: [
+                  IconButton(
+                    onPressed: () { context.read<ChatCubit>().selectImage(widget.receiver.id);  setState(() { scrollToBottom(); });}, 
+                    icon: Icon(FontAwesomeIcons.images, color: AppColors.primary)),
+                    IconButton(
+                    onPressed: () {}, 
+                    icon: Icon(FontAwesomeIcons.solidFaceLaughBeam, color: AppColors.primary)),
                   Expanded(
                     child: TextField(
                       keyboardType: TextInputType.multiline,

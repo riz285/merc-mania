@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../services/models/notification.dart';
 
@@ -40,8 +39,8 @@ class _NotificationIcon extends StatelessWidget {
     switch(category) {
       case 'update': return Icon(Icons.update);
       case 'survey': return Icon(Icons.supervised_user_circle);
-      case 'new order': return Icon(FontAwesomeIcons.plus, color: Colors.green);
-      case 'report' : return Icon(Icons.report, color: Colors.redAccent);
+      case 'new order': return Icon(Icons.shopping_bag, color: Colors.green);
+      case 'report' : return Icon(Icons.report, color: Colors.red);
     }
     return SizedBox(height: 10, width: 10);
   }

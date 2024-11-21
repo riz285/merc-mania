@@ -1,3 +1,4 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -57,7 +58,7 @@ class _StyledDrawerState extends State<StyledDrawer> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) return Center();
           if (snapshot.hasError) return Text('Error: ${snapshot.error}');
-          final data = snapshot.data!.data()!;
+          final currentUser = User.fromJson(snapshot.data!.data()!);
           // Drawer Items
           return Drawer(
             child: Column(children: [
@@ -76,10 +77,10 @@ class _StyledDrawerState extends State<StyledDrawer> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Current user's avatar
-                          Avatar(photo: data['photo'], size: 35),
+                          Avatar(photo: currentUser.photo, size: 35),
                           const SizedBox(height: 12),
                           // Current user's name
-                          Text('${data['first_name'] ?? ''} ${data['last_name'] ?? ''}', 
+                          Text('${currentUser.firstName ?? ''} ${currentUser.lastName ?? ''}', 
                             style: TextStyle(color: Colors.brown, fontWeight: FontWeight.w600)),
                           // TODO: implement get() user's following and followers
                           Row(children: [
@@ -107,7 +108,7 @@ class _StyledDrawerState extends State<StyledDrawer> {
                     onTap: () { 
                       Navigator.of(context).push(
                       MaterialPageRoute(
-                      builder: (context) => const UserProductScreen(),
+                      builder: (context) => UserProductScreen(id: currentUser.id),
                         )
                       );
                     },

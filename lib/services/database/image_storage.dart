@@ -20,9 +20,19 @@ class ImageStorage {
     String imgUrl = await taskSnapshot.ref.getDownloadURL(); 
     return imgUrl;
   }
-  // Save product ti th database
+  // Save product to database
   Future<String> uploadProductImageToStorage(XFile image) async {
     Reference storageReference = FirebaseStorage.instance.ref().child('product_images/${DateTime.now().millisecondsSinceEpoch}.jpg');
+    final bytes = await image.readAsBytes(); 
+    UploadTask uploadTask = storageReference.putData(bytes);
+
+    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => print('Upload image to storage successfully'));
+    String imgUrl = await taskSnapshot.ref.getDownloadURL(); 
+    return imgUrl;
+  }
+  // Save image type message to database
+  Future<String> uploadImageToStorage(XFile image) async {
+    Reference storageReference = FirebaseStorage.instance.ref().child('chat_images/${DateTime.now().millisecondsSinceEpoch}.jpg');
     final bytes = await image.readAsBytes(); 
     UploadTask uploadTask = storageReference.putData(bytes);
 

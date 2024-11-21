@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:merc_mania/screens/chat/cubit/chat_cubit.dart';
 import 'package:merc_mania/screens/notifications/cubit/notifications_cubit.dart';
+import 'package:merc_mania/screens/payment/cubit/payment_cubit.dart';
 import 'package:merc_mania/screens/product_display/cubit/product_cubit.dart';
 import 'package:merc_mania/screens/cart/cubit/cart_cubit.dart';
 import 'package:merc_mania/screens/profile/cubit/profile_cubit.dart';
@@ -43,6 +44,7 @@ class App extends StatelessWidget {
           BlocProvider<AddressCubit>(create: (_) => AddressCubit(_authenticationRepository)), // Manage User's Addresses
           BlocProvider<ChatCubit>(create: (_) => ChatCubit(_authenticationRepository)),
           BlocProvider<NotificationCubit>(create: (_) => NotificationCubit(_authenticationRepository)),
+          BlocProvider<PaymentCubit>(create: (_) => PaymentCubit()),
         ],
         child: const AppView(),
       )

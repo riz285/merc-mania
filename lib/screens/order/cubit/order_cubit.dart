@@ -15,12 +15,12 @@ import '../../../services/models/order.dart';
 part 'order_state.dart';
 
 class OrderCubit extends Cubit<OrderState> {
-  OrderCubit(this._authenticationRepository) : super(const OrderState());
+  OrderCubit(this._authenticationRepository) : super(const OrderState(orderId: ''));
 
   final AuthenticationRepository _authenticationRepository;
   final orderService = OrderService();
 
-  void createNewOrder(List<Product> items, int total, Address address, String paymentMethod) async {
+  Future<void> createNewOrder(List<Product> items, int total, Address address, String paymentMethod) async {
     final List<String> productIds = items.map((product) => product.id).toList();
     final String shippingAddress = address.ward! + address.street! + address.detail!;
     final AppOrder order = AppOrder(
@@ -55,7 +55,7 @@ class OrderCubit extends Cubit<OrderState> {
   Future<void> cashPaymentProcess(int amount, List<Product> items, Address address) async {
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
-      createNewOrder(items, amount, address, 'cod');
+      await createNewOrder(items, amount, address, 'cod');
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } catch (e) {
       print(e);
@@ -71,7 +71,7 @@ class OrderCubit extends Cubit<OrderState> {
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
       await StripeService.instance.makePayment(amount, _authenticationRepository.currentUser.id);
-      createNewOrder(items, amount, address, 'card');
+      await createNewOrder(items, amount, address, 'card');
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } catch (e) {
       print(e);
@@ -86,24 +86,10 @@ class OrderCubit extends Cubit<OrderState> {
   Future<void> paypalPaymentProcess(int amount, List<Product> items, Address address) async {
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
-      createNewOrder(items, amount, address, 'paypal');
+      await createNewOrder(items, amount, address, 'paypal');
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } catch (e) {
       print(e);
-      emit(
-        state.copyWith(
-          status: FormzSubmissionStatus.failure,
-        ),
-      );
-    }
-  }
-
-  void checkOutOrder(List<Product> items, int total, Address address) {
-      emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
-    try {
-      createNewOrder(items, total, address, 'cod');
-      emit(state.copyWith(status: FormzSubmissionStatus.success));
-    } catch (e) {
       emit(
         state.copyWith(
           status: FormzSubmissionStatus.failure,

@@ -200,9 +200,12 @@ class _AddNewProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => AddProductScreen())
-                      ),
+      onPressed: () { 
+        context.read<ProductCubit>().init();
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => AddProductScreen())
+        );
+      },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
       child: const Icon(Icons.add, color: AppColors.title,),
     );

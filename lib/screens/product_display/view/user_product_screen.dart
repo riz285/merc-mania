@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../app/bloc/app_bloc.dart';
 import '../../../common/widgets/styled_app_bar.dart';
 import '../../../core/configs/assets/app_format.dart';
 import '../cubit/product_cubit.dart';
@@ -11,20 +10,20 @@ import '../../../services/models/product.dart';
 import 'product_detail.dart';
 
 class UserProductScreen extends StatelessWidget {
-  const UserProductScreen({super.key});
+  final String id;
+  const UserProductScreen({super.key, required this.id});
 
   @override
   Widget build(BuildContext context) {
     final productService = ProductService();
-    final user = context.select((AppBloc bloc) => bloc.state.user);
     return BlocBuilder<ProductCubit, ProductState>(
       builder: (context, state) =>
         Scaffold(
           appBar: StyledAppBar(
-            title: Text('My Products'),
+            title: Text('Shop\'s Products'),
           ),
           body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream:  productService.getUserProducts(user.id), 
+            stream:  productService.getUserProducts(id), 
             builder: (builder, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator());
               if (snapshot.hasError) return Text('Error: ${snapshot.error}');

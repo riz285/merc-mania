@@ -37,7 +37,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
               ),
             );
         } else if (state.status.isSuccess) {
-          context.read<NotificationCubit>().alertAboutNewOrder(context.read<OrderCubit>().state.orderId??'');
+          context.read<NotificationCubit>().alertAboutNewOrder(context.read<OrderCubit>().state.orderId);
           context.read<CartCubit>().state.product==null 
           ? context.read<CartCubit>().resetCart() : context.read<CartCubit>().deleteFromPurchase();
           ScaffoldMessenger.of(context)
@@ -221,9 +221,7 @@ class __PaymentMethodCardState extends State<_PaymentMethodCard> {
                 setState(() {
                   selectedIndex = value ?? 0;
                 });
-                (cart.product==null)
-                ? context.read<OrderCubit>().cardPaymentProcess(cart.total, cart.products, widget.address)
-                : context.read<OrderCubit>().cardPaymentProcess(cart.price??0, cart.product??List.empty(), widget.address);
+                context.read<OrderCubit>().cardPaymentProcess(cart.price??cart.total, cart.product??cart.products, widget.address);
               },
             ),
             SizedBox(height: 8),
@@ -254,7 +252,7 @@ class _ConfirmOrderButton extends StatelessWidget {
     return ElevatedButton(
       key: const Key('order_confirm_raisedButton'),
       onPressed: () {
-        context.read<OrderCubit>().cashPaymentProcess(cart.total, cart.products, address);
+        context.read<OrderCubit>().cashPaymentProcess(cart.price??cart.total, cart.product??cart.products, address);
       }, 
       child: Text('CONFIRM'),
     );

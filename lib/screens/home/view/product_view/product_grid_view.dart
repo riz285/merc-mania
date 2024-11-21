@@ -12,7 +12,7 @@ class ProductGridView extends StatelessWidget {
     return GridView.builder(
       shrinkWrap : true,
       physics: NeverScrollableScrollPhysics(), 
-      itemCount: products.length < 8 ? products.length : 8,
+      itemCount: products.length < 10 ? products.length : 10,
       itemBuilder: (context, index) => Padding(
         padding: const EdgeInsets.all(5.0),
         child: ProductCard(product: products[index]),

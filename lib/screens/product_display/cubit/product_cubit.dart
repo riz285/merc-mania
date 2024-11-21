@@ -1,12 +1,15 @@
 // ignore_for_file: avoid_print
 
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:merc_mania/services/database/product_service.dart';
-import 'package:merc_mania/services/database/image_storage.dart';
 
+import '../../../core/configs/assets/app_format.dart';
+import '../../../services/database/image_storage.dart';
+import '../../../services/database/product_service.dart';
+import '../../../services/database/user_service.dart';
 import '../../../services/models/product.dart';
 
 part 'product_state.dart';
@@ -17,6 +20,24 @@ class ProductCubit extends HydratedCubit<ProductState> {
   final AuthenticationRepository _authenticationRepository;
   final imageStorage = ImageStorage();
   final productService = ProductService();
+  final userService = UserService();
+
+  void init() {
+    emit(
+      state.copyWith(
+        image: null,
+        productName: null,
+        brand: null,
+        franchise: null,
+        price: 0,
+        quantity: 1,
+        description: null,
+        discount: null,
+        isValid: false,
+        status: FormzSubmissionStatus.initial
+      )
+    );
+  }
 
   /// Increase Product's view count
   Future<void> increaseView(Product product) async {
@@ -100,6 +121,26 @@ class ProductCubit extends HydratedCubit<ProductState> {
     };
   }  
 
+  
+  Future<DocumentSnapshot<Map<String, dynamic>>?> fetchProductData(String id) async {
+    try {
+      return await productService.getProduct(id);
+    } catch (e) {
+      print('Error fetching user data: $e');
+      return null;
+    }
+  }
+
+  /// Fetch current user's data
+  Future<DocumentSnapshot<Map<String, dynamic>>?> fetchUserData(String id) async {
+    try {
+      return await userService.getUserInfo(id);
+    } catch (e) {
+      print('Error fetching user data: $e');
+      return null;
+    }
+  }
+
   Future<void> productImageChanged() async {
   final pickedImage = await imageStorage.pickImage();
   if (pickedImage == null) return;
@@ -172,6 +213,33 @@ class ProductCubit extends HydratedCubit<ProductState> {
     );
   }
 
+  Future<void> updateProductFormSubmitted(String id, Product product) async {
+    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
+    try {
+      // Create product
+      await productService.updateProduct(id, {
+        'image' : state.image??product.image,
+        'name' : state.productName??product.name, 
+        'brand_name' : state.brand??product.brandName, 
+        'franchise': state.franchise??product.franchise,
+        'price' : state.price!=0 ? state.price : product.price,
+        'quantity' : state.quantity!=1 ? state.quantity : state.quantity,
+        'description' : state.description??product.description,
+        'discount_percentage' : state.discount??product.discountPercentage,
+        'user_id' : _authenticationRepository.currentUser.id,
+        'timestamp' : AppFormat.date.format(DateTime.now()),
+      });
+      emit(state.copyWith(status: FormzSubmissionStatus.success));
+    } catch (e) {
+      emit( 
+        state.copyWith(
+          // errorMessage: e.message,
+          status: FormzSubmissionStatus.failure,
+        ),
+      );
+    }
+  }
+
   Future<void> addProductFormSubmitted() async {
     if (!state.isValid) return;
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
@@ -186,7 +254,8 @@ class ProductCubit extends HydratedCubit<ProductState> {
         'quantity' : state.quantity,
         'description' : state.description,
         'discount_percentage' : state.discount,
-        'user_id' : _authenticationRepository.currentUser.id
+        'user_id' : _authenticationRepository.currentUser.id,
+        'timestamp' : AppFormat.date.format(DateTime.now()),
       });
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } catch (e) {
