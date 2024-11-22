@@ -28,10 +28,10 @@ class StyledNavigationBar extends StatelessWidget {
             label: 'Notifications',
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.inbox),
+            selectedIcon: Icon(Icons.chat),
             icon: Badge(
               label: Text('3'),
-              child: Icon(Icons.inbox_outlined),
+              child: Icon(Icons.chat_bubble_outline),
             ),
             label: 'Inbox',
           ),

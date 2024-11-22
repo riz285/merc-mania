@@ -70,6 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   Text('Your self description', style: TextStyle(fontSize: 16)),
                                   Expanded(
                                     child: TextField(keyboardType: TextInputType.multiline,
+                                    maxLines: 3,
                                     controller: controller,
                                     inputFormatters: [ LengthLimitingTextInputFormatter(60) ],
                                   )),
@@ -82,7 +83,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       child: Text('Save')),
                                   )
                                 ]
-                                                      ),
+                              ),
                             ),
                           ),
                       ));
@@ -112,7 +113,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                   ],
-                
               ),
             );
           }

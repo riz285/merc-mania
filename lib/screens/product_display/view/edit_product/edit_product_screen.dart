@@ -22,6 +22,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   @override
   void initState() {
     super.initState();
+    fetchProductData();
   }
 
   Future<DocumentSnapshot<Map<String, dynamic>>?> fetchProductData() async {
@@ -38,6 +39,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
       appBar: StyledAppBar(
         title: Text('Edit Product Details'),
         leading: Container(),
+        actions: [ IconButton(onPressed: () {
+          context.read<ProductCubit>().deleteProduct(widget.product.id);
+        }, icon: Icon(FontAwesomeIcons.trash), iconSize: 15) ],
         ),
       body: BlocListener<ProductCubit, ProductState>(
         listener: (context, state) { setState(() {});
@@ -99,10 +103,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 _DescriptionInput(product.description),
                 SizedBox(height: 16),
                 // Add New Product Button
-                Row(
+                Row(mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _CancelButton(onPressed: () => Navigator.pop(context)),
-                    Spacer(),
+                    SizedBox(width: 60),
                     _UpdateProductButton(id: product.id, product: product),
                   ],
                 )]
@@ -218,6 +222,8 @@ class _DescriptionInput extends StatelessWidget {
     return TextField(
       key: const Key('addNewProductForm_descriptionInput_textField'),
       onChanged: (text) => context.read<ProductCubit>().descriptionChanged(text),
+      keyboardType: TextInputType.multiline,
+      maxLines: 3,
       decoration: InputDecoration(
         floatingLabelBehavior: FloatingLabelBehavior.always,
         labelText: 'product descrption', 

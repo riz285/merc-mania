@@ -27,7 +27,7 @@ class OrderCubit extends Cubit<OrderState> {
           productIds: productIds,
           quantity: items.length,
           total: total,
-          createdAt: AppFormat.date.format(DateTime.now()),
+          createdAt: AppFormat.euDate.format(DateTime.now()),
           shippingAddress: shippingAddress,
           userId: _authenticationRepository.currentUser.id,
           paymentMethod: paymentMethod

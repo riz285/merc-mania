@@ -48,8 +48,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                 if (snapshot.hasError) return Text('Error: ${snapshot.error}');
                 if (snapshot.hasData) {
                   final products = snapshot.data!;
-                  return Expanded(
-                    child: ListView.separated(
+                  return ListView.separated(
                       itemCount: products.length,
                       itemBuilder: (context, index) => InkWell(
                         onTap: () {
@@ -87,8 +86,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                         )
                       ), 
                       separatorBuilder: (context, index) => SizedBox(width: 5),
-                    ),
-                  );
+                    );
                 }    
                 return Text('No product data found');
               }),

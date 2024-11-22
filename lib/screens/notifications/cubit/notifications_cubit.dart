@@ -25,7 +25,7 @@ class NotificationCubit extends Cubit<NotificationState> {
       'name' : 'NOTICE',
       'description' : 'Your product ${product.name} has received a report: $reportMessage',
       'user_id' : product.userId,
-      'timestamp' : AppFormat.date.format(DateTime.now()),
+      'timestamp' : AppFormat.euDate.format(DateTime.now()),
     });                                                                                          
   }
 
@@ -35,7 +35,7 @@ class NotificationCubit extends Cubit<NotificationState> {
       'name' : 'New Order',
       'user_id' : _authenticationRepository.currentUser.id,
       'description' : 'You have just made an order! Order ID: $orderId',
-      'timestamp' : AppFormat.date.format(DateTime.now()),
+      'timestamp' : AppFormat.euDate.format(DateTime.now()),
     });
   }
 

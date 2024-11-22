@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../core/configs/assets/card_number_formatter.dart';
+import '../../screens/payment/card_number_formatter.dart';
 import '../../core/configs/themes/app_colors.dart';
 import '../../screens/payment/cubit/payment_cubit.dart';
 

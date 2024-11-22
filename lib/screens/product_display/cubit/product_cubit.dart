@@ -121,6 +121,15 @@ class ProductCubit extends HydratedCubit<ProductState> {
     };
   }  
 
+/// Fetch current user's data
+  Future<DocumentSnapshot<Map<String, dynamic>>?> fetchUserData(String id) async {
+    try {
+      return await userService.getUserInfo(id);
+    } catch (e) {
+      print('Error fetching user data: $e');
+      return null;
+    }
+  }
   
   Future<DocumentSnapshot<Map<String, dynamic>>?> fetchProductData(String id) async {
     try {
@@ -131,13 +140,12 @@ class ProductCubit extends HydratedCubit<ProductState> {
     }
   }
 
-  /// Fetch current user's data
-  Future<DocumentSnapshot<Map<String, dynamic>>?> fetchUserData(String id) async {
+  void deleteProduct (String id) {
     try {
-      return await userService.getUserInfo(id);
+      removeFromWishList(id);
+      productService.deleteProduct(id);
     } catch (e) {
-      print('Error fetching user data: $e');
-      return null;
+      print(e);
     }
   }
 
@@ -227,7 +235,8 @@ class ProductCubit extends HydratedCubit<ProductState> {
         'description' : state.description??product.description,
         'discount_percentage' : state.discount??product.discountPercentage,
         'user_id' : _authenticationRepository.currentUser.id,
-        'timestamp' : AppFormat.date.format(DateTime.now()),
+        'timestamp' : AppFormat.euDate.format(DateTime.now()),
+        'is_sold' : false
       });
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } catch (e) {
@@ -255,7 +264,8 @@ class ProductCubit extends HydratedCubit<ProductState> {
         'description' : state.description,
         'discount_percentage' : state.discount,
         'user_id' : _authenticationRepository.currentUser.id,
-        'timestamp' : AppFormat.date.format(DateTime.now()),
+        'timestamp' : AppFormat.euDate.format(DateTime.now()),
+        'is_sold' : false
       });
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } catch (e) {

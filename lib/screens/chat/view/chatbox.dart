@@ -80,7 +80,7 @@ class _ChatboxState extends State<Chatbox> {
                                   Row(
                                     children: [
                                       Text(
-                                          AppFormat.hourmin.format(AppFormat.date.parse(messages[index].timestamp)),
+                                          AppFormat.hourmin.format(AppFormat.euDate.parse(messages[index].timestamp)),
                                           style: TextStyle(fontSize: 10),
                                           ),
                                     ],

@@ -84,9 +84,9 @@ class _StyledDrawerState extends State<StyledDrawer> {
                             style: TextStyle(color: Colors.brown, fontWeight: FontWeight.w600)),
                           // TODO: implement get() user's following and followers
                           Row(children: [
-                            Text('Following: 0', style: TextStyle(color: Colors.brown)),
+                            Text('Following: 26', style: TextStyle(color: Colors.brown)),
                             Spacer(),
-                            Text('Followers: 0', style: TextStyle(color: Colors.brown))
+                            Text('Followers: 392', style: TextStyle(color: Colors.brown))
                           ],)
                         ],
                       ),
@@ -203,6 +203,13 @@ class _StyledDrawerState extends State<StyledDrawer> {
                     key: const Key('drawer_logout_iconButton'),
                     onPressed: () {
                       context.read<AppBloc>().add(const AppLogoutPressed());
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(
+                          SnackBar(
+                            content: Text('Signed out!'),
+                          ),
+                        );
                     }, icon: Icon(Icons.logout))
                   ])
               )

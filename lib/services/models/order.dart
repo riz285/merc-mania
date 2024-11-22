@@ -9,7 +9,7 @@ class AppOrder extends Equatable {
     required this.total,
     required this.createdAt,
     this.shippingAddress,
-    this.paymentMethod
+    required this.paymentMethod
   });
 
   final String? id;
@@ -19,9 +19,9 @@ class AppOrder extends Equatable {
   final int total;
   final String createdAt;
   final String? shippingAddress;
-  final String? paymentMethod;
+  final String paymentMethod;
 
-  static const empty = AppOrder(userId: '', productIds: [], quantity: 0, total: 0, createdAt: '01-01-1900 00:00');
+  static const empty = AppOrder(userId: '', productIds: [], quantity: 0, total: 0, createdAt: '01-01-1900 00:00', paymentMethod: '');
 
   factory AppOrder.fromJson(Map<String, dynamic> json) {
     return AppOrder(

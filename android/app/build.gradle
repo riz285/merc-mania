@@ -17,13 +17,18 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
+    lint {
+        // https://github.com/bumptech/glide/issues/4940
+        lintConfig = file("$rootDir/android-lint.xml")
+        // baseline = file("lint-baseline.xml")
+        // Displaying errors on stdout
+        textOutput file('stdout')
+        textReport true
+    }
+
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8
     }
-
-    lint {
-          baseline = file("lint-baseline.xml")
-      }
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).

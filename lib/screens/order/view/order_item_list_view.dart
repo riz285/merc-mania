@@ -9,12 +9,10 @@ class OrderItemListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.separated(
+    return ListView.separated(
               itemCount: products.length,
               itemBuilder: (context, index) => OrderItemCard(product: products[index]), 
               separatorBuilder: (context, index) => SizedBox(width: 5),
-      ),
     );
   }
 }

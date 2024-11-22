@@ -9,11 +9,12 @@ class Product extends Equatable {
     this.brandName,
     required this.price,
     this.quantity,
-    this.isInStock,
+    this.isSold,
     this.discountPercentage,
     this.viewCount,
     this.franchise,
-    this.userId
+    required this.userId,
+    required this.timestamp
   });
 
   final String id;
@@ -23,28 +24,30 @@ class Product extends Equatable {
   final String? brandName;
   final int price;
   final int? quantity;
-  final bool? isInStock;
+  final bool? isSold;
   final int? discountPercentage;
   final int? viewCount;
   final String? franchise;
-  final String? userId;
+  final String userId;
+  final String timestamp;
 
-  static const empty = Product(id: '', name: '', image: '', price: 0);
+  static const empty = Product(id: '', name: '', image: '', price: 0, timestamp: '', userId: '');
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
-      id: json['id'],
+      id: json['id']??'',
       name: json['name'],
       image: json['image'],
       description: json['description'],
       brandName: json['brand_name'],
       price: json['price'],
       quantity: json['quantity'],
-      isInStock: json['is_in_stock'],
+      isSold: json['is_sold'],
       discountPercentage: json['discount_percentage'],
       viewCount: json['view_count'],
       franchise: json['franchise'],
-      userId: json['user_id']
+      userId: json['user_id'],
+      timestamp: json['timestamp']
     );
   }
 
@@ -57,15 +60,16 @@ class Product extends Equatable {
       'brand_name' : brandName,
       'price' : price,
       'quantity' : quantity,
-      'isInStock' : isInStock,
+      'is_sold' : isSold,
       'discount_percentage' : discountPercentage,
       'view_count' : viewCount,
       'franchise' : franchise,
-      'user_id' : userId
+      'user_id' : userId,
+      'timestamp' : timestamp
     };
   }
 
   @override
-  List<Object?> get props => [id, name, image, description, brandName, price, quantity, isInStock, discountPercentage, viewCount, franchise, userId];
+  List<Object?> get props => [id, name, image, description, brandName, price, quantity, isSold, discountPercentage, viewCount, franchise, userId, timestamp];
 
 }

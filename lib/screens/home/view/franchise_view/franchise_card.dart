@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:merc_mania/screens/product_display/view/product_screen.dart';
+import 'package:merc_mania/screens/home/view/franchise_view/franchise_product_screen.dart';
 
 import '../../../../services/models/franchise.dart';
 
@@ -13,7 +13,7 @@ class FranchiseCard extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => ProductScreen(franchise: franchise),
+              builder: (context) => FranchiseProductScreen(franchise: franchise),
             )
           );
       },
@@ -50,15 +50,19 @@ class FranchiseCard extends StatelessWidget {
                 height: 35,
                 decoration: BoxDecoration(
                     color: Color.fromRGBO(54, 54, 54, 95),
+                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))
                     ),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(franchise.name,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
+                    Expanded(
+                      child: Text(franchise.name,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ]
                 ),

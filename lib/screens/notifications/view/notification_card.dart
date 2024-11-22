@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/configs/assets/app_format.dart';
 import '../../../services/models/notification.dart';
 
 class NotificationCard extends StatelessWidget {
@@ -20,7 +21,7 @@ class NotificationCard extends StatelessWidget {
             Text('${notification.description}'),
             Align(
               alignment: Alignment.bottomRight,
-              child: Text('${notification.timestamp}'),
+              child: Text(AppFormat.vnDate.format(AppFormat.euDate.parse('${notification.timestamp}'))),
             )
           ],
         ),

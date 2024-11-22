@@ -68,6 +68,10 @@ class AppTheme {
         labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
         unselectedLabelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
         unselectedLabelColor: AppColors.title
+      ),
+      navigationBarTheme: NavigationBarThemeData(
+        labelTextStyle: WidgetStatePropertyAll(TextStyle(color: AppColors.title, fontWeight: FontWeight.w600)),
+        iconTheme: WidgetStatePropertyAll(IconThemeData(color: AppColors.title))
       )
   );
   //Dark mode

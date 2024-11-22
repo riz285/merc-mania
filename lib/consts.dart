@@ -2,3 +2,4 @@ const String stripePublishableKey = 'pk_test_51QJpDfAJz5Xusi1nd6xnP1g0fcZzpWxje1
 const String stripeSecretKey = 'sk_test_51QJpDfAJz5Xusi1nStENWOgmxko2SYX7B3qq3sdfddAAMaKgXLO5POx4RaaK3sXfcQxX4PUWtUgr3BdSMhBHfyRG00Q15CmCcI';
 const String paypalApiKey = 'AaNqN5ce21Ntbq2L1h6vYXZorL-Yxlv9N3sKuY4_NVZfJkhSsCUJgEHy1e3Ib04WGxEnNpQ2XZ6yof3A';
 const String paypalSecretKey = 'EPigYYs4atm8zy5vqsqI5LJq5o-drRjD7bkdM-Kgz0zvG59rf-TCkLJrzlsGNsylQrcSOHqjqdLoBKBw';
+const String appPhoneNumber = '0585775837';

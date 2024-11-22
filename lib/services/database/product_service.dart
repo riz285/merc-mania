@@ -4,12 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/product.dart';
 
 class ProductService {
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final firestore = FirebaseFirestore.instance;
   final productCollectionRef = FirebaseFirestore.instance.collection('products');
   final favoriteProductRelationRef = FirebaseFirestore.instance.collection('user_favorite_item_relationships');
-  
+
 // CRUD
-  /// Add New Product
+  /// Create New Product
   Future<void> addProduct(Map<String, dynamic> data) async {
     try {
       final docRef = await productCollectionRef.add(data);
@@ -34,7 +34,7 @@ class ProductService {
     return products;
   }
 
-  // Get product
+  // Get a product data
   Future<DocumentSnapshot<Map<String, dynamic>>?> getProduct(String id) async {
     try {
       if (id != '') {
@@ -51,6 +51,21 @@ class ProductService {
   Stream<QuerySnapshot<Map<String, dynamic>>> getProducts() {
     return productCollectionRef.snapshots();
   }
+
+  // Get products by page
+  // Future<QuerySnapshot<Map<String, dynamic>>> getProductsByPage(int page, int pageSize) async {
+  // void firebasePagination(int page, int pageSize) {
+  //   final first = productCollectionRef.orderBy('id').limit(pageSize);
+  //   first.get().then((documentSnapshot) {
+  //     // Get last visible document
+  //     final lastVisible = documentSnapshot.docs[documentSnapshot.size - 1];
+  //     // New query at this document, get next page
+  //     final next = productCollectionRef.orderBy('id').startAfterDocument(lastVisible).limit(pageSize);
+  //     // Use query for pagination
+  //   },
+  //   onError: (e) => print(e)
+  //   );
+  // }
 
   // Get popular Products
   Future<QuerySnapshot<Map<String, dynamic>>> getPopularProducts() async {

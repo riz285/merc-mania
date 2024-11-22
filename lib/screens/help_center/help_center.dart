@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:merc_mania/common/widgets/styled_app_bar.dart';
+import 'package:merc_mania/consts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HelpCenter extends StatelessWidget {
   const HelpCenter({super.key});
+
+  Future<void> makePhoneCall(String phoneNum) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNum
+    );
+    if (!await launchUrl(launchUri)) {
+      throw 'Could not launch $launchUri';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +66,9 @@ class HelpCenter extends StatelessWidget {
                     leading: Icon(FontAwesomeIcons.phone, size: 20),
                     title: Text('Call us'),
                     subtitle: Text('If you are hearing or speech impaired, please contact us via IP relay service.'),
-                    onTap: () {},  
+                    onTap: () {
+                      makePhoneCall(appPhoneNumber);
+                    },  
                   )),
               ],),
             ],

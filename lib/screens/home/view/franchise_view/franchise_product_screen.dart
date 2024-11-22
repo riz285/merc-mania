@@ -2,16 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/widgets/styled_app_bar.dart';
-import '../../home/view/product_view/extended_product_grid_view.dart';
-import '../cubit/product_cubit.dart';
-import '../../../services/database/product_service.dart';
-import '../../../services/models/franchise.dart';
-import '../../../services/models/product.dart';
+import '../../../../common/widgets/styled_app_bar.dart';
+import '../product_view/extended_product_grid_view.dart';
+import '../../../product_display/cubit/product_cubit.dart';
+import '../../../../services/database/product_service.dart';
+import '../../../../services/models/franchise.dart';
+import '../../../../services/models/product.dart';
 
-class ProductScreen extends StatelessWidget {
+class FranchiseProductScreen extends StatelessWidget {
   final Franchise franchise;
-  const ProductScreen({super.key, required this.franchise});
+  const FranchiseProductScreen({super.key, required this.franchise});
 
   @override
   Widget build(BuildContext context) {

@@ -19,9 +19,7 @@ class OrderCard extends StatelessWidget {
         //       builder: (context) => OrderDetail(order: order),
         //     ),
         // );
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
+      }, 
         child: Card(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -31,7 +29,7 @@ class OrderCard extends StatelessWidget {
                   Text('Order: ${order.id}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
                   Align(
                     alignment: Alignment.bottomRight,
-                    child: Text('Created at: ${order.createdAt}')),
+                    child: Text('Created at: ${AppFormat.vnDate.format(AppFormat.euDate.parse(order.createdAt))}')),
                   Divider(),
                     SizedBox(
                       height: 300,
@@ -41,14 +39,16 @@ class OrderCard extends StatelessWidget {
                     children: [
                       Text('Number of items: ${order.quantity}'),
                       Spacer(),
-                      Text('Total: ${AppFormat.currency.format(order.total)}')
+                      Column(children: [
+                        Text('Total: ${AppFormat.currency.format(order.total)}'),
+                        Text('Paid with: ${order.paymentMethod.toUpperCase()}')
+                      ])
                     ],
                   ),
                 ],
               ),
           ),
-          ),
-      ),
+        ),
     );
   }
 }

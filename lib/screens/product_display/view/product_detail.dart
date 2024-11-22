@@ -27,7 +27,7 @@ class ProductDetail extends StatefulWidget {
 
 class _ProductDetailState extends State<ProductDetail> {
   double discountedPrice(int price, int discountPercentage) {
-    return (price*(100-discountPercentage)/100);
+    return (price * (100 - discountPercentage) / 100);
   }
 
   @override
@@ -57,6 +57,7 @@ class _ProductDetailState extends State<ProductDetail> {
   Widget build(BuildContext context) {
     final cart = BlocProvider.of<CartCubit>(context);
     final userId = context.select((AppBloc bloc) => bloc.state.user.id);
+
     return Scaffold(
       appBar: StyledAppBar(
         title: Text('Product Details'),
@@ -72,168 +73,156 @@ class _ProductDetailState extends State<ProductDetail> {
         child: FutureBuilder(
           future: fetchProductData(), 
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator());
+            // if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator());
             if (snapshot.hasError) return Text('Error: ${snapshot.error}');
             if (snapshot.hasData) {
               final product = Product.fromJson(snapshot.data!.data()!);
-        return ListView(
-          padding: EdgeInsets.symmetric(vertical: 30),
-          children: [
-            // Product image
-            Container(
-              alignment: Alignment.topCenter,
-              height: 200,
-              width: 200,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                image: DecorationImage(
-                  fit: BoxFit.contain,
-                  image: NetworkImage(product.image))
-              ),
-            ),
-            SizedBox(height: 20),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              return ListView(
+                padding: EdgeInsets.symmetric(vertical: 30),
                 children: [
-                  Text(
-                    product.name, 
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20
-                    )
-                  ),
-                  SizedBox(
-                    child: Text('Brand: ${product.brandName ?? 'unknown'}')
-                  ),
-                  product.discountPercentage == null ?
-                  SizedBox(
-                    child: Text('Price: ${AppFormat.currency.format(product.price)}')
-                  ) 
-                  : Row(children: [
-                    SizedBox(
-                      child: Text('Price: ')
+                  // Product image
+                  Container(padding: EdgeInsets.only(left: 85),
+                    alignment: Alignment.topLeft,
+                    height: 200,
+                    width: 200,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      image: DecorationImage(
+                        fit: BoxFit.contain,
+                        image: NetworkImage(product.image))
                     ),
-                    SizedBox(
-                      child: Text(AppFormat.currency.format(product.price), style: TextStyle(decoration: TextDecoration.lineThrough))
-                    ),
-                    SizedBox(width: 4),
-                    SizedBox(
-                      child: Text(AppFormat.currency.format(discountedPrice(product.price, product.discountPercentage??1)), style: TextStyle(color: Colors.red),)
-                    ),
-                  ]),
-                  Text('Last updated: ${product.timestamp}', style: TextStyle(fontSize: 16)),
-                  // Tools
-                  Padding(padding: EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Add to favorite
-                        Container(
-                          height: 40,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(10))
-                          ),
-                          child: IconButton(
-                            onPressed: () {
-                              context.read<ProductCubit>().toggleFavorite(product.id);
-                              setState(() {
-                                
-                              });
-                            }, 
-                            icon: 
-                                  ! context.read<ProductCubit>().isFavorite(product.id)
-                                  ? Icon(Icons.favorite_border_outlined)
-                                  : Icon(Icons.favorite, color: Colors.red,)
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        // Add to cart 
-                        Container(
-                          height: 40,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(10))
-                          ),
-                          child: IconButton(
-                            onPressed: () {
-                              cart.addToCart(product);
-                              ScaffoldMessenger.of(context)
-                                ..hideCurrentSnackBar()
-                                ..showSnackBar(
-                                  SnackBar(
-                                    content: Text('Product added to cart'),
-                                    duration: Duration(seconds: 1),
-                                  ),
-                                );
-                            }, 
-                            icon: Icon(Icons.shopping_cart_checkout_outlined)),
-                        ),
-                        SizedBox(width: 10),
-                        // Report product
-                        Container(
-                          height: 40,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(10))
-                          ),
-                          child: IconButton(
-                            onPressed: () {
-                              showDialog(context: context, builder: (context) => _ReportDialog(product: product));
-                            }, 
-                            icon: Icon(Icons.report)),
-                        ),
-                      ],
-                    ),
-                  ),
-                  FutureBuilder(
-                    future: fetchUserData(), 
-                    builder: (context, snapshot) {
-                      // if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator());
-                      if (snapshot.hasError) return Text('Error: ${snapshot.error}');
-                      if (snapshot.hasData) {
-                        final user = User.fromJson(snapshot.data!.data()!);
-                        return ListTile(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-                          title: Row(children: [
-                              Avatar(photo: user.photo),
-                              SizedBox(width: 8),
-                              Text('${user.firstName ?? ''} ${user.lastName ?? ''}'),
-                            ],),
-                          onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProductScreen(id: user.id))),
-                        );
-                      }
-                      return Container();
-                    }
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                      'Description',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20
-                      )
-                    ),
-                  Text(
-                    (product.description==null||product.description=='')  ? '[There is no product description.]' : product.description!, 
-                    textAlign: TextAlign.justify,
                   ),
                   SizedBox(height: 20),
-                  Center(child: _PurchaseButton(onPressed: () {
-                    cart.addToPurchase(product);
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChooseAddressPage()));
-                  })),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          product.name, 
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20
+                          )
+                        ),
+                        Text('Brand: ${product.brandName ?? 'unknown'}'),
+                        product.discountPercentage == null 
+                        ? Text('Price: ${AppFormat.currency.format(product.price)}') 
+                        : Row(children: [
+                          Text('Price: '),
+                          Text(AppFormat.currency.format(product.price), style: TextStyle(decoration: TextDecoration.lineThrough)),
+                          SizedBox(width: 4),
+                          Text(AppFormat.currency.format(discountedPrice(product.price, product.discountPercentage??1)), style: TextStyle(color: Colors.red))
+                        ]),
+                        Text('Last updated: ${AppFormat.vnDate.format(AppFormat.euDate.parse(product.timestamp))}'),
+                        // Tools
+                        Padding(padding: EdgeInsets.all(10),
+                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              // Add to favorite
+                              Container(
+                                height: 40,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.all(Radius.circular(10))
+                                ),
+                                child: IconButton(
+                                  onPressed: () {
+                                    context.read<ProductCubit>().toggleFavorite(product.id);
+                                    setState(() {});
+                                  }, 
+                                  icon: ! context.read<ProductCubit>().isFavorite(product.id)
+                                        ? Icon(Icons.favorite_border_outlined)
+                                        : Icon(Icons.favorite, color: Colors.red,)
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              // Add to cart 
+                              Container(
+                                height: 40,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 1
+                                  ),
+                                  borderRadius: BorderRadius.all(Radius.circular(10))
+                                ),
+                                child: IconButton(
+                                  onPressed: () {
+                                    cart.addToCart(product);
+                                    ScaffoldMessenger.of(context)
+                                      ..hideCurrentSnackBar()
+                                      ..showSnackBar(
+                                        SnackBar(
+                                          content: Text('Product added to cart'),
+                                          duration: Duration(seconds: 1),
+                                        ),
+                                      );
+                                  }, 
+                                  icon: Icon(Icons.shopping_cart_checkout_outlined)),
+                              ),
+                              SizedBox(width: 10),
+                              // Report product
+                              Container(
+                                height: 40,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 1
+                                  ),
+                                  borderRadius: BorderRadius.all(Radius.circular(10))
+                                ),
+                              child: IconButton(
+                                onPressed: () {
+                                  showDialog(context: context, builder: (context) => _ReportDialog(product: product));
+                                }, 
+                                icon: Icon(Icons.report)),
+                              ),
+                            ],
+                          ),
+                        ),
+                        FutureBuilder(
+                          future: fetchUserData(), 
+                          builder: (context, snapshot) {
+                            // if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator());
+                            if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+                            if (snapshot.hasData) {
+                              final user = User.fromJson(snapshot.data!.data()!);
+                              return ListTile(
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                                title: Row(children: [
+                                  Avatar(photo: user.photo),
+                                  SizedBox(width: 8),
+                                  Text('${user.firstName ?? ''} ${user.lastName ?? ''}'),
+                                ]),
+                                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProductScreen(id: user.id))),
+                              );
+                            }
+                            return Container();
+                          }
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          'Description',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20
+                          )
+                        ),
+                        Text(
+                          (product.description==null||product.description=='')  ? '[There is no product description.]' : product.description!, 
+                          textAlign: TextAlign.justify,
+                        ),
+                        SizedBox(height: 20),
+                        Center(child: _PurchaseButton(onPressed: () {
+                          cart.addToPurchase(product);
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChooseAddressPage()));
+                        }
+                    )
+                  ),
                 ],
               ),
             )
@@ -284,7 +273,7 @@ class _ReportDialogState extends State<_ReportDialog> {
                 ..hideCurrentSnackBar()
                 ..showSnackBar(
                   SnackBar(
-                    content: Text('Product is reported'),
+                    content: Text('Reported a product.'),
                   ),
                 );
               Navigator.pop(context); 
