@@ -9,8 +9,8 @@ final class ProductState extends Equatable {
     this.productName,
     this.brand,
     this.franchise,
-    this.price,
-    this.quantity,
+    this.price=0,
+    this.quantity=1,
     this.description,
     //
     this.discount,
@@ -26,8 +26,8 @@ final class ProductState extends Equatable {
   final String? productName;
   final String? brand;
   final String? franchise;
-  final int? price;
-  final int? quantity;
+  final int price;
+  final int quantity;
   final String? description;
   //
   final int? discount;

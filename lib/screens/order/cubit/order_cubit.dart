@@ -6,6 +6,7 @@ import 'package:formz/formz.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:merc_mania/core/configs/assets/app_format.dart';
 import 'package:merc_mania/services/database/order_service.dart';
+import 'package:merc_mania/services/database/product_service.dart';
 import 'package:merc_mania/services/models/product.dart';
 
 import '../../../services/database/stripe_service.dart';
@@ -19,6 +20,20 @@ class OrderCubit extends Cubit<OrderState> {
 
   final AuthenticationRepository _authenticationRepository;
   final orderService = OrderService();
+  final productService = ProductService();
+
+  Future<void> updateProducts(List<Product> items) async {
+    try {
+      for (Product item in items) {
+        await productService.updateProduct(item.id, {
+          'quantity' : item.quantity - 1,
+          'is_sold' : item.quantity==1?true:false
+        });
+      } 
+    } catch (e) {
+      print(e);
+    }
+  }
 
   Future<void> createNewOrder(List<Product> items, int total, Address address, String paymentMethod) async {
     final List<String> productIds = items.map((product) => product.id).toList();
@@ -56,6 +71,7 @@ class OrderCubit extends Cubit<OrderState> {
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
       await createNewOrder(items, amount, address, 'cod');
+      updateProducts(items);
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } catch (e) {
       print(e);
@@ -72,6 +88,7 @@ class OrderCubit extends Cubit<OrderState> {
     try {
       await StripeService.instance.makePayment(amount, _authenticationRepository.currentUser.id);
       await createNewOrder(items, amount, address, 'card');
+      updateProducts(items);
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } catch (e) {
       print(e);
@@ -87,6 +104,7 @@ class OrderCubit extends Cubit<OrderState> {
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
       await createNewOrder(items, amount, address, 'paypal');
+      updateProducts(items);
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } catch (e) {
       print(e);

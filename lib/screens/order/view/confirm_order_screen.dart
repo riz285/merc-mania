@@ -221,7 +221,7 @@ class __PaymentMethodCardState extends State<_PaymentMethodCard> {
                 setState(() {
                   selectedIndex = value ?? 0;
                 });
-                context.read<OrderCubit>().cardPaymentProcess(cart.price??cart.total, cart.product??cart.products, widget.address);
+                await context.read<OrderCubit>().cardPaymentProcess(cart.price??cart.total, cart.product??cart.products, widget.address);
               },
             ),
             SizedBox(height: 8),

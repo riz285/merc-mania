@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:merc_mania/common/widgets/styled_discount_banner.dart';
+import 'package:merc_mania/common/widgets/styled_sold_banner.dart';
 import 'package:merc_mania/screens/product_display/cubit/product_cubit.dart';
 import '../../../core/configs/assets/app_format.dart';
 import 'product_detail.dart';
@@ -40,8 +41,10 @@ class _ProductCardState extends State<ProductCard> {
         ),
         child: Stack(
           children: [
+            // Sold Out banner
+            widget.product.isSold==true ? StyledSoldOutBanner(isSold: widget.product.isSold)
             // Discount percentage
-            Visibility(
+            : Visibility(
               visible: (widget.product.discountPercentage != null) ,
               child: StyledDiscountBanner(discountPercentage: widget.product.discountPercentage??0)
             ),

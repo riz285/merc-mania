@@ -11,6 +11,7 @@ import 'package:merc_mania/screens/product_display/view/user_product_screen.dart
 import 'package:merc_mania/services/models/product.dart';
 
 import '../../../app/bloc/app_bloc.dart';
+import '../../../common/widgets/styled_sold_banner.dart';
 import '../../../core/configs/assets/avatar.dart';
 import '../../address/view/address_selection/choose_address_page.dart';
 import '../cubit/product_cubit.dart';
@@ -91,6 +92,11 @@ class _ProductDetailState extends State<ProductDetail> {
                         fit: BoxFit.contain,
                         image: NetworkImage(product.image))
                     ),
+                    child: Stack(children: [
+                      // Sold Out banner
+                      widget.product.isSold==true ? StyledSoldOutBanner(isSold: widget.product.isSold)
+                      : Container()]
+                    )
                   ),
                   SizedBox(height: 20),
                   Container(
@@ -151,7 +157,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                   borderRadius: BorderRadius.all(Radius.circular(10))
                                 ),
                                 child: IconButton(
-                                  onPressed: () {
+                                  onPressed:  widget.product.isSold!=true ? () {
                                     cart.addToCart(product);
                                     ScaffoldMessenger.of(context)
                                       ..hideCurrentSnackBar()
@@ -161,7 +167,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                           duration: Duration(seconds: 1),
                                         ),
                                       );
-                                  }, 
+                                  } : null, 
                                   icon: Icon(Icons.shopping_cart_checkout_outlined)),
                               ),
                               SizedBox(width: 10),
@@ -217,10 +223,13 @@ class _ProductDetailState extends State<ProductDetail> {
                           textAlign: TextAlign.justify,
                         ),
                         SizedBox(height: 20),
-                        Center(child: _PurchaseButton(onPressed: () {
-                          cart.addToPurchase(product);
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChooseAddressPage()));
-                        }
+                        Center(child: 
+                        _PurchaseButton(
+                          onPressed: widget.product.isSold!=true 
+                          ? () { cart.addToPurchase(product);
+                                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChooseAddressPage()));
+                               } 
+                          : null,
                     )
                   ),
                 ],
@@ -286,7 +295,7 @@ class _ReportDialogState extends State<_ReportDialog> {
 }
 
 class _PurchaseButton extends StatelessWidget {
-  final Function() onPressed;
+  final Function()? onPressed;
   const _PurchaseButton({required this.onPressed});
 
   @override

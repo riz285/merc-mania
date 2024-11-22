@@ -262,6 +262,7 @@ class ProductCubit extends HydratedCubit<ProductState> {
         'price' : state.price,
         'quantity' : state.quantity,
         'description' : state.description,
+        'view_count' : 0,
         'discount_percentage' : state.discount,
         'user_id' : _authenticationRepository.currentUser.id,
         'timestamp' : AppFormat.euDate.format(DateTime.now()),

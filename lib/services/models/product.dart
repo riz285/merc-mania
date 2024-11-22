@@ -8,10 +8,10 @@ class Product extends Equatable {
     this.description,
     this.brandName,
     required this.price,
-    this.quantity,
-    this.isSold,
+    required this.quantity,
+    required this.isSold,
     this.discountPercentage,
-    this.viewCount,
+    required this.viewCount,
     this.franchise,
     required this.userId,
     required this.timestamp
@@ -23,15 +23,15 @@ class Product extends Equatable {
   final String? description;
   final String? brandName;
   final int price;
-  final int? quantity;
-  final bool? isSold;
+  final int quantity;
+  final bool isSold;
   final int? discountPercentage;
-  final int? viewCount;
+  final int viewCount;
   final String? franchise;
   final String userId;
   final String timestamp;
 
-  static const empty = Product(id: '', name: '', image: '', price: 0, timestamp: '', userId: '');
+  static const empty = Product(id: '', name: '', image: '', price: 0, timestamp: '', userId: '', quantity: 0, isSold: false, viewCount: 0);
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(

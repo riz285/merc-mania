@@ -1,26 +1,28 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
-class StyledDiscountBanner extends StatelessWidget {
-  final int discountPercentage;
-  const StyledDiscountBanner({super.key, required this.discountPercentage});
+class StyledSoldOutBanner extends StatelessWidget {
+  final bool isSold;
+  const StyledSoldOutBanner({super.key, required this.isSold});
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
       size: Size(70, 55),
-      painter: TrianglePainter(discountPercentage: discountPercentage),
+      painter: TrianglePainter(isSold: isSold),
     );
   }
 }
 
 class TrianglePainter extends CustomPainter {
-  final int discountPercentage;
-  const TrianglePainter({required this.discountPercentage});
+  final bool isSold;
+  const TrianglePainter({required this.isSold});
 
   @override
   void paint (Canvas canvas, Size size) {
     final paint = Paint()
-    ..color = Colors.blue
+    ..color = Colors.redAccent
     ..style = PaintingStyle.fill;
 
     final path = Path()
@@ -40,7 +42,7 @@ class TrianglePainter extends CustomPainter {
     final textPainter = TextPainter(
       textDirection: TextDirection.ltr,
       text: TextSpan(
-        text: '$discountPercentage%',
+        text: 'SOLD',
         style: TextStyle(
           color: Colors.white,
           fontSize: 16,
@@ -49,8 +51,10 @@ class TrianglePainter extends CustomPainter {
       )
     )..layout();
 
-    final xCenter = (size.width - textPainter.width) / 5;
-    final yCenter = (size.height - textPainter.height) / 5;
+    canvas.rotate(1.8*pi);
+
+    final xCenter = (size.width - 2*textPainter.width);
+    final yCenter = (size.height - 1.75*textPainter.height);
     textPainter.paint(canvas, Offset(xCenter, yCenter));
   }
   
