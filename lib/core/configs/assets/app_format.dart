@@ -8,4 +8,5 @@ class AppFormat {
   static DateFormat time = DateFormat('yyyy-MM-dd HH:mm:ss.SSS');
   static DateFormat dateTostring = DateFormat('yyyyMMddhhmm');
   static NumberFormat cardnumber = NumberFormat('####,####,####,####');
+  static NumberFormat thousand = NumberFormat('###,###,###');
 }

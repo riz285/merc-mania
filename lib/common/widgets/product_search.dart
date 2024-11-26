@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:merc_mania/services/database/product_service.dart';
 
 import '../../core/configs/assets/app_format.dart';
@@ -10,13 +11,150 @@ import '../../screens/product_display/view/product_detail.dart';
 
 class ProductSearchDelegate extends SearchDelegate<String> {
   final productService = ProductService();
+  final minController = TextEditingController();
+  final maxController = TextEditingController();
+  int? min;
+  int? max;
   
   @override
   List<Widget>? buildActions(BuildContext context) {
     if (query.isNotEmpty) {
-      return [IconButton(onPressed: () => query = '', icon: Icon(Icons.clear_outlined))];
+      return [IconButton(onPressed: () => query = '', icon: Icon(Icons.clear_outlined)),
+      Padding(
+        padding: const EdgeInsets.only(right: 20),
+        child: PopupMenuButton(icon: Icon(FontAwesomeIcons.filterCircleDollar),
+        itemBuilder: (context) => [
+          PopupMenuItem(child: Text('Price Range (đ)')),
+          PopupMenuItem(child: Row(children: [
+            Expanded(
+              child: TextField(textAlign: TextAlign.center, controller: minController,
+                decoration: InputDecoration(border: OutlineInputBorder(),
+                  hintText: 'MIN'
+                ),
+              ),
+            ),
+            const Text('   —   '),
+            Expanded(
+              child: TextField(textAlign: TextAlign.center, controller: maxController,
+                decoration: InputDecoration(border: OutlineInputBorder(),
+                  hintText: 'MAX',
+                ),
+              ),
+            ),
+            ])
+          ),
+          PopupMenuItem(child: Row(children: [
+            Expanded(
+              child: TextButton(onPressed: () {
+                minController.text = '0'; maxController.text = AppFormat.thousand.format(100000);
+              }, child: Text('0 - 100k'))
+            ),
+            Expanded(
+              child: TextButton(onPressed: () {
+                minController.text = AppFormat.thousand.format(100000); maxController.text = AppFormat.thousand.format(500000);
+              }, child: Text('100k - 500k'))
+            ),
+            ])
+          ),
+          PopupMenuItem(child: Row(children: [
+            Expanded(
+              child: TextButton(onPressed: () {
+                minController.text = AppFormat.thousand.format(500000); maxController.text = AppFormat.thousand.format(1000000);
+              }, child: Text('500k - 1tr'))
+            ),
+            Expanded(
+              child: TextButton(onPressed: () {
+                minController.text = AppFormat.thousand.format(1000000); maxController.text = '';
+              }, child: Text('> 1tr'))
+            ),
+            ])
+          ),
+          PopupMenuItem(child: Row(children: [
+            Expanded(
+              child: TextButton(onPressed: () {
+                minController.text = ''; maxController.text = '';
+              }, child: Text('Reset'))
+            ),
+            Expanded(
+              child: ElevatedButton(onPressed: () {
+                if (minController.text.isNotEmpty) min = AppFormat.thousand.parse(minController.text).toInt();
+                if (maxController.text.isNotEmpty) max = AppFormat.thousand.parse(maxController.text).toInt();
+                Navigator.pop(context);
+              }, child: Text('Apply'))
+            ),
+            ])
+          ),
+        ]
+            ),
+      )];
     }
-    return null;
+    return [Padding(
+      padding: const EdgeInsets.only(right: 20),
+      child: PopupMenuButton(icon: Icon(FontAwesomeIcons.filterCircleDollar),
+        itemBuilder: (context) => [
+          PopupMenuItem(child: Text('Price Range (đ)')),
+          PopupMenuItem(child: Row(children: [
+            Expanded(
+              child: TextField(textAlign: TextAlign.center, controller: minController,
+                decoration: InputDecoration(border: OutlineInputBorder(),
+                  hintText: 'MIN'
+                ),
+              ),
+            ),
+            const Text('   —   '),
+            Expanded(
+              child: TextField(textAlign: TextAlign.center, controller: maxController,
+                decoration: InputDecoration(border: OutlineInputBorder(),
+                  hintText: 'MAX',
+                ),
+              ),
+            ),
+            ])
+          ),
+          PopupMenuItem(child: Row(children: [
+            Expanded(
+              child: TextButton(onPressed: () {
+                minController.text = '0'; maxController.text = AppFormat.thousand.format(100000);
+              }, child: Text('0 - 100k'))
+            ),
+            Expanded(
+              child: TextButton(onPressed: () {
+                minController.text = AppFormat.thousand.format(100000); maxController.text = AppFormat.thousand.format(500000);
+              }, child: Text('100k - 500k'))
+            ),
+            ])
+          ),
+          PopupMenuItem(child: Row(children: [
+            Expanded(
+              child: TextButton(onPressed: () {
+                minController.text = AppFormat.thousand.format(500000); maxController.text = AppFormat.thousand.format(1000000);
+              }, child: Text('500k - 1tr'))
+            ),
+            Expanded(
+              child: TextButton(onPressed: () {
+                minController.text = AppFormat.thousand.format(1000000); maxController.text = '';
+              }, child: Text('> 1tr'))
+            ),
+            ])
+          ),
+          PopupMenuItem(child: Row(children: [
+            Expanded(
+              child: TextButton(onPressed: () {
+                minController.text = ''; maxController.text = '';
+              }, child: Text('Reset'))
+            ),
+            Expanded(
+              child: ElevatedButton(onPressed: () {
+                if (minController.text.isNotEmpty) min = AppFormat.thousand.parse(minController.text).toInt();
+                if (maxController.text.isNotEmpty) max = AppFormat.thousand.parse(maxController.text).toInt();
+                Navigator.pop(context);
+              }, child: Text('Apply'))
+            ),
+            ])
+          ),
+        ]
+      ),
+    )];
   }
 
   @override
@@ -26,14 +164,13 @@ class ProductSearchDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    final searchedWord = query.toLowerCase().split(' ');
     StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
           stream: productService.getProducts(), 
           builder: (builder, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator());
             if (snapshot.hasError) return Text('Error: ${snapshot.error}');
             if (snapshot.hasData) {
-              final products = snapshot.data!.docs.map((doc) => result(doc.data(), searchedWord)).toList();
+              final products = snapshot.data!.docs.map((doc) => result(doc.data(), query, min, max)).toList();
             return ListView.separated(
               itemCount: products.length,
               itemBuilder: (context, index) => products[index]==Product.empty ? Container() : InkWell(
@@ -83,14 +220,13 @@ class ProductSearchDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final searchedWord = query.toLowerCase().split(' ');
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
           stream: productService.getProducts(), 
           builder: (builder, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator());
             if (snapshot.hasError) return Text('Error: ${snapshot.error}');
             if (snapshot.hasData) {
-              final products = snapshot.data!.docs.map((doc) => result(doc.data(), searchedWord)).toList();
+              final products = snapshot.data!.docs.map((doc) => result(doc.data(), query, min, max)).toList();
             return query.isEmpty ? Container() : ListView.separated(
               itemCount: products.length,
               itemBuilder: (context, index) => products[index]==Product.empty ? Container() : InkWell(
@@ -143,12 +279,65 @@ class ProductSearchDelegate extends SearchDelegate<String> {
 
 }
 
-Product result (Map<String, dynamic> data, List<String> query) {
-  final name = data['name'].toLowerCase().split(' ').toSet(); // Product name
-  final querySet = query.toSet(); // Search Query
+Product result (Map<String, dynamic> data, String query, int? min, int? max) {
+  final name = normalizeText(data['name'].toLowerCase()).split(' ').toSet(); // Product name
+  final franchise = normalizeText(data['franchise'].toLowerCase()).split(' ').toSet();
+  final price = data['price'];
+  final querySplit = query.toLowerCase().split(' ');
+  final querySet = querySplit.toSet(); // Search Query
+  if (min!=null) {
+    if (max!=null) {
+      if (price>=min && price <=max) {
+        if (name.containsAll(querySet)) {
+          return Product.fromJson(data);
+        }
+        if (franchise.containsAll(querySet)) {
+          return Product.fromJson(data);
+        }
+      }
+    } else if (price >= min) {
+      if (name.containsAll(querySet)) {
+        return Product.fromJson(data);
+      }
+      if (franchise.containsAll(querySet)) {
+        return Product.fromJson(data);
+      }
+    }
+  } else {
     if (name.containsAll(querySet)) {
       return Product.fromJson(data);
     }
+    if (franchise.containsAll(querySet)) {
+      return Product.fromJson(data);
+    }
+  }
   return Product.empty;
 }
 
+String normalizeText(String text) {
+    // Replace common special characters
+    text = text.replaceAll('ä', 'a')
+              .replaceAll('ö', 'o')
+              .replaceAll('ü', 'u')
+              .replaceAll('ß', 'ss')
+              .replaceAll('é', 'e')
+              .replaceAll('è', 'e')
+              .replaceAll('à', 'a')
+              .replaceAll('â', 'a')
+              .replaceAll('ç', 'c')
+              .replaceAll('î', 'i')
+              .replaceAll('ô', 'o')
+              .replaceAll('û', 'u')
+              .replaceAll('ñ', 'n')
+              .replaceAll('Á', 'A')
+              .replaceAll('É', 'E')
+              .replaceAll('Í', 'I')
+              .replaceAll('Ó', 'O')
+              .replaceAll('Ú', 'U')
+              .replaceAll('Ñ', 'N');
+
+    // Use a more general approach with regular expressions for other characters
+    text = text.replaceAll(RegExp(r'[^\w\s]'), ''); // Remove non-word and non-whitespace characters
+
+    return text;
+  }
