@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
+import '../../../core/configs/assets/avatar.dart';
 import '../cubit/sign_up_cubit.dart';
 
 class SignUpForm extends StatelessWidget {
@@ -28,10 +29,7 @@ class SignUpForm extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(
-                  'assets/images/butterfly.png',
-                  height: 100,
-                ),
+              _AvatarInput(),
               const SizedBox(height: 8),
               _EmailInput(),
               _PasswordInput(),
@@ -44,6 +42,63 @@ class SignUpForm extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _AvatarInput extends StatefulWidget {
+  @override
+  State<_AvatarInput> createState() => _AvatarInputState();
+}
+
+class _AvatarInputState extends State<_AvatarInput> {
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<SignUpCubit, SignUpState>(
+      listener: (context, state) => setState(() {}),
+      child: GestureDetector(
+                  onTap: () {
+                    context.read<SignUpCubit>().avatarChanged();
+                  },
+                  child: Align(
+                    child: Stack(
+                      children: [
+                        Avatar(photo: context.read<SignUpCubit>().state.photo, size: 40),
+                        Positioned(
+                          bottom: 1,
+                          right: 1,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 2,
+                                  color: Colors.white,
+                                ),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(
+                                    50,
+                                  ),
+                                ),
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    offset: Offset(2, 4),
+                                    color: Colors.black.withOpacity(
+                                      0.3,
+                                    ),
+                                    blurRadius: 3,
+                                  ),
+                                ]),
+                            child: Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Icon(Icons.add_a_photo),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
     );
   }
 }
@@ -158,7 +213,7 @@ class _PhoneNumberInput extends StatelessWidget {
     );
 
     return TextField(
-      key: const Key('updateProfileForm_phoneNumberInput_textField'),
+      key: const Key('updateSignUpForm_phoneNumberInput_textField'),
       onChanged: (phoneNum) => context.read<SignUpCubit>().phoneNumberChanged(phoneNum),
       keyboardType: TextInputType.number,
       decoration: InputDecoration(

@@ -41,81 +41,90 @@ class _EditProductScreenState extends State<EditProductScreen> {
         leading: Container(),
         actions: [ IconButton(onPressed: () {
           context.read<ProductCubit>().deleteProduct(widget.product.id);
+          Navigator.of(context).pop(); 
         }, icon: Icon(FontAwesomeIcons.trash), iconSize: 15) ],
         ),
       body: BlocListener<ProductCubit, ProductState>(
-        listener: (context, state) { setState(() {});
+        listener: (context, state) {
           if (state.status.isSuccess) {
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ProductDetail(product: widget.product)));
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(
+                  content: Text('Update Product Successfully'),
+                ),
+              );
           } else if (state.status.isFailure) {
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(
                 SnackBar(
-                  content: Text('Edit Product Failure'),
+                  content: Text('Update Product Failure'),
                 ),
               );
           }
         },
         child: FutureBuilder(
-          future: fetchProductData(), 
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator());
-            if (snapshot.hasError) return Text('Error: ${snapshot.error}');
-            if (snapshot.hasData) {
-              final product = Product.fromJson(snapshot.data!.data()!);
-              return ListView(padding: EdgeInsets.all(30),
-                children: [
-                Padding(padding: EdgeInsets.all(8),
-                  child: GestureDetector(
-                    child: Stack(alignment: Alignment.center,
-                      children: [
-                        Container(
-                          height: 200,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Colors.grey[700],
-                            image: DecorationImage(image: NetworkImage(context.read<ProductCubit>().state.image ?? product.image))
-                          ),
-                        ),
-                        Positioned(
-                          child: Icon(FontAwesomeIcons.image, color: AppColors.lightCardBackground,)
-                        )
-                      ]
-                    ),
-                    onTap: () { 
-                      context.read<ProductCubit>().productImageChanged(); 
-                      setState(() {});
-                    },
-                  ),
-                ),
-                // Product Name
-                _NameInput(product.name),
-                // Brand Name
-                _BrandNameInput(product.brandName),
-                // Franchise
-                _FranchiseInput(product.franchise),
-                // Price
-                _PriceInput(product.price),
-                // Quantity
-                _QuantityInput(product.quantity),
-                // Description
-                _DescriptionInput(product.description),
-                SizedBox(height: 16),
-                // Add New Product Button
-                Row(mainAxisAlignment: MainAxisAlignment.center,
+            future: fetchProductData(), 
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator());
+              if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+              if (snapshot.hasData) {
+                final product = Product.fromJson(snapshot.data!.data()!);
+                return ListView(padding: EdgeInsets.all(30),
                   children: [
-                    _CancelButton(onPressed: () => Navigator.pop(context)),
-                    SizedBox(width: 60),
-                    _UpdateProductButton(id: product.id, product: product),
-                  ],
-                )]
-              );
-            }
-          return Container();
-        }
+                  Padding(padding: EdgeInsets.all(8),
+                      child: GestureDetector(
+                        child: Stack(alignment: Alignment.center,
+                          children: [
+                            Container(
+                              height: 200,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.grey[700],
+                                image: DecorationImage(image: NetworkImage(context.read<ProductCubit>().state.image ?? product.image))
+                              ),
+                            ),
+                            Positioned(
+                              child: Icon(FontAwesomeIcons.image, color: AppColors.lightCardBackground,)
+                            )
+                          ]
+                        ),
+                        onTap: () { 
+                          context.read<ProductCubit>().productImageChanged(); 
+                          setState(() {});
+                        },
+                      ),
+                    ),
+                  
+                  // Product Name
+                  _NameInput(product.name),
+                  // Brand Name
+                  _BrandNameInput(product.brandName),
+                  // Franchise
+                  _FranchiseInput(product.franchise),
+                  // Price
+                  _PriceInput(product.price),
+                  // Quantity
+                  _QuantityInput(product.quantity),
+                  // Description
+                  _DescriptionInput(product.description),
+                  SizedBox(height: 16),
+                  // Add New Product Button
+                  Row(mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _CancelButton(onPressed: () => Navigator.pop(context)),
+                      SizedBox(width: 60),
+                      _UpdateProductButton(id: product.id, product: product),
+                    ],
+                  )]
+                );
+              }
+            return Container();
+          }
+        ),
       )
-    ));
+    );
   }
 }
 

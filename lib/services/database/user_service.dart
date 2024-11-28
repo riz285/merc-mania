@@ -29,10 +29,10 @@ final authenticationRepository = AuthenticationRepository();
   // Create user
   Future<void> createUser(String id, User user) async {
     try {
-      if (!await exists(id)) {
+      
         await usersCollectionRef.doc(id).set(user.toJson());
         print('User created successfully');
-      }
+      
     } catch (e) {
       print('$e');
     }

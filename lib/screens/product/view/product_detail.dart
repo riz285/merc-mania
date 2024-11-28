@@ -64,14 +64,14 @@ class _ProductDetailState extends State<ProductDetail> {
         title: Text('Product Details'),
         actions: [ 
           userId==widget.product.userId 
-          ? IconButton(onPressed: () { context.read<ProductCubit>().init();
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditProductScreen(product: widget.product)));
+          ? IconButton(onPressed: () { 
+            context.read<ProductCubit>().init();
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) { 
+              return EditProductScreen(product: widget.product); }));
           }, icon: Icon(Icons.edit_note)) 
           : Container() ],
       ),
-      body: BlocListener<ProductCubit, ProductState>(
-        listener: (context, state) => setState(() {}),
-        child: FutureBuilder(
+      body: FutureBuilder(
           future: fetchProductData(), 
           builder: (context, snapshot) {
             // if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator());
@@ -240,7 +240,7 @@ class _ProductDetailState extends State<ProductDetail> {
         }
         return Container();
       }),
-    ));
+    );
   }
 }
 

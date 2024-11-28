@@ -73,6 +73,7 @@ class ProductSearchDelegate extends SearchDelegate<String> {
             Expanded(
               child: TextButton(onPressed: () {
                 minController.text = ''; maxController.text = '';
+                min=null; max=null;
               }, child: Text('Reset'))
             ),
             Expanded(
@@ -141,6 +142,7 @@ class ProductSearchDelegate extends SearchDelegate<String> {
             Expanded(
               child: TextButton(onPressed: () {
                 minController.text = ''; maxController.text = '';
+                min=null; max=null;
               }, child: Text('Reset'))
             ),
             Expanded(
@@ -283,8 +285,8 @@ Product result (Map<String, dynamic> data, String query, int? min, int? max) {
   final name = normalizeText(data['name'].toLowerCase()).split(' ').toSet(); // Product name
   final franchise = normalizeText(data['franchise'].toLowerCase()).split(' ').toSet();
   final price = data['price'];
-  final querySplit = query.toLowerCase().split(' ');
-  final querySet = querySplit.toSet(); // Search Query
+  final querySplit = query.toLowerCase().split(' '); // Search Query
+  final querySet = querySplit.toSet(); 
   if (min!=null) {
     if (max!=null) {
       if (price>=min && price <=max) {

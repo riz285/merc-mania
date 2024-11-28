@@ -82,7 +82,6 @@ class _StyledDrawerState extends State<StyledDrawer> {
                           // Current user's name
                           Text('${currentUser.firstName ?? ''} ${currentUser.lastName ?? ''}', 
                             style: TextStyle(color: Colors.brown, fontWeight: FontWeight.w600)),
-                          // TODO: implement get() user's following and followers
                           Row(children: [
                             Text('Following: 26', style: TextStyle(color: Colors.brown)),
                             Spacer(),

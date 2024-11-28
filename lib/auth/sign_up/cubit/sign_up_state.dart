@@ -2,6 +2,7 @@ part of 'sign_up_cubit.dart';
 
 final class SignUpState extends Equatable {
   const SignUpState({
+    this.photo,
     this.email = const Email.pure(),
     this.password = const Password.pure(),
     this.confirmedPassword = const ConfirmedPassword.pure(),
@@ -13,6 +14,7 @@ final class SignUpState extends Equatable {
     this.errorMessage,
   });
 
+  final String? photo;
   final Email email;
   final Password password;
   final ConfirmedPassword confirmedPassword;
@@ -37,6 +39,7 @@ final class SignUpState extends Equatable {
       ];
 
   SignUpState copyWith({
+    String? photo,
     Email? email,
     Password? password,
     ConfirmedPassword? confirmedPassword,
@@ -48,6 +51,7 @@ final class SignUpState extends Equatable {
     String? errorMessage,
   }) {
     return SignUpState(
+      photo: photo ?? this.photo,
       email: email ?? this.email,
       password: password ?? this.password,
       confirmedPassword: confirmedPassword ?? this.confirmedPassword,

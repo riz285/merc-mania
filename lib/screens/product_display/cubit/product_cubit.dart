@@ -23,7 +23,8 @@ class ProductCubit extends HydratedCubit<ProductState> {
   final userService = UserService();
 
   void init() {
-    emit(
+    try {
+      emit(
       state.copyWith(
         image: null,
         productName: null,
@@ -37,6 +38,8 @@ class ProductCubit extends HydratedCubit<ProductState> {
         status: FormzSubmissionStatus.initial
       )
     );
+    }
+    catch (e) { print(e); }
   }
 
   /// Increase Product's view count

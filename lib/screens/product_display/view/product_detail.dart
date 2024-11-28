@@ -34,7 +34,7 @@ class _ProductDetailState extends State<ProductDetail> {
   @override
   initState() {
     super.initState();
-    fetchProductData();
+    _fetchProductData();
     fetchUserData();
   }
 
@@ -46,7 +46,7 @@ class _ProductDetailState extends State<ProductDetail> {
     }
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>?> fetchProductData() async {
+  Future<DocumentSnapshot<Map<String, dynamic>>?> _fetchProductData() async {
     try {
       return await context.read<ProductCubit>().fetchProductData(widget.product.id);
     } catch (e) {
@@ -64,7 +64,8 @@ class _ProductDetailState extends State<ProductDetail> {
         title: Text('Product Details'),
         actions: [ 
           userId==widget.product.userId 
-          ? IconButton(onPressed: () { context.read<ProductCubit>().init();
+          ? IconButton(onPressed: () { 
+            context.read<ProductCubit>().init();
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditProductScreen(product: widget.product)));
           }, icon: Icon(Icons.edit_note)) 
           : Container() ],
@@ -72,7 +73,7 @@ class _ProductDetailState extends State<ProductDetail> {
       body: BlocListener<ProductCubit, ProductState>(
         listener: (context, state) => setState(() {}),
         child: FutureBuilder(
-          future: fetchProductData(), 
+          future: _fetchProductData(), 
           builder: (context, snapshot) {
             // if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator());
             if (snapshot.hasError) return Text('Error: ${snapshot.error}');

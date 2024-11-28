@@ -7,6 +7,8 @@ import 'package:form_inputs/form_inputs.dart';
 import 'package:formz/formz.dart';
 import 'package:merc_mania/services/database/user_service.dart';
 
+import '../../../services/database/image_storage.dart';
+
 part 'sign_up_state.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
@@ -14,6 +16,18 @@ class SignUpCubit extends Cubit<SignUpState> {
 
   final AuthenticationRepository _authenticationRepository;
   final userService = UserService();
+  final imageStorage = ImageStorage();
+
+  Future<void> avatarChanged() async {
+    final pickedImage = await imageStorage.pickImage();
+    if (pickedImage == null) return;
+    final photo = await imageStorage.uploadAvatarToStorage(pickedImage);
+    emit(
+      state.copyWith(
+        photo: photo
+      )
+    );
+  }
 
   void emailChanged(String value) {
     final email = Email.dirty(value);
@@ -138,7 +152,7 @@ class SignUpCubit extends Cubit<SignUpState> {
       );
       // ignore: no_leading_underscores_for_local_identifiers
       User _currentUser = _authenticationRepository.currentUser;
-      User user = User(id: _currentUser.id, email: _currentUser.email, firstName: _currentUser.firstName, lastName: _currentUser.lastName, phoneNum: _currentUser.phoneNum);
+      User user = User(id: _currentUser.id, email: _currentUser.email, firstName: state.firstName.value, lastName: state.lastName.value, phoneNum: state.phoneNum.value, photo: state.photo);
       await userService.createUser(user.id, user);
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } on SignUpWithEmailAndPasswordFailure catch (e) {

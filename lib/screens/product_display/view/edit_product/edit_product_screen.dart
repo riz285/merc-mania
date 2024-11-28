@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:formz/formz.dart';
+import 'package:merc_mania/app/view/app.dart';
 import 'package:merc_mania/screens/product_display/view/product_detail.dart';
 import 'package:merc_mania/services/models/product.dart';
 
@@ -40,11 +41,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
         title: Text('Edit Product Details'),
         leading: Container(),
         actions: [ IconButton(onPressed: () {
-          context.read<ProductCubit>().deleteProduct(widget.product.id);
+          showDialog(context: context, builder: (context) => AlertDialog(
+            title: Text('Do you want this item to be deleted? This action can\'t be undone.', style: TextStyle(fontSize: 16), textAlign: TextAlign.center),
+            content: ElevatedButton(onPressed: () {
+              context.read<ProductCubit>().deleteProduct(widget.product.id);
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => AppView()));
+            }, child: Text('Confirm')),
+          ));
         }, icon: Icon(FontAwesomeIcons.trash), iconSize: 15) ],
         ),
       body: BlocListener<ProductCubit, ProductState>(
-        listener: (context, state) { setState(() {});
+        listener: (context, state) { 
           if (state.status.isSuccess) {
             Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ProductDetail(product: widget.product)));
           } else if (state.status.isFailure) {
@@ -90,17 +97,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   ),
                 ),
                 // Product Name
-                _NameInput(product.name),
+                _NameInput(name: product.name),
                 // Brand Name
-                _BrandNameInput(product.brandName),
+                _BrandNameInput(brand: product.brandName),
                 // Franchise
-                _FranchiseInput(product.franchise),
+                _FranchiseInput(franchise: product.franchise),
                 // Price
-                _PriceInput(product.price),
+                _PriceInput(price: product.price),
                 // Quantity
-                _QuantityInput(product.quantity),
+                _QuantityInput(quantity: product.quantity),
                 // Description
-                _DescriptionInput(product.description),
+                _DescriptionInput(description: product.description),
                 SizedBox(height: 16),
                 // Add New Product Button
                 Row(mainAxisAlignment: MainAxisAlignment.center,
@@ -121,7 +128,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
 class _NameInput extends StatelessWidget {
   final String? name;
-  const _NameInput(this.name);
+  const _NameInput({required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +146,7 @@ class _NameInput extends StatelessWidget {
 
 class _BrandNameInput extends StatelessWidget {
   final String? brand;
-  const _BrandNameInput(this.brand);
+  const _BrandNameInput({required this.brand});
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +165,7 @@ class _BrandNameInput extends StatelessWidget {
 
 class _FranchiseInput extends StatelessWidget {
   final String? franchise;
-  const _FranchiseInput(this.franchise);
+  const _FranchiseInput({required this.franchise});
 
   @override
   Widget build(BuildContext context) {
@@ -176,7 +183,7 @@ class _FranchiseInput extends StatelessWidget {
 
 class _PriceInput extends StatelessWidget {
   final int? price;
-  const _PriceInput(this.price);
+  const _PriceInput({required this.price});
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +203,7 @@ class _PriceInput extends StatelessWidget {
 
 class _QuantityInput extends StatelessWidget {
   final int? quantity;
-  const _QuantityInput(this.quantity);
+  const _QuantityInput({required this.quantity});
 
   @override
   Widget build(BuildContext context) {
@@ -215,7 +222,7 @@ class _QuantityInput extends StatelessWidget {
 
 class _DescriptionInput extends StatelessWidget {
   final String? description;
-  const _DescriptionInput(this.description);
+  const _DescriptionInput({required this.description});
 
   @override
   Widget build(BuildContext context) {
